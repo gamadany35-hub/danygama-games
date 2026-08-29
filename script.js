@@ -1,14 +1,1 @@
-const games=[
- {name:"Demo Football",platform:"Android",size:"1.2 GB",icon:"⚽",url:"#"},
- {name:"Demo Racing",platform:"PC",size:"2.8 GB",icon:"🏎️",url:"#"},
- {name:"Demo Adventure",platform:"Android",size:"950 MB",icon:"🗡️",url:"#"},
- {name:"Demo Action",platform:"PC",size:"4.1 GB",icon:"🔥",url:"#"}
-];
-const list=document.getElementById("gameList"),search=document.getElementById("search");
-function render(q=""){
- list.innerHTML="";
- games.filter(g=>g.name.toLowerCase().includes(q.toLowerCase())).forEach(g=>{
-  list.innerHTML+=`<article class="card"><div class="cover">${g.icon}</div><h3>${g.name}</h3><div class="meta">${g.platform} • ${g.size}</div><a class="download" href="${g.url}">📥 Download</a></article>`;
- });
-}
-search.addEventListener("input",e=>render(e.target.value));render();
+const games=[{name:"Demo Football",platform:"Android",size:"1.2 GB",cat:"Football",icon:"⚽",url:"#"} ,{name:"Demo Racing",platform:"PC",size:"2.8 GB",cat:"Racing",icon:"🏎️",url:"#"} ,{name:"Demo Adventure",platform:"Android",size:"950 MB",cat:"Adventure",icon:"🗡️",url:"#"} ,{name:"Demo Action",platform:"PC",size:"4.1 GB",cat:"Action",icon:"🔥",url:"#"}];let active="All";const list=document.getElementById("gameList"),search=document.getElementById("search"),cats=document.getElementById("cats");function catsRender(){cats.innerHTML=["All",...new Set(games.map(g=>g.cat))].map(c=>`<button class="cat ${c==active?"active":""}" onclick="setCat('${c}')">${c}</button>`).join("")}function render(){let q=search.value.toLowerCase(),a=games.filter(g=>(active=="All"||g.cat==active)&&g.name.toLowerCase().includes(q));document.getElementById("count").textContent=a.length+" games";list.innerHTML=a.map(g=>`<article class="card"><div class="cover">${g.icon}</div><h3>${g.name}</h3><p class="meta">${g.platform} • ${g.size} • ${g.cat}</p><a class="download" href="${g.url}">📥 Download</a></article>`).join("")}function setCat(c){active=c;catsRender();render()}search.addEventListener("input",render);catsRender();render();function openAdmin(){document.getElementById("modal").style.display="flex"}function closeAdmin(){document.getElementById("modal").style.display="none"}
