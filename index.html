@@ -1,1 +1,71 @@
-<!doctype html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Danygama Games</title><link rel="stylesheet" href="style.css"></head><body><header><b>🎮 Danygama <i>Games</i></b><nav><a href="#home">Home</a><a href="#games">Games</a><button onclick="openAdmin()">🔐 Admin</button></nav></header><section id="home" class="hero"><small>WELCOME TO DANYGAMA GAMES</small><h1>Find Your Next<br><span>Favorite Game</span></h1><p>Gundua games, tafuta kwa jina au category, na tumia download links halali.</p><a class="btn" href="#games">🎮 Browse Games</a></section><section id="games" class="section"><div class="top"><h2>🔥 Games</h2><input id="search" placeholder="🔍 Tafuta game..."></div><div id="cats"></div><p id="count"></p><div id="gameList" class="grid"></div></section><section class="section about"><h2>About Danygama Games</h2><p>Gaming website ya Danygama. Kwa sasa games zinasimamiwa kupitia GitHub; admin panel kamili tutaunganisha baadaye.</p></section><div id="modal" class="modal"><div class="panel"><button class="close" onclick="closeAdmin()">✕</button><h2>🔐 Admin</h2><p>Sehemu hii imeandaliwa kwa ajili ya admin system. Usitumie password yako ya GitHub hapa.</p><button class="btn" onclick="closeAdmin()">Close</button></div></div><footer>© 2026 Danygama Games</footer><script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danygama Games</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <h2>🎮 DANYGAMA GAMES</h2>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#games">Games</a>
+    <a href="#categories">Categories</a>
+  </nav>
+</header>
+
+<section id="home" class="hero">
+  <h1>🎮 Danygama Games</h1>
+
+  <p>
+    Karibu Danygama Games — tafuta game yako,
+    chagua game na download kwa urahisi.
+  </p>
+
+  <a href="#games" class="main-btn">
+    🎮 Tazama Games
+  </a>
+</section>
+
+<section class="search-section">
+  <input
+    type="text"
+    id="search"
+    placeholder="🔍 Tafuta game..."
+  >
+</section>
+
+<section id="categories">
+  <h2>🗂️ Categories</h2>
+
+  <div id="cats">
+    <button onclick="filterCategory('All')">All</button>
+    <button onclick="filterCategory('Football')">⚽ Football</button>
+    <button onclick="filterCategory('Racing')">🏎️ Racing</button>
+    <button onclick="filterCategory('Action')">🔫 Action</button>
+    <button onclick="filterCategory('Adventure')">🗺️ Adventure</button>
+  </div>
+</section>
+
+<section id="games">
+  <h2>🔥 Games</h2>
+
+  <p id="count"></p>
+
+  <div id="gameList"></div>
+</section>
+
+<footer>
+  <p>© 2026 Danygama Games</p>
+  <p>🎮 Games • Downloads • Gaming</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
