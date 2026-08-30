@@ -11,34 +11,43 @@ const games = [
 
 const gameList = document.getElementById("gameList");
 const search = document.getElementById("search");
-const cats = document.getElementById("cats");
+const count = document.getElementById("count");
 
 function showGames(list) {
-  if (!gameList) return;
-
   gameList.innerHTML = "";
 
+  count.textContent =
+    list.length + (list.length === 1 ? " game" : " games");
+
   if (list.length === 0) {
-    gameList.innerHTML = "<p>Hakuna game iliyopatikana.</p>";
+    gameList.innerHTML =
+      "<p>Hakuna game iliyopatikana 🔎</p>";
     return;
   }
 
   list.forEach(game => {
+
     const card = document.createElement("div");
     card.className = "game-card";
 
     card.innerHTML = `
-      <div class="game-icon">${game.icon}</div>
+      <div class="game-icon">
+        ${game.icon}
+      </div>
+
       <h3>${game.name}</h3>
+
       <p>🎮 Platform: ${game.platform}</p>
       <p>📦 Size: ${game.size}</p>
       <p>🗂️ Category: ${game.cat}</p>
 
-      <a class="download-btn"
-         href="${game.url}"
-         target="_blank"
-         rel="noopener noreferrer">
-         📥 DOWNLOAD
+      <a
+        class="download-btn"
+        href="${game.url}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        📥 DOWNLOAD
       </a>
     `;
 
@@ -46,39 +55,31 @@ function showGames(list) {
   });
 }
 
-function showCategories() {
-  if (!cats) return;
-
-  const categories = ["All", ...new Set(games.map(game => game.cat))];
-
-  cats.innerHTML = categories.map(category => `
-    <button onclick="filterCategory('${category}')">
-      ${category}
-    </button>
-  `).join("");
-}
-
 function filterCategory(category) {
+
   if (category === "All") {
     showGames(games);
-  } else {
-    showGames(games.filter(game => game.cat === category));
+    return;
   }
+
+  const filtered = games.filter(
+    game => game.cat === category
+  );
+
+  showGames(filtered);
 }
 
-if (search) {
-  search.addEventListener("input", function () {
-    const text = search.value.toLowerCase();
+search.addEventListener("input", function () {
 
-    const results = games.filter(game =>
-      game.name.toLowerCase().includes(text) ||
-      game.platform.toLowerCase().includes(text) ||
-      game.cat.toLowerCase().includes(text)
-    );
+  const text = search.value.toLowerCase();
 
-    showGames(results);
-  });
-}
+  const results = games.filter(game =>
+    game.name.toLowerCase().includes(text) ||
+    game.platform.toLowerCase().includes(text) ||
+    game.cat.toLowerCase().includes(text)
+  );
 
-showCategories();
+  showGames(results);
+});
+
 showGames(games);
