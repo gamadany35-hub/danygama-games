@@ -36,8 +36,8 @@ function showGames(list) {
 
     card.innerHTML = `
       <div class="game-icon">
-        ${game.icon}
-      </div>
+  <img src="${game.image}" alt="${game.name}">
+</div>
 
       <h3>${game.name}</h3>
 
