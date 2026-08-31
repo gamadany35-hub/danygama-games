@@ -4,7 +4,7 @@ const games = [
     platform: "Android",
     size: "ZIP",
     cat: "Football",
-    icon: "⚽",
+    icon: image: "WEKA_LINK_YA_PICHA_HAPA",
     url: "https://www.mediafire.com/file/piakyxymvyv1723/PES2025_NBC_PL_V2_BY_MASTER_PES.zip/file"
   },
 
@@ -13,7 +13,7 @@ const games = [
     platform: "Android",
     size: "1.62 GB",
     cat: "Football",
-    icon: "⚽",
+    icon: image: "WEKA_LINK_YA_PICHA_HAPA",
     url: "https://modsfire.com/download/8n21dAo36O351Q3/68715"
   }
 ];
