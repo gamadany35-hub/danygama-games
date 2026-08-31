@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danygama Games - Admin</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    .box {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 7px 0;
+      box-sizing: border-box;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      border-radius: 8px;
+      background: #111;
+      color: white;
+    }
+
+    .game {
+      border: 1px solid #ddd;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+    }
+
+    .delete {
+      background: #d00;
+    }
+
+    #panel {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <h1>🎮 Danygama Games</h1>
+  <h2>Admin Panel</h2>
+
+  <div id="login">
+    <h3>Admin Login</h3>
+
+    <input id="email" type="email" placeholder="Admin Email">
+
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="login()">LOGIN</button>
+
+    <p id="loginMessage"></p>
+  </div>
+
+
+  <div id="panel">
+
+    <button onclick="logout()">LOGOUT</button>
+
+    <hr>
+
+    <h3>➕ Add New Game</h3>
+
+    <input id="name" placeholder="Game name">
+
+    <input id="platform" placeholder="Platform mfano Android">
+
+    <input id="size" placeholder="Size mfano 2 GB">
+
+    <input id="category" placeholder="Category mfano Football">
+
+    <input id="image" placeholder="Image URL">
+
+    <input id="url" placeholder="Download URL">
+
+    <button onclick="addGame()">SAVE GAME</button>
+
+    <p id="message"></p>
+
+    <hr>
+
+    <h3>🎮 Games Zilizopo</h3>
+
+    <div id="games"></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL = https://octyeeoameulsdlaaqbc.supabase.co/rest/v1/
+const SUPABASE_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI;
+
+const supabaseClient =
+  supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+
+async function login() {
+
+  const email =
+    document.getElementById("email").value;
+
+  const password =
+    document.getElementById("password").value;
+
+  const { error } =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if (error) {
+
+    document.getElementById("loginMessage").textContent =
+      error.message;
+
+    return;
+  }
+
+  showPanel();
+}
+
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+  document.getElementById("panel").style.display = "none";
+
+  document.getElementById("login").style.display = "block";
+}
+
+
+function showPanel() {
+
+  document.getElementById("login").style.display = "none";
+
+  document.getElementById("panel").style.display = "block";
+
+  loadGames();
+}
+
+
+async function addGame() {
+
+  const name =
+    document.getElementById("name").value;
+
+  const platform =
+    document.getElementById("platform").value;
+
+  const size =
+    document.getElementById("size").value;
+
+  const category =
+    document.getElementById("category").value;
+
+  const image =
+    document.getElementById("image").value;
+
+  const url =
+    document.getElementById("url").value;
+
+
+  const { error } =
+    await supabaseClient
+      .from("games")
+      .insert({
+        name,
+        platform,
+        size,
+        category,
+        image,
+        url
+      });
+
+
+  if (error) {
+
+    document.getElementById("message").textContent =
+      error.message;
+
+    return;
+  }
+
+
+  document.getElementById("message").textContent =
+    "✅ Game imeongezwa!";
+
+  document.getElementById("name").value = "";
+  document.getElementById("platform").value = "";
+  document.getElementById("size").value = "";
+  document.getElementById("category").value = "";
+  document.getElementById("image").value = "";
+  document.getElementById("url").value = "";
+
+  loadGames();
+}
+
+
+async function loadGames() {
+
+  const { data, error } =
+    await supabaseClient
+      .from("games")
+      .select("*")
+      .order("id", { ascending: false });
+
+
+  if (error) {
+
+    document.getElementById("games").textContent =
+      error.message;
+
+    return;
+  }
+
+
+  const container =
+    document.getElementById("games");
+
+  container.innerHTML = "";
+
+
+  data.forEach(game => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "game";
+
+    div.innerHTML = `
+      <strong>${game.name}</strong>
+      <br>
+      ${game.platform} • ${game.size}
+      <br>
+      ${game.category}
+      <br><br>
+
+      <button class="delete"
+        onclick="deleteGame(${game.id})">
+        🗑️ DELETE
+      </button>
+    `;
+
+    container.appendChild(div);
+
+  });
+}
+
+
+async function deleteGame(id) {
+
+  if (!confirm("Una uhakika unataka kufuta game hii?")) {
+    return;
+  }
+
+
+  const { error } =
+    await supabaseClient
+      .from("games")
+      .delete()
+      .eq("id", id);
+
+
+  if (error) {
+
+    alert(error.message);
+
+    return;
+  }
+
+
+  loadGames();
+}
+
+
+supabaseClient.auth.getSession()
+  .then(({ data }) => {
+
+    if (data.session) {
+      showPanel();
+    }
+
+  });
+
+</script>
+
+</body>
+</html>
