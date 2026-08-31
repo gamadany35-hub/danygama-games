@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gamadany35-hub.github.io/danygama-games/sitemap.xml
