@@ -2,79 +2,329 @@
 <html lang="sw">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Danygama Games - Download Games Android, PC, PS2 & PS3</title>
+  <title>Danygama Games</title>
 
-  <meta name="description" content="Danygama Games - Download games kwa Android, PC, PS2 na PS3. Tafuta game yako, soma maelezo na download kwa urahisi.">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <meta name="keywords" content="Danygama Games, download games, Android games, PC games, PS2 games, PS3 games, football games">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-  <meta name="author" content="Danygama Games">
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #080b12;
+      color: white;
+    }
 
-  <meta name="robots" content="index, follow">
-  <link rel="stylesheet" href="style.css">
+    header {
+      padding: 25px 15px;
+      text-align: center;
+      background: #141a27;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+    }
+
+    header p {
+      margin: 0;
+      color: #aaa;
+    }
+
+    .search {
+      max-width: 650px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    #search {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #303a4e;
+      background: #20283a;
+      color: white;
+      font-size: 16px;
+    }
+
+    #games {
+      max-width: 1000px;
+      margin: auto;
+      padding: 10px 15px 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+    }
+
+    .game {
+      background: #141a27;
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid #252d3d;
+    }
+
+    .game img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .game-info {
+      padding: 15px;
+    }
+
+    .game h2 {
+      font-size: 19px;
+      margin: 0 0 10px;
+    }
+
+    .details {
+      color: #bbb;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .download {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      background: #7658ff;
+      color: white;
+      padding: 12px;
+      border-radius: 9px;
+      margin-top: 13px;
+      font-weight: bold;
+    }
+
+    .download:hover {
+      opacity: 0.9;
+    }
+
+    #message {
+      text-align: center;
+      padding: 30px;
+      color: #bbb;
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-  <h2>🎮 DANYGAMA GAMES</h2>
-
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#games">Games</a>
-    <a href="#categories">Categories</a>
-  </nav>
+  <h1>🎮 DANYGAMA GAMES</h1>
+  <p>Pakua games zako kwa urahisi</p>
 </header>
 
-<section id="home" class="hero">
-  <h1>🎮 Danygama Games</h1>
-
-  <p>
-    Karibu Danygama Games — tafuta game yako,
-    chagua game na download kwa urahisi.
-  </p>
-
-  <a href="#games" class="main-btn">
-    🎮 Tazama Games
-  </a>
-</section>
-
-<section class="search-section">
+<div class="search">
   <input
-    type="text"
     id="search"
-    placeholder="🔍 Tafuta game..."
+    type="search"
+    placeholder="🔎 Tafuta game..."
+    oninput="searchGames()"
   >
-</section>
+</div>
 
-<section id="categories">
-  <h2>🗂️ Categories</h2>
+<div id="message">
+  ⏳ Inapakia games...
+</div>
 
-  <div id="cats">
-    <button onclick="filterCategory('All')">All</button>
-    <button onclick="filterCategory('Football')">⚽ Football</button>
-    <button onclick="filterCategory('Racing')">🏎️ Racing</button>
-    <button onclick="filterCategory('Action')">🔫 Action</button>
-    <button onclick="filterCategory('Adventure')">🗺️ Adventure</button>
-  </div>
-</section>
+<div id="games"></div>
 
-<section id="games">
-  <h2>🔥 Games</h2>
 
-  <p id="count"></p>
+<script>
 
-  <div id="gameList"></div>
-</section>
+const SUPABASE_URL =
+  "https://octyeeoameulsdlaaqbc.supabase.co";
 
-<footer>
-  <p>© 2026 Danygama Games</p>
-  <p>🎮 Games • Downloads • Gaming</p>
-</footer>
+const SUPABASE_KEY =
+  "const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";";
 
-<script src="script.js"></script>
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+let allGames = [];
+
+
+async function loadGames() {
+
+  const message =
+    document.getElementById("message");
+
+  const container =
+    document.getElementById("games");
+
+  const { data, error } =
+    await supabaseClient
+      .from("games")
+      .select("*")
+      .order("id", {
+        ascending: false
+      });
+
+
+  if (error) {
+
+    message.textContent =
+      "❌ Imeshindwa kupakia games: " +
+      error.message;
+
+    return;
+  }
+
+
+  allGames = data || [];
+
+  message.style.display = "none";
+
+  displayGames(allGames);
+}
+
+
+function displayGames(games) {
+
+  const container =
+    document.getElementById("games");
+
+  container.innerHTML = "";
+
+
+  if (games.length === 0) {
+
+    container.innerHTML =
+      "<p>Hakuna game iliyopatikana.</p>";
+
+    return;
+  }
+
+
+  games.forEach(function(game) {
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "game";
+
+
+    const image =
+      game.image
+        ? `<img src="${escapeHTML(game.image)}" alt="${escapeHTML(game.name)}">`
+        : "";
+
+
+    card.innerHTML = `
+
+      ${image}
+
+      <div class="game-info">
+
+        <h2>
+          🎮 ${escapeHTML(game.name)}
+        </h2>
+
+        <div class="details">
+
+          📱 Platform:
+          ${escapeHTML(game.platform || "")}
+
+          <br>
+
+          📦 Size:
+          ${escapeHTML(game.size || "")}
+
+          <br>
+
+          🗂️ Category:
+          ${escapeHTML(game.category || "")}
+
+        </div>
+
+        <a
+          class="download"
+          href="${escapeHTML(game.url || "#")}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          ⬇️ DOWNLOAD
+        </a>
+
+      </div>
+
+    `;
+
+
+    container.appendChild(card);
+
+  });
+
+}
+
+
+function searchGames() {
+
+  const search =
+    document
+      .getElementById("search")
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  const filtered =
+    allGames.filter(function(game) {
+
+      return (
+
+        (game.name || "")
+          .toLowerCase()
+          .includes(search)
+
+        ||
+
+        (game.platform || "")
+          .toLowerCase()
+          .includes(search)
+
+        ||
+
+        (game.category || "")
+          .toLowerCase()
+          .includes(search)
+
+      );
+
+    });
+
+
+  displayGames(filtered);
+}
+
+
+function escapeHTML(value) {
+
+  const div =
+    document.createElement("div");
+
+  div.textContent =
+    value ?? "";
+
+  return div.innerHTML;
+}
+
+
+loadGames();
+
+</script>
 
 </body>
 </html>
