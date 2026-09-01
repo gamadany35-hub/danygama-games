@@ -49,16 +49,16 @@
       color: white;
     }
 
+    input[type="file"] {
+      padding: 10px;
+    }
+
     button {
       background: #7658ff;
       color: white;
       border: none;
       font-weight: bold;
       cursor: pointer;
-    }
-
-    button:hover {
-      opacity: 0.9;
     }
 
     .logout {
@@ -76,6 +76,14 @@
       border-radius: 12px;
     }
 
+    .game img {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
     .message {
       margin-top: 10px;
       font-weight: bold;
@@ -83,6 +91,15 @@
 
     #panel {
       display: none;
+    }
+
+    #preview {
+      display: none;
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-top: 10px;
     }
 
     hr {
@@ -158,15 +175,22 @@
       placeholder="Category mfano Football"
     >
 
+    <label>
+      🖼️ Chagua picha ya game:
+    </label>
+
     <input
-      id="image"
-      type="text"
-      placeholder="Image URL"
+      id="imageFile"
+      type="file"
+      accept="image/*"
+      onchange="previewImage(event)"
     >
+
+    <img id="preview">
 
     <input
       id="url"
-      type="text"
+      type="url"
       placeholder="Download URL"
     >
 
@@ -191,401 +215,160 @@
 
 <script>
 
-  /* =========================
-     SUPABASE CONNECTION
-  ========================= */
+const SUPABASE_URL =
+  "https://octyeeoameulsdlaaqbc.supabase.co";
 
-  const SUPABASE_URL =
-    "https://octyeeoameulsdlaaqbc.supabase.co";
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
 
-  const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
-
-
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-  /* =========================
-     LOGIN
-  ========================= */
+async function login() {
 
-  async function login() {
+  const email =
+    document.getElementById("email").value.trim();
 
-    const email =
-      document.getElementById("email").value.trim();
+  const password =
+    document.getElementById("password").value;
 
-    const password =
-      document.getElementById("password").value;
+  const message =
+    document.getElementById("loginMessage");
 
-
-    const message =
-      document.getElementById("loginMessage");
-
-
-    if (!email || !password) {
-
-      message.textContent =
-        "⚠️ Weka email na password.";
-
-      return;
-    }
-
-
+  if (!email || !password) {
     message.textContent =
-      "⏳ Inaingia...";
+      "⚠️ Weka email na password.";
+    return;
+  }
+
+  message.textContent =
+    "⏳ Inaingia...";
+
+  const { error } =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if (error) {
+    message.textContent =
+      "❌ " + error.message;
+    return;
+  }
+
+  message.textContent =
+    "✅ Login successful!";
+
+  showPanel();
+}
 
 
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
+function showPanel() {
 
-        email: email,
+  document.getElementById("login").style.display =
+    "none";
 
-        password: password
+  document.getElementById("panel").style.display =
+    "block";
 
+  loadGames();
+}
+
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+  document.getElementById("panel").style.display =
+    "none";
+
+  document.getElementById("login").style.display =
+    "block";
+}
+
+
+function previewImage(event) {
+
+  const file =
+    event.target.files[0];
+
+  const preview =
+    document.getElementById("preview");
+
+  if (!file) {
+    preview.style.display = "none";
+    return;
+  }
+
+  preview.src =
+    URL.createObjectURL(file);
+
+  preview.style.display =
+    "block";
+}
+
+
+async function uploadImage(file) {
+
+  if (!file) {
+    return null;
+  }
+
+  const extension =
+    file.name.split(".").pop();
+
+  const fileName =
+    Date.now() + "-" +
+    Math.random().toString(36).substring(2) +
+    "." + extension;
+
+  const filePath =
+    "games/" + fileName;
+
+
+  const { error: uploadError } =
+    await supabaseClient
+      .storage
+      .from("game-images")
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: false
       });
 
 
-    if (error) {
-
-      message.textContent =
-        "❌ " + error.message;
-
-      return;
-    }
-
-
-    message.textContent =
-      "✅ Login successful!";
-
-
-    showPanel();
-
+  if (uploadError) {
+    throw uploadError;
   }
 
 
-  /* =========================
-     SHOW ADMIN PANEL
-  ========================= */
+  const { data } =
+    supabaseClient
+      .storage
+      .from("game-images")
+      .getPublicUrl(filePath);
 
-  function showPanel() {
 
-    document.getElementById("login").style.display =
-      "none";
+  return data.publicUrl;
+}
 
-    document.getElementById("panel").style.display =
-      "block";
 
-    loadGames();
+async function addGame() {
 
-  }
+  const name =
+    document.getElementById("name").value.trim();
 
+  const platform =
+    document.getElementById("platform").value.trim();
 
-  /* =========================
-     LOGOUT
-  ========================= */
+  const size =
+    document.getElementById("size").value.trim();
 
-  async function logout() {
+  const category =
+    document.getElementById("category").value.trim();
 
-    await supabaseClient.auth.signOut();
-
-    document.getElementById("panel").style.display =
-      "none";
-
-    document.getElementById("login").style.display =
-      "block";
-
-    document.getElementById("email").value =
-      "";
-
-    document.getElementById("password").value =
-      "";
-
-  }
-
-
-  /* =========================
-     ADD GAME
-  ========================= */
-
-  async function addGame() {
-
-    const name =
-      document.getElementById("name").value.trim();
-
-    const platform =
-      document.getElementById("platform").value.trim();
-
-    const size =
-      document.getElementById("size").value.trim();
-
-    const category =
-      document.getElementById("category").value.trim();
-
-    const image =
-      document.getElementById("image").value.trim();
-
-    const url =
-      document.getElementById("url").value.trim();
-
-
-    const message =
-      document.getElementById("message");
-
-
-    if (!name || !platform || !size || !category || !url) {
-
-      message.textContent =
-        "⚠️ Jaza Game name, Platform, Size, Category na Download URL.";
-
-      return;
-    }
-
-
-    message.textContent =
-      "⏳ Inaongeza game...";
-
-
-    const { error } =
-      await supabaseClient
-        .from("games")
-        .insert({
-
-          name: name,
-
-          platform: platform,
-
-          size: size,
-
-          category: category,
-
-          image: image,
-
-          url: url
-
-        });
-
-
-    if (error) {
-
-      message.textContent =
-        "❌ " + error.message;
-
-      return;
-    }
-
-
-    message.textContent =
-      "✅ Game imeongezwa!";
-
-
-    document.getElementById("name").value =
-      "";
-
-    document.getElementById("platform").value =
-      "";
-
-    document.getElementById("size").value =
-      "";
-
-    document.getElementById("category").value =
-      "";
-
-    document.getElementById("image").value =
-      "";
-
-    document.getElementById("url").value =
-      "";
-
-
-    loadGames();
-
-  }
-
-
-  /* =========================
-     LOAD GAMES
-  ========================= */
-
-  async function loadGames() {
-
-    const container =
-      document.getElementById("games");
-
-
-    container.innerHTML =
-      "⏳ Inapakia games...";
-
-
-    const { data, error } =
-      await supabaseClient
-        .from("games")
-        .select("*")
-        .order("id", {
-          ascending: false
-        });
-
-
-    if (error) {
-
-      container.innerHTML =
-        "❌ " + error.message;
-
-      return;
-    }
-
-
-    if (!data || data.length === 0) {
-
-      container.innerHTML =
-        "Hakuna games bado.";
-
-      return;
-    }
-
-
-    container.innerHTML =
-      "";
-
-
-    data.forEach(function(game) {
-
-      const div =
-        document.createElement("div");
-
-
-      div.className =
-        "game";
-
-
-      div.innerHTML = `
-
-        <strong>
-          🎮 ${escapeHTML(game.name)}
-        </strong>
-
-        <br><br>
-
-        📱 Platform:
-        ${escapeHTML(game.platform || "")}
-
-        <br>
-
-        📦 Size:
-        ${escapeHTML(game.size || "")}
-
-        <br>
-
-        🗂️ Category:
-        ${escapeHTML(game.category || "")}
-
-        <br><br>
-
-        <button
-          class="delete"
-          onclick="deleteGame(${game.id})"
-        >
-          🗑️ DELETE
-        </button>
-
-      `;
-
-
-      container.appendChild(div);
-
-    });
-
-  }
-
-
-  /* =========================
-     DELETE GAME
-  ========================= */
-
-  async function deleteGame(id) {
-
-    const confirmDelete =
-      confirm(
-        "Una uhakika unataka kufuta game hii?"
-      );
-
-
-    if (!confirmDelete) {
-      return;
-    }
-
-
-    const { error } =
-      await supabaseClient
-        .from("games")
-        .delete()
-        .eq("id", id);
-
-
-    if (error) {
-
-      alert(
-        "❌ " + error.message
-      );
-
-      return;
-    }
-
-
-    alert(
-      "✅ Game imefutwa."
-    );
-
-
-    loadGames();
-
-  }
-
-
-  /* =========================
-     SECURITY: DISPLAY TEXT
-  ========================= */
-
-  function escapeHTML(value) {
-
-    const div =
-      document.createElement("div");
-
-    div.textContent =
-      value ?? "";
-
-    return div.innerHTML;
-
-  }
-
-
-  /* =========================
-     CHECK EXISTING LOGIN
-  ========================= */
-
-  async function checkSession() {
-
-    const {
-      data
-    } =
-      await supabaseClient.auth.getSession();
-
-
-    if (data.session) {
-
-      showPanel();
-
-    }
-
-  }
-
-
-  checkSession();
-
-</script>
-
-</body>
-</html>
+  const url =
+   
