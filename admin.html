@@ -371,4 +371,212 @@ async function addGame() {
     document.getElementById("category").value.trim();
 
   const url =
-   
+       document.getElementById("url").value.trim();
+
+  const imageFile =
+    document.getElementById("imageFile").files[0];
+
+  const message =
+    document.getElementById("message");
+
+  if (
+    !name ||
+    !platform ||
+    !size ||
+    !category ||
+    !url ||
+    !imageFile
+  ) {
+    message.textContent =
+      "⚠️ Jaza taarifa zote na chagua picha.";
+    return;
+  }
+
+  try {
+
+    message.textContent =
+      "⏳ Inapakia picha...";
+
+    const imageUrl =
+      await uploadImage(imageFile);
+
+    message.textContent =
+      "⏳ Inahifadhi game...";
+
+    const { error } =
+      await supabaseClient
+        .from("games")
+        .insert({
+          name: name,
+          platform: platform,
+          size: size,
+          category: category,
+          image: imageUrl,
+          url: url
+        });
+
+    if (error) {
+      throw error;
+    }
+
+    message.textContent =
+      "✅ Game na picha vimeongezwa!";
+
+    document.getElementById("name").value = "";
+    document.getElementById("platform").value = "";
+    document.getElementById("size").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("url").value = "";
+    document.getElementById("imageFile").value = "";
+
+    document.getElementById("preview").style.display =
+      "none";
+
+    loadGames();
+
+  } catch (error) {
+
+    message.textContent =
+      "❌ " + error.message;
+
+  }
+}
+
+
+async function loadGames() {
+
+  const container =
+    document.getElementById("games");
+
+  container.innerHTML =
+    "⏳ Inapakia games...";
+
+  const { data, error } =
+    await supabaseClient
+      .from("games")
+      .select("*")
+      .order("id", {
+        ascending: false
+      });
+
+  if (error) {
+    container.innerHTML =
+      "❌ " + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    container.innerHTML =
+      "Hakuna games bado.";
+    return;
+  }
+
+  container.innerHTML = "";
+
+  data.forEach(function(game) {
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "game";
+
+    let imageHTML = "";
+
+    if (game.image) {
+      imageHTML =
+        `<img src="${escapeHTML(game.image)}" alt="Game image">`;
+    }
+
+    div.innerHTML = `
+      ${imageHTML}
+
+      <strong>
+        🎮 ${escapeHTML(game.name)}
+      </strong>
+
+      <br><br>
+
+      📱 Platform:
+      ${escapeHTML(game.platform || "")}
+
+      <br>
+
+      📦 Size:
+      ${escapeHTML(game.size || "")}
+
+      <br>
+
+      🗂️ Category:
+      ${escapeHTML(game.category || "")}
+
+      <br><br>
+
+      <button
+        class="delete"
+        onclick="deleteGame(${game.id})">
+        🗑️ DELETE
+      </button>
+    `;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+
+async function deleteGame(id) {
+
+  if (!confirm(
+    "Una uhakika unataka kufuta game hii?"
+  )) {
+    return;
+  }
+
+  const { error } =
+    await supabaseClient
+      .from("games")
+      .delete()
+      .eq("id", id);
+
+  if (error) {
+    alert("❌ " + error.message);
+    return;
+  }
+
+  alert("✅ Game imefutwa.");
+
+  loadGames();
+}
+
+
+function escapeHTML(value) {
+
+  const div =
+    document.createElement("div");
+
+  div.textContent =
+    value ?? "";
+
+  return div.innerHTML;
+}
+
+
+async function checkSession() {
+
+  const { data } =
+    await supabaseClient.auth.getSession();
+
+  if (data.session) {
+    showPanel();
+  }
+}
+
+
+checkSession();
+
+</script>
+
+</body>
+</html>
