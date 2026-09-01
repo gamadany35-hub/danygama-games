@@ -142,7 +142,7 @@ const SUPABASE_URL =
   "https://octyeeoameulsdlaaqbc.supabase.co";
 
 const SUPABASE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
 
 const supabaseClient =
   window.supabase.createClient(
@@ -156,38 +156,45 @@ let allGames = [];
 
 async function loadGames() {
 
-  const message =
-    document.getElementById("message");
+  const message = document.getElementById("message");
+  const container = document.getElementById("games");
 
-  const container =
-    document.getElementById("games");
+  message.style.display = "block";
+  message.textContent = "⏳ Inasoma database...";
 
-  const { data, error } =
-    await supabaseClient
+  try {
+
+    const { data, error } = await supabaseClient
       .from("games")
-      .select("*")
-      .order("id", {
-        ascending: false
-      });
+      .select("*");
 
+    console.log("SUPABASE DATA:", data);
+    console.log("SUPABASE ERROR:", error);
 
-  if (error) {
+    if (error) {
+      message.textContent =
+        "❌ Supabase Error: " + error.message;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      message.textContent =
+        "⚠️ Database imefunguka lakini hakuna game.";
+      return;
+    }
 
     message.textContent =
-      "❌ Imeshindwa kupakia games: " +
-      error.message;
+      "✅ Games zimepatikana: " + data.length;
 
-    return;
+    displayGames(data);
+
+  } catch (err) {
+
+    message.textContent =
+      "❌ Error: " + err.message;
+
   }
-
-
-  allGames = data || [];
-
-  message.style.display = "none";
-
-  displayGames(allGames);
 }
-
 
 function displayGames(games) {
 
