@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="sw">
-<head><!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QDDJEXQVD"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6QDDJEXQVD');
-</script>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Danygama Games</title>
 
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6QDDJEXQVD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6QDDJEXQVD');
+  </script>
+
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -43,6 +45,37 @@
       color: #aaa;
     }
 
+    /* ACCOUNT AREA */
+    #authArea {
+      margin-top: 18px;
+    }
+
+    .auth-btn {
+      border: none;
+      padding: 11px 16px;
+      margin: 4px;
+      border-radius: 9px;
+      background: #7658ff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .auth-btn:hover {
+      opacity: 0.9;
+    }
+
+    #userArea {
+      margin-top: 15px;
+      display: none;
+    }
+
+    .user-name {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    /* SEARCH */
     .search {
       max-width: 650px;
       margin: 20px auto;
@@ -59,6 +92,7 @@
       font-size: 16px;
     }
 
+    /* GAMES */
     #games {
       max-width: 1000px;
       margin: auto;
@@ -118,30 +152,239 @@
       padding: 30px;
       color: #bbb;
     }
+
+    /* POPUP */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.75);
+      padding: 20px;
+    }
+
+    .modal-content {
+      max-width: 400px;
+      margin: 70px auto;
+      background: #141a27;
+      padding: 25px;
+      border-radius: 15px;
+      border: 1px solid #303a4e;
+    }
+
+    .modal-content h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    .auth-input {
+      width: 100%;
+      padding: 13px;
+      margin: 8px 0;
+      border-radius: 9px;
+      border: 1px solid #303a4e;
+      background: #20283a;
+      color: white;
+      font-size: 15px;
+    }
+
+    .close-btn {
+      float: right;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 13px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 9px;
+      background: #7658ff;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .switch-auth {
+      text-align: center;
+      margin-top: 15px;
+      color: #aaa;
+    }
+
+    .switch-auth button {
+      background: none;
+      border: none;
+      color: #9b87ff;
+      cursor: pointer;
+    }
+
+    #authMessage {
+      text-align: center;
+      margin-top: 12px;
+      color: #ffcc66;
+    }
   </style>
 </head>
 
 <body>
 
 <header>
+
   <h1>🎮 DANYGAMA GAMES</h1>
+
   <p>Pakua games zako kwa urahisi</p>
+
+  <!-- LOGIN / REGISTER -->
+  <div id="authArea">
+
+    <button class="auth-btn" onclick="showRegister()">
+      📝 Jisajili
+    </button>
+
+    <button class="auth-btn" onclick="showLogin()">
+      🔐 Ingia
+    </button>
+
+  </div>
+
+  <!-- USER ACCOUNT -->
+  <div id="userArea">
+
+    <div class="user-name" id="userName">
+      👤 Account
+    </div>
+
+    <button class="auth-btn" onclick="logout()">
+      🚪 Toka
+    </button>
+
+  </div>
+
 </header>
 
+
+<!-- SEARCH -->
+
 <div class="search">
+
   <input
     id="search"
     type="search"
     placeholder="🔎 Tafuta game..."
     oninput="searchGames()"
   >
+
 </div>
+
+
+<!-- MESSAGE -->
 
 <div id="message">
   ⏳ Inapakia games...
 </div>
 
+
+<!-- GAMES -->
+
 <div id="games"></div>
+
+
+<!-- REGISTER MODAL -->
+
+<div id="registerModal" class="modal">
+
+  <div class="modal-content">
+
+    <button class="close-btn" onclick="closeModals()">×</button>
+
+    <h2>📝 Jisajili</h2>
+
+    <input
+      id="registerEmail"
+      class="auth-input"
+      type="email"
+      placeholder="Email"
+    >
+
+    <input
+      id="registerPassword"
+      class="auth-input"
+      type="password"
+      placeholder="Password"
+    >
+
+    <button
+      class="submit-btn"
+      onclick="registerUser()"
+    >
+      JISAJILI
+    </button>
+
+    <div id="registerMessage" class="authMessage"></div>
+
+    <div class="switch-auth">
+      Tayari una account?
+      <button onclick="showLogin()">
+        Ingia
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- LOGIN MODAL -->
+
+<div id="loginModal" class="modal">
+
+  <div class="modal-content">
+
+    <button class="close-btn" onclick="closeModals()">×</button>
+
+    <h2>🔐 Ingia</h2>
+
+    <input
+      id="loginEmail"
+      class="auth-input"
+      type="email"
+      placeholder="Email"
+    >
+
+    <input
+      id="loginPassword"
+      class="auth-input"
+      type="password"
+      placeholder="Password"
+    >
+
+    <button
+      class="submit-btn"
+      onclick="loginUser()"
+    >
+      INGIA
+    </button>
+
+    <div id="loginMessage" class="authMessage"></div>
+
+    <div class="switch-auth">
+      Huna account?
+      <button onclick="showRegister()">
+        Jisajili
+      </button>
+    </div>
+
+  </div>
+
+</div>
 
 
 <script>
@@ -151,6 +394,7 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
+
 
 const supabaseClient =
   window.supabase.createClient(
@@ -162,52 +406,360 @@ const supabaseClient =
 let allGames = [];
 
 
+/* =========================
+   REGISTER
+========================= */
+
+async function registerUser() {
+
+  const email =
+    document
+      .getElementById("registerEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("registerPassword")
+      .value;
+
+
+  const message =
+    document.getElementById(
+      "registerMessage"
+    );
+
+
+  if (!email || !password) {
+
+    message.textContent =
+      "⚠️ Weka email na password.";
+
+    return;
+  }
+
+
+  if (password.length < 6) {
+
+    message.textContent =
+      "⚠️ Password iwe angalau characters 6.";
+
+    return;
+  }
+
+
+  message.textContent =
+    "⏳ Inatengeneza account...";
+
+
+  const { data, error } =
+    await supabaseClient.auth.signUp({
+
+      email: email,
+
+      password: password
+
+    });
+
+
+  if (error) {
+
+    message.textContent =
+      "❌ " + error.message;
+
+    return;
+  }
+
+
+  message.textContent =
+    "✅ Account imetengenezwa!";
+
+
+  setTimeout(function() {
+
+    closeModals();
+
+    showLogin();
+
+  }, 1200);
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+async function loginUser() {
+
+  const email =
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("loginPassword")
+      .value;
+
+
+  const message =
+    document.getElementById(
+      "loginMessage"
+    );
+
+
+  if (!email || !password) {
+
+    message.textContent =
+      "⚠️ Weka email na password.";
+
+    return;
+  }
+
+
+  message.textContent =
+    "⏳ Inaingia...";
+
+
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+
+      email: email,
+
+      password: password
+
+    });
+
+
+  if (error) {
+
+    message.textContent =
+      "❌ " + error.message;
+
+    return;
+  }
+
+
+  message.textContent =
+    "✅ Umeingia!";
+
+
+  setTimeout(function() {
+
+    closeModals();
+
+    updateAuthUI();
+
+  }, 700);
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+  updateAuthUI();
+
+}
+
+
+/* =========================
+   AUTH UI
+========================= */
+
+async function updateAuthUI() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient.auth.getSession();
+
+
+  const authArea =
+    document.getElementById(
+      "authArea"
+    );
+
+  const userArea =
+    document.getElementById(
+      "userArea"
+    );
+
+  const userName =
+    document.getElementById(
+      "userName"
+    );
+
+
+  if (session && session.user) {
+
+    authArea.style.display =
+      "none";
+
+    userArea.style.display =
+      "block";
+
+    userName.textContent =
+      "👤 " +
+      (session.user.email || "Account");
+
+  } else {
+
+    authArea.style.display =
+      "block";
+
+    userArea.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =========================
+   MODALS
+========================= */
+
+function showRegister() {
+
+  document.getElementById(
+    "loginModal"
+  ).style.display = "none";
+
+  document.getElementById(
+    "registerModal"
+  ).style.display = "block";
+
+}
+
+
+function showLogin() {
+
+  document.getElementById(
+    "registerModal"
+  ).style.display = "none";
+
+  document.getElementById(
+    "loginModal"
+  ).style.display = "block";
+
+}
+
+
+function closeModals() {
+
+  document.getElementById(
+    "registerModal"
+  ).style.display = "none";
+
+  document.getElementById(
+    "loginModal"
+  ).style.display = "none";
+
+}
+
+
+/* =========================
+   LOAD GAMES
+========================= */
+
 async function loadGames() {
 
-  const message = document.getElementById("message");
-  const container = document.getElementById("games");
+  const message =
+    document.getElementById(
+      "message"
+    );
 
-  message.style.display = "block";
-  message.textContent = "⏳ Inasoma database...";
+  message.style.display =
+    "block";
+
+  message.textContent =
+    "⏳ Inasoma database...";
+
 
   try {
 
-    const { data, error } = await supabaseClient
-      .from("games")
-      .select("*");
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("games")
+        .select("*");
 
-    console.log("SUPABASE DATA:", data);
-    console.log("SUPABASE ERROR:", error);
+
+    console.log(
+      "SUPABASE DATA:",
+      data
+    );
+
+    console.log(
+      "SUPABASE ERROR:",
+      error
+    );
+
 
     if (error) {
+
       message.textContent =
-        "❌ Supabase Error: " + error.message;
+        "❌ Supabase Error: " +
+        error.message;
+
       return;
     }
+
 
     if (!data || data.length === 0) {
+
       message.textContent =
         "⚠️ Database imefunguka lakini hakuna game.";
+
       return;
     }
 
+
+    allGames = data;
+
+
     message.textContent =
-      "✅ Games zimepatikana: " + data.length;
+      "✅ Games zimepatikana: " +
+      data.length;
+
 
     displayGames(data);
+
 
   } catch (err) {
 
     message.textContent =
-      "❌ Error: " + err.message;
+      "❌ Error: " +
+      err.message;
 
   }
+
 }
+
+
+/* =========================
+   DISPLAY GAMES
+========================= */
 
 function displayGames(games) {
 
   const container =
-    document.getElementById("games");
+    document.getElementById(
+      "games"
+    );
+
 
   container.innerHTML = "";
 
@@ -218,13 +770,17 @@ function displayGames(games) {
       "<p>Hakuna game iliyopatikana.</p>";
 
     return;
+
   }
 
 
   games.forEach(function(game) {
 
     const card =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     card.className =
       "game";
@@ -232,7 +788,9 @@ function displayGames(games) {
 
     const image =
       game.image
+
         ? `<img src="${escapeHTML(game.image)}" alt="${escapeHTML(game.name)}">`
+
         : "";
 
 
@@ -284,6 +842,10 @@ function displayGames(games) {
 }
 
 
+/* =========================
+   SEARCH
+========================= */
+
 function searchGames() {
 
   const search =
@@ -321,22 +883,47 @@ function searchGames() {
 
 
   displayGames(filtered);
+
 }
 
+
+/* =========================
+   SECURITY
+========================= */
 
 function escapeHTML(value) {
 
   const div =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   div.textContent =
     value ?? "";
 
   return div.innerHTML;
+
 }
 
 
+/* =========================
+   START
+========================= */
+
 loadGames();
+
+updateAuthUI();
+
+
+/* =========================
+   AUTH STATE LISTENER
+========================= */
+
+supabaseClient.auth.onAuthStateChange(
+  function() {
+    updateAuthUI();
+  }
+);
 
 </script>
 
