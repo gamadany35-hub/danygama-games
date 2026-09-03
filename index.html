@@ -564,6 +564,35 @@
       border-color: var(--blue);
     }
 
+    .market-file {
+      width: 100%;
+      padding: 13px;
+      margin: 7px 0;
+      border-radius: 11px;
+      border: 1px solid #30425d;
+      background: #0b1729;
+      color: white;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .image-preview {
+      display: none;
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      border-radius: 13px;
+      margin-top: 8px;
+      border: 1px solid #30425d;
+    }
+
+    .image-help {
+      color: #9aa9bd;
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 4px 0 8px;
+    }
+
     .market-textarea {
       min-height: 100px;
       resize: vertical;
@@ -1288,11 +1317,36 @@
       >
 
 
+      <!-- DIRECT IMAGE UPLOAD -->
+
+      <label
+        for="teamImageFile"
+        style="
+          display:block;
+          color:#dbe5f2;
+          font-weight:800;
+          margin-top:10px;
+        "
+      >
+        📷 Picha ya Kikosi
+      </label>
+
+      <div class="image-help">
+        Chagua picha moja kwa moja kutoka kwenye simu yako.
+      </div>
+
       <input
-        id="teamImage"
-        class="market-input"
-        type="url"
-        placeholder="Link ya picha ya kikosi"
+        id="teamImageFile"
+        class="market-file"
+        type="file"
+        accept="image/*"
+        onchange="previewTeamImage(event)"
+      >
+
+      <img
+        id="teamImagePreview"
+        class="image-preview"
+        alt="Preview ya picha ya kikosi"
       >
 
 
@@ -2909,6 +2963,199 @@
   }
 
 
+  /* =========================
+     IMAGE PREVIEW
+  ========================= */
+
+  function previewTeamImage(event) {
+
+    const file =
+      event.target.files &&
+      event.target.files[0];
+
+
+    const preview =
+      document.getElementById(
+        "teamImagePreview"
+      );
+
+
+    if (!file) {
+
+      preview.src = "";
+
+      preview.style.display =
+        "none";
+
+      return;
+
+    }
+
+
+    if (!file.type.startsWith("image/")) {
+
+      alert(
+        "❌ Tafadhali chagua picha tu."
+      );
+
+      event.target.value = "";
+
+      preview.src = "";
+
+      preview.style.display =
+        "none";
+
+      return;
+
+    }
+
+
+    const reader =
+      new FileReader();
+
+
+    reader.onload =
+      function(e) {
+
+        preview.src =
+          e.target.result;
+
+        preview.style.display =
+          "block";
+
+      };
+
+
+    reader.readAsDataURL(file);
+
+  }
+
+
+  /* =========================
+     UPLOAD MARKETPLACE IMAGE
+  ========================= */
+
+  async function uploadMarketplaceImage(
+    file,
+    userId
+  ) {
+
+    if (!file) {
+      return null;
+    }
+
+
+    if (!file.type.startsWith("image/")) {
+
+      throw new Error(
+        "Faili lazima iwe picha."
+      );
+
+    }
+
+
+    /*
+      Limit ya picha: 8MB
+    */
+
+    if (file.size > 8 * 1024 * 1024) {
+
+      throw new Error(
+        "Picha ni kubwa sana. Tumia picha chini ya 8MB."
+      );
+
+    }
+
+
+    const extension =
+      (
+        file.name.split(".").pop() ||
+        "jpg"
+      )
+      .toLowerCase()
+      .replace(
+        /[^a-z0-9]/g,
+        ""
+      );
+
+
+    const fileName =
+      "marketplace/" +
+      userId +
+      "/" +
+      Date.now() +
+      "_" +
+      Math.random()
+        .toString(36)
+        .substring(2, 10) +
+      "." +
+      extension;
+
+
+    const {
+      error: uploadError
+    } =
+      await supabaseClient
+        .storage
+        .from("game-images")
+        .upload(
+          fileName,
+          file,
+          {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: file.type
+          }
+        );
+
+
+    if (uploadError) {
+
+      console.error(
+        "IMAGE UPLOAD ERROR:",
+        uploadError
+      );
+
+      throw new Error(
+        "Picha haikupakiwa: " +
+        uploadError.message
+      );
+
+    }
+
+
+    const {
+      data
+    } =
+      supabaseClient
+        .storage
+        .from("game-images")
+        .getPublicUrl(
+          fileName
+        );
+
+
+    if (
+      !data ||
+      !data.publicUrl
+    ) {
+
+      throw new Error(
+        "Imeshindwa kupata link ya picha."
+      );
+
+    }
+
+
+    return data.publicUrl;
+
+  }
+
+
+  /* =========================
+     SHOW SELL FORM
+  ========================= */
+
   function showSellTeamForm() {
 
     supabaseClient.auth
@@ -2965,6 +3212,10 @@
 
   }
 
+
+  /* =========================
+     SELL TEAM
+  ========================= */
 
   async function sellTeam() {
 
@@ -3034,13 +3285,12 @@
         .trim();
 
 
-    const image =
+    const imageFile =
       document
         .getElementById(
-          "teamImage"
+          "teamImageFile"
         )
-        .value
-        .trim();
+        .files[0];
 
 
     const description =
@@ -3089,11 +3339,51 @@
     }
 
 
+    if (!imageFile) {
+
+      message.textContent =
+        "⚠️ Chagua picha ya kikosi kwanza.";
+
+      return;
+
+    }
+
+
+    const submitButton =
+      document.querySelector(
+        "#sellTeamForm .submit-btn"
+      );
+
+
+    submitButton.disabled =
+      true;
+
+
+    submitButton.style.opacity =
+      "0.6";
+
+
     message.textContent =
-      "⏳ Inaweka kikosi sokoni...";
+      "⏳ Inapakia picha...";
 
 
     try {
+
+      /*
+        Upload picha moja kwa moja
+        kwenda Supabase Storage
+      */
+
+      const imageUrl =
+        await uploadMarketplaceImage(
+          imageFile,
+          session.user.id
+        );
+
+
+      message.textContent =
+        "⏳ Inaweka kikosi sokoni...";
+
 
       const {
         error
@@ -3122,8 +3412,7 @@
                 Number(price),
 
               image:
-                image ||
-                null,
+                imageUrl,
 
               description:
                 description ||
@@ -3179,8 +3468,19 @@
 
 
       document.getElementById(
-        "teamImage"
+        "teamImageFile"
       ).value = "";
+
+
+      document.getElementById(
+        "teamImagePreview"
+      ).src = "";
+
+
+      document.getElementById(
+        "teamImagePreview"
+      ).style.display =
+        "none";
 
 
       document.getElementById(
@@ -3217,13 +3517,25 @@
 
 
       message.textContent =
-        "❌ Error: " +
+        "❌ " +
         error.message;
+
+    } finally {
+
+      submitButton.disabled =
+        false;
+
+      submitButton.style.opacity =
+        "1";
 
     }
 
   }
 
+
+  /* =========================
+     CONTACT SELLER
+  ========================= */
 
   function contactSellerEncoded(
     encodedContact
@@ -3325,13 +3637,31 @@
 
 
   /* =========================
-     HELP
+     HELP / ADMIN WHATSAPP
   ========================= */
 
   function contactAdmin() {
 
-    alert(
-      "Tutaunganisha hapa WhatsApp au email ya admin."
+    const adminNumber =
+      "255786538998";
+
+
+    const message =
+      encodeURIComponent(
+        "Habari Danygama Games Admin, nahitaji msaada."
+      );
+
+
+    const whatsappURL =
+      "https://wa.me/" +
+      adminNumber +
+      "?text=" +
+      message;
+
+
+    window.open(
+      whatsappURL,
+      "_blank"
     );
 
   }
