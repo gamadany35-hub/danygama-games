@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07101f">
 
   <title>Danygama Games</title>
 
@@ -23,156 +24,510 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --bg: #07101f;
+      --panel: #0d1a2e;
+      --panel2: #101f35;
+      --line: rgba(255,255,255,.09);
+      --text: #f7fbff;
+      --muted: #9aa9bd;
+      --blue: #1688ff;
+      --blue2: #35a7ff;
+      --purple: #7047ff;
+      --green: #13a866;
+      --orange: #e88713;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #080b12;
-      color: white;
+      background:
+        radial-gradient(circle at 80% 10%, rgba(22,136,255,.14), transparent 30%),
+        radial-gradient(circle at 10% 50%, rgba(112,71,255,.08), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 88px;
     }
 
-    header {
-      padding: 25px 15px;
-      text-align: center;
-      background: #141a27;
+    button,
+    input {
+      font: inherit;
     }
 
-    header h1 {
-      margin: 0 0 8px;
-    }
-
-    header p {
-      margin: 0;
-      color: #aaa;
-    }
-
-    /* ACCOUNT AREA */
-    #authArea {
-      margin-top: 18px;
-    }
-
-    .auth-btn {
-      border: none;
-      padding: 11px 16px;
-      margin: 4px;
-      border-radius: 9px;
-      background: #7658ff;
-      color: white;
-      font-weight: bold;
+    button {
       cursor: pointer;
     }
 
-    .auth-btn:hover {
-      opacity: 0.9;
+    .app {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
     }
 
-    #userArea {
-      margin-top: 15px;
-      display: none;
+    /* TOP HEADER */
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 18px 12px;
     }
 
-    .user-name {
-      font-weight: bold;
-      margin-bottom: 8px;
+    .menu-btn,
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(255,255,255,.04);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      flex: 0 0 auto;
+    }
+
+    .brand {
+      flex: 1;
+      min-width: 0;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .brand-main {
+      color: white;
+      font-size: 20px;
+    }
+
+    .brand-blue {
+      color: var(--blue2);
+      font-size: 20px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #173b70, #5c38b8);
+      border: 2px solid rgba(53,167,255,.5);
+      font-size: 19px;
     }
 
     /* SEARCH */
-    .search {
-      max-width: 650px;
-      margin: 20px auto;
-      padding: 0 15px;
+
+    .search-wrap {
+      padding: 0 18px 15px;
+    }
+
+    .search-box {
+      position: relative;
     }
 
     #search {
       width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid #303a4e;
-      background: #20283a;
+      padding: 15px 18px 15px 48px;
+      border-radius: 17px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(13,26,46,.95);
       color: white;
-      font-size: 16px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    #search:focus {
+      border-color: rgba(22,136,255,.65);
+      box-shadow: 0 0 0 3px rgba(22,136,255,.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 17px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9fb0c7;
+      font-size: 19px;
+    }
+
+    /* PAGES */
+
+    .page {
+      display: none;
+      padding: 0 18px 25px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 10px 0 15px;
+    }
+
+    .page-title h1 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    .page-title p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* HERO */
+
+    .hero {
+      min-height: 320px;
+      border-radius: 23px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255,255,255,.1);
+
+      background:
+        linear-gradient(
+          100deg,
+          rgba(3,10,23,.97) 0%,
+          rgba(4,18,42,.72) 48%,
+          rgba(7,12,28,.28) 100%
+        ),
+        radial-gradient(
+          circle at 75% 35%,
+          #185bd1,
+          #0a1730 52%,
+          #050a14 100%
+        );
+
+      display: flex;
+      align-items: flex-end;
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .38;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: var(--blue);
+      padding: 7px 12px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 6vw, 46px);
+    }
+
+    .hero p {
+      margin: 0 0 17px;
+      color: #c3d1e3;
+      font-size: 14px;
+    }
+
+    .hero-btn {
+      border: 0;
+      background: white;
+      color: #07101f;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 900;
+    }
+
+    /* WELCOME */
+
+    .streak {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(
+        100deg,
+        rgba(28,43,69,.96),
+        rgba(17,26,46,.96)
+      );
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      padding: 15px 16px;
+      margin-bottom: 16px;
+    }
+
+    .streak-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,145,0,.12);
+      font-size: 22px;
+    }
+
+    .streak strong {
+      display: block;
+    }
+
+    .streak small {
+      color: var(--muted);
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* QUICK BUTTONS */
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 23px;
+    }
+
+    .quick-btn {
+      border: 0;
+      color: white;
+      min-height: 66px;
+      border-radius: 15px;
+      font-weight: 800;
+      padding: 10px 7px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+    }
+
+    .quick-btn span {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .q-blue {
+      background: linear-gradient(135deg, #0875db, #1462d0);
+    }
+
+    .q-purple {
+      background: linear-gradient(135deg, #6d35db, #4930b8);
+    }
+
+    .q-green {
+      background: linear-gradient(135deg, #0a9b62, #08794e);
+    }
+
+    .q-orange {
+      background: linear-gradient(135deg, #df8611, #bc5f0b);
+    }
+
+    /* SECTION */
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 18px 0 12px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .view-all {
+      color: #3ca7ff;
+      border: 0;
+      background: none;
+      font-weight: 800;
     }
 
     /* GAMES */
-    #games {
-      max-width: 1000px;
-      margin: auto;
-      padding: 10px 15px 40px;
+
+    .game-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
     }
 
     .game {
-      background: #141a27;
-      border-radius: 15px;
+      background: linear-gradient(180deg, #102039, #0b1729);
+      border-radius: 18px;
       overflow: hidden;
-      border: 1px solid #252d3d;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(0,0,0,.16);
+    }
+
+    .game-img-wrap {
+      height: 190px;
+      position: relative;
+      background: #101b2d;
     }
 
     .game img {
       width: 100%;
-      height: 190px;
+      height: 100%;
       object-fit: cover;
       display: block;
     }
 
-    .game-info {
-      padding: 15px;
+    .new-badge {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      background: var(--blue);
+      color: white;
+      border-radius: 20px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: 800;
     }
 
-    .game h2 {
-      font-size: 19px;
-      margin: 0 0 10px;
+    .game-info {
+      padding: 13px;
+    }
+
+    .game h3 {
+      font-size: 16px;
+      margin: 0 0 8px;
+      line-height: 1.25;
     }
 
     .details {
-      color: #bbb;
-      font-size: 14px;
-      line-height: 1.7;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.65;
     }
 
     .download {
       display: block;
       text-align: center;
       text-decoration: none;
-      background: #7658ff;
+      background: var(--blue);
       color: white;
-      padding: 12px;
-      border-radius: 9px;
-      margin-top: 13px;
-      font-weight: bold;
+      padding: 11px;
+      border-radius: 11px;
+      margin-top: 11px;
+      font-weight: 900;
+      font-size: 13px;
     }
 
     .download:hover {
-      opacity: 0.9;
+      filter: brightness(1.08);
     }
 
-    #message {
-      text-align: center;
-      padding: 30px;
-      color: #bbb;
+    /* CATEGORIES */
+
+    .categories {
+      display: flex;
+      gap: 9px;
+      overflow-x: auto;
+      padding-bottom: 7px;
     }
 
-    /* POPUP */
+    .category-btn {
+      white-space: nowrap;
+      border: 1px solid var(--line);
+      color: #dbe5f2;
+      background: #101c30;
+      padding: 11px 14px;
+      border-radius: 30px;
+      font-weight: 700;
+    }
+
+    .category-btn.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: white;
+    }
+
+    /* ACCOUNT / HELP */
+
+    .account-card,
+    .help-card {
+      background: linear-gradient(145deg, #10213a, #0b1729);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px;
+      margin-top: 15px;
+    }
+
+    .account-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #138cff, #653ee0);
+      font-size: 30px;
+      margin-bottom: 14px;
+    }
+
+    .account-card h2,
+    .help-card h2 {
+      margin: 0 0 7px;
+    }
+
+    .account-card p,
+    .help-card p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .auth-btn {
+      border: 0;
+      padding: 11px 16px;
+      margin: 4px 4px 4px 0;
+      border-radius: 10px;
+      background: var(--blue);
+      color: white;
+      font-weight: bold;
+    }
+
+    .auth-btn.secondary {
+      background: #202f47;
+    }
+
+    /* MODALS */
+
     .modal {
       display: none;
       position: fixed;
       z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.75);
+      inset: 0;
+      background: rgba(0,0,0,.78);
       padding: 20px;
     }
 
     .modal-content {
-      max-width: 400px;
+      max-width: 410px;
       margin: 70px auto;
-      background: #141a27;
-      padding: 25px;
-      border-radius: 15px;
-      border: 1px solid #303a4e;
+      background: #101c30;
+      padding: 24px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
     }
 
     .modal-content h2 {
@@ -180,132 +535,780 @@
       margin-top: 0;
     }
 
-    .auth-input {
-      width: 100%;
-      padding: 13px;
-      margin: 8px 0;
-      border-radius: 9px;
-      border: 1px solid #303a4e;
-      background: #20283a;
-      color: white;
-      font-size: 15px;
-    }
-
     .close-btn {
       float: right;
       background: transparent;
       border: none;
       color: white;
-      font-size: 24px;
-      cursor: pointer;
+      font-size: 25px;
+    }
+
+    .auth-input {
+      width: 100%;
+      padding: 13px;
+      margin: 8px 0;
+      border-radius: 10px;
+      border: 1px solid #30425d;
+      background: #0b1729;
+      color: white;
+      font-size: 15px;
+      outline: none;
     }
 
     .submit-btn {
       width: 100%;
       padding: 13px;
       margin-top: 10px;
-      border: none;
-      border-radius: 9px;
-      background: #7658ff;
+      border: 0;
+      border-radius: 10px;
+      background: var(--blue);
       color: white;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
+      font-weight: 900;
     }
 
     .switch-auth {
       text-align: center;
-      margin-top: 15px;
-      color: #aaa;
+      margin-top: 14px;
+      color: #9eacc0;
     }
 
     .switch-auth button {
       background: none;
       border: none;
-      color: #9b87ff;
-      cursor: pointer;
+      color: #48aaff;
+      font-weight: bold;
     }
 
-    #authMessage {
+    .authMessage {
       text-align: center;
-      margin-top: 12px;
-      color: #ffcc66;
+      margin-top: 10px;
+      color: #ffd166;
+    }
+
+    #message {
+      text-align: center;
+      padding: 25px;
+      color: var(--muted);
+    }
+
+    /* BOTTOM NAVIGATION */
+
+    .bottom-nav {
+      position: fixed;
+      z-index: 5000;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 78px;
+      background: rgba(7,16,31,.96);
+      backdrop-filter: blur(18px);
+      border-top: 1px solid rgba(255,255,255,.1);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 8px max(10px, calc((100vw - 1100px)/2));
+    }
+
+    .nav-btn {
+      border: 0;
+      background: transparent;
+      color: #8797ad;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .nav-btn.active {
+      color: #2c9cff;
+    }
+
+    .nav-btn.active .nav-icon {
+      filter: drop-shadow(0 0 8px rgba(44,156,255,.6));
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 760px) {
+
+      .topbar {
+        padding-top: 13px;
+      }
+
+      .brand-main,
+      .brand-blue {
+        font-size: 17px;
+      }
+
+      .top-actions .icon-btn {
+        display: none;
+      }
+
+      .hero {
+        min-height: 300px;
+        padding: 20px;
+      }
+
+      .quick-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .game-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .game-img-wrap {
+        height: 165px;
+      }
+    }
+
+    @media (max-width: 480px) {
+
+      .page {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .search-wrap {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .game-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .game-img-wrap {
+        height: 145px;
+      }
+
+      .game-info {
+        padding: 10px;
+      }
+
+      .game h3 {
+        font-size: 14px;
+      }
+
+      .details {
+        font-size: 11px;
+      }
+
+      .download {
+        font-size: 11px;
+        padding: 10px 5px;
+      }
+
+      .hero h2 {
+        font-size: 28px;
+      }
+
+      .hero p {
+        font-size: 13px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<header>
+<div class="app">
 
-  <h1>🎮 DANYGAMA GAMES</h1>
+  <!-- HEADER -->
 
-  <p>Pakua games zako kwa urahisi</p>
+  <header class="topbar">
 
-  <!-- LOGIN / REGISTER -->
-  <div id="authArea">
-
-    <button class="auth-btn" onclick="showRegister()">
-      📝 Jisajili
+    <button
+      class="menu-btn"
+      onclick="showPage('home')"
+    >
+      ☰
     </button>
 
-    <button class="auth-btn" onclick="showLogin()">
-      🔐 Ingia
-    </button>
-
-  </div>
-
-  <!-- USER ACCOUNT -->
-  <div id="userArea">
-
-    <div class="user-name" id="userName">
-      👤 Account
+    <div class="brand">
+      <span class="brand-main">🎮 DANYGAMA</span><br>
+      <span class="brand-blue">GAMES</span>
     </div>
 
-    <button class="auth-btn" onclick="logout()">
-      🚪 Toka
-    </button>
+    <div class="top-actions">
+
+      <button
+        class="icon-btn"
+        onclick="focusSearch()"
+      >
+        ⌕
+      </button>
+
+      <button
+        class="icon-btn"
+        onclick="showPage('updates')"
+      >
+        🔔
+      </button>
+
+      <button
+        class="avatar"
+        onclick="showPage('account')"
+      >
+        👤
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- SEARCH -->
+
+  <div class="search-wrap">
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        ⌕
+      </span>
+
+      <input
+        id="search"
+        type="search"
+        placeholder="Tafuta games, patches, mods..."
+        oninput="searchGames()"
+      >
+
+    </div>
 
   </div>
 
-</header>
 
+  <!-- HOME -->
 
-<!-- SEARCH -->
-
-<div class="search">
-
-  <input
-    id="search"
-    type="search"
-    placeholder="🔎 Tafuta game..."
-    oninput="searchGames()"
+  <main
+    id="homePage"
+    class="page active"
   >
 
+    <section class="hero">
+
+      <img
+        id="heroImage"
+        class="hero-image"
+        alt=""
+        style="display:none;"
+      >
+
+      <div class="hero-content">
+
+        <span class="hero-tag">
+          🔥 DANYGAMA GAMES
+        </span>
+
+        <h2 id="heroTitle">
+          Games mpya zipo hapa
+        </h2>
+
+        <p id="heroText">
+          Pata games, patches na mods kwenye sehemu moja.
+        </p>
+
+        <button
+          class="hero-btn"
+          onclick="showPage('games')"
+        >
+          🎮 Tazama Games
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <div class="streak">
+
+      <div class="streak-icon">
+        🔥
+      </div>
+
+      <div>
+
+        <strong>
+          Karibu Danygama Games
+        </strong>
+
+        <small>
+          Rudi tena kuona games na updates mpya.
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- QUICK BUTTONS -->
+
+    <div class="quick-grid">
+
+      <button
+        class="quick-btn q-blue"
+        onclick="showPage('updates')"
+      >
+        <span>🔄</span>
+        Updates
+      </button>
+
+      <button
+        class="quick-btn q-purple"
+        onclick="showPage('games')"
+      >
+        <span>📊</span>
+        Popular
+      </button>
+
+      <button
+        class="quick-btn q-green"
+        onclick="showPage('games')"
+      >
+        <span>🏆</span>
+        Tournaments
+      </button>
+
+      <button
+        class="quick-btn q-orange"
+        onclick="showPage('help')"
+      >
+        <span>🎓</span>
+        Msaada
+      </button>
+
+    </div>
+
+
+    <!-- RECOMMENDED -->
+
+    <div class="section-head">
+
+      <h2>
+        Recommended for you
+      </h2>
+
+      <button
+        class="view-all"
+        onclick="showPage('games')"
+      >
+        View All ›
+      </button>
+
+    </div>
+
+    <div
+      id="recommendedGames"
+      class="game-grid"
+    ></div>
+
+
+    <!-- CATEGORIES -->
+
+    <div class="section-head">
+
+      <h2>
+        Categories
+      </h2>
+
+      <button
+        class="view-all"
+        onclick="showPage('games')"
+      >
+        View All ›
+      </button>
+
+    </div>
+
+
+    <div class="categories">
+
+      <button
+        class="category-btn active"
+        onclick="filterCategory('All Games', this)"
+      >
+        ▦ All Games
+      </button>
+
+      <button
+        class="category-btn"
+        onclick="filterCategory('Football', this)"
+      >
+        ⚽ Football
+      </button>
+
+      <button
+        class="category-btn"
+        onclick="filterCategory('PPSSPP', this)"
+      >
+        🎮 PPSSPP
+      </button>
+
+      <button
+        class="category-btn"
+        onclick="filterCategory('Racing', this)"
+      >
+        🚗 Racing
+      </button>
+
+      <button
+        class="category-btn"
+        onclick="filterCategory('Adventure', this)"
+      >
+        🏔 Adventure
+      </button>
+
+      <button
+        class="category-btn"
+        onclick="filterCategory('Android', this)"
+      >
+        📱 Android
+      </button>
+
+    </div>
+
+  </main>
+
+
+  <!-- GAMES -->
+
+  <main
+    id="gamesPage"
+    class="page"
+  >
+
+    <div class="page-title">
+
+      <div>
+
+        <h1>
+          🎮 Games
+        </h1>
+
+        <p>
+          Games zote zilizopo kwenye Danygama Games.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div id="message">
+      ⏳ Inapakia games...
+    </div>
+
+    <div
+      id="games"
+      class="game-grid"
+    ></div>
+
+  </main>
+
+
+  <!-- UPDATES -->
+
+  <main
+    id="updatesPage"
+    class="page"
+  >
+
+    <div class="page-title">
+
+      <div>
+
+        <h1>
+          🔄 Updates
+        </h1>
+
+        <p>
+          Games na patches zilizoongezwa hivi karibuni.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="updatesGames"
+      class="game-grid"
+    ></div>
+
+  </main>
+
+
+  <!-- HELP -->
+
+  <main
+    id="helpPage"
+    class="page"
+  >
+
+    <div class="page-title">
+
+      <div>
+
+        <h1>
+          💬 Msaada
+        </h1>
+
+        <p>
+          Unahitaji msaada kuhusu website au game?
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="help-card">
+
+      <h2>
+        Karibu Danygama Games 👋
+      </h2>
+
+      <p>
+        Kama una tatizo la kutafuta game,
+        download link, account au una swali
+        kuhusu website, unaweza kuwasiliana na admin.
+      </p>
+
+      <button
+        class="auth-btn"
+        onclick="contactAdmin()"
+      >
+        📩 Wasiliana na Admin
+      </button>
+
+    </div>
+
+
+    <div class="help-card">
+
+      <h2>
+        ❓ Maswali ya haraka
+      </h2>
+
+      <p>
+        <b>Game haionekani?</b><br>
+        Jaribu kutafuta kwa jina la game
+        au fungua Games.
+      </p>
+
+      <p>
+        <b>Download haifanyi?</b><br>
+        Angalia kama internet yako iko vizuri
+        na ujaribu link tena.
+      </p>
+
+      <p>
+        <b>Unataka game iongezwe?</b><br>
+        Wasiliana na admin.
+      </p>
+
+    </div>
+
+  </main>
+
+
+  <!-- ACCOUNT -->
+
+  <main
+    id="accountPage"
+    class="page"
+  >
+
+    <div class="page-title">
+
+      <div>
+
+        <h1>
+          👤 Account
+        </h1>
+
+        <p>
+          Simamia account yako ya Danygama Games.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="account-card">
+
+      <div class="account-avatar">
+        👤
+      </div>
+
+
+      <div id="authArea">
+
+        <h2>
+          Karibu!
+        </h2>
+
+        <p>
+          Jisajili au ingia ili kutumia account yako.
+        </p>
+
+        <button
+          class="auth-btn"
+          onclick="showRegister()"
+        >
+          📝 Jisajili
+        </button>
+
+        <button
+          class="auth-btn secondary"
+          onclick="showLogin()"
+        >
+          🔐 Ingia
+        </button>
+
+      </div>
+
+
+      <div
+        id="userArea"
+        style="display:none;"
+      >
+
+        <h2 id="userName">
+          Account
+        </h2>
+
+        <p>
+          Umeingia kwenye account yako.
+        </p>
+
+        <button
+          class="auth-btn"
+          onclick="logout()"
+        >
+          🚪 Toka
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
 </div>
 
 
-<!-- MESSAGE -->
+<!-- BOTTOM NAVIGATION -->
 
-<div id="message">
-  ⏳ Inapakia games...
-</div>
+<nav class="bottom-nav">
+
+  <button
+    class="nav-btn active"
+    data-page="home"
+    onclick="showPage('home')"
+  >
+    <span class="nav-icon">
+      ⌂
+    </span>
+
+    <span>
+      Home
+    </span>
+  </button>
 
 
-<!-- GAMES -->
+  <button
+    class="nav-btn"
+    data-page="games"
+    onclick="showPage('games')"
+  >
+    <span class="nav-icon">
+      🎮
+    </span>
 
-<div id="games"></div>
+    <span>
+      Games
+    </span>
+  </button>
+
+
+  <button
+    class="nav-btn"
+    data-page="updates"
+    onclick="showPage('updates')"
+  >
+    <span class="nav-icon">
+      ⇩
+    </span>
+
+    <span>
+      Updates
+    </span>
+  </button>
+
+
+  <button
+    class="nav-btn"
+    data-page="help"
+    onclick="showPage('help')"
+  >
+    <span class="nav-icon">
+      💬
+    </span>
+
+    <span>
+      Msaada
+    </span>
+  </button>
+
+
+  <button
+    class="nav-btn"
+    data-page="account"
+    onclick="showPage('account')"
+  >
+    <span class="nav-icon">
+      ♙
+    </span>
+
+    <span>
+      Account
+    </span>
+  </button>
+
+</nav>
 
 
 <!-- REGISTER MODAL -->
 
-<div id="registerModal" class="modal">
+<div
+  id="registerModal"
+  class="modal"
+>
 
   <div class="modal-content">
 
-    <button class="close-btn" onclick="closeModals()">×</button>
+    <button
+      class="close-btn"
+      onclick="closeModals()"
+    >
+      ×
+    </button>
 
-    <h2>📝 Jisajili</h2>
+    <h2>
+      📝 Jisajili
+    </h2>
 
     <input
       id="registerEmail"
@@ -328,13 +1331,19 @@
       JISAJILI
     </button>
 
-    <div id="registerMessage" class="authMessage"></div>
+    <div
+      id="registerMessage"
+      class="authMessage"
+    ></div>
 
     <div class="switch-auth">
+
       Tayari una account?
+
       <button onclick="showLogin()">
         Ingia
       </button>
+
     </div>
 
   </div>
@@ -344,13 +1353,23 @@
 
 <!-- LOGIN MODAL -->
 
-<div id="loginModal" class="modal">
+<div
+  id="loginModal"
+  class="modal"
+>
 
   <div class="modal-content">
 
-    <button class="close-btn" onclick="closeModals()">×</button>
+    <button
+      class="close-btn"
+      onclick="closeModals()"
+    >
+      ×
+    </button>
 
-    <h2>🔐 Ingia</h2>
+    <h2>
+      🔐 Ingia
+    </h2>
 
     <input
       id="loginEmail"
@@ -373,13 +1392,19 @@
       INGIA
     </button>
 
-    <div id="loginMessage" class="authMessage"></div>
+    <div
+      id="loginMessage"
+      class="authMessage"
+    ></div>
 
     <div class="switch-auth">
+
       Huna account?
+
       <button onclick="showRegister()">
         Jisajili
       </button>
+
     </div>
 
   </div>
@@ -389,541 +1414,968 @@
 
 <script>
 
-const SUPABASE_URL =
-  "https://octyeeoameulsdlaaqbc.supabase.co";
+  const SUPABASE_URL =
+    "https://octyeeoameulsdlaaqbc.supabase.co";
 
-const SUPABASE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
+  /*
+    WEKA HAPA SUPABASE ANON/PUBLISHABLE KEY YAKO.
+    Usitumie service_role/secret key kwenye website.
+  */
 
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+  const SUPABASE_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
 
 
-let allGames = [];
-
-
-/* =========================
-   REGISTER
-========================= */
-
-async function registerUser() {
-
-  const email =
-    document
-      .getElementById("registerEmail")
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById("registerPassword")
-      .value;
-
-
-  const message =
-    document.getElementById(
-      "registerMessage"
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
     );
 
 
-  if (!email || !password) {
+  let allGames = [];
 
-    message.textContent =
-      "⚠️ Weka email na password.";
-
-    return;
-  }
+  let currentCategory =
+    "All Games";
 
 
-  if (password.length < 6) {
+  /* =========================
+     PAGE NAVIGATION
+  ========================= */
 
-    message.textContent =
-      "⚠️ Password iwe angalau characters 6.";
+  function showPage(page) {
 
-    return;
-  }
-
-
-  message.textContent =
-    "⏳ Inatengeneza account...";
-
-
-  const { data, error } =
-    await supabaseClient.auth.signUp({
-
-      email: email,
-
-      password: password
-
-    });
-
-
-  if (error) {
-
-    message.textContent =
-      "❌ " + error.message;
-
-    return;
-  }
-
-
-  message.textContent =
-    "✅ Account imetengenezwa!";
-
-
-  setTimeout(function() {
-
-    closeModals();
-
-    showLogin();
-
-  }, 1200);
-
-}
-
-
-/* =========================
-   LOGIN
-========================= */
-
-async function loginUser() {
-
-  const email =
     document
-      .getElementById("loginEmail")
-      .value
-      .trim();
+      .querySelectorAll(".page")
+      .forEach(function(p) {
 
-  const password =
-    document
-      .getElementById("loginPassword")
-      .value;
+        p.classList.remove("active");
+
+      });
 
 
-  const message =
-    document.getElementById(
-      "loginMessage"
-    );
+    const target =
+      document.getElementById(
+        page + "Page"
+      );
 
 
-  if (!email || !password) {
+    if (target) {
 
-    message.textContent =
-      "⚠️ Weka email na password.";
+      target.classList.add("active");
 
-    return;
-  }
-
-
-  message.textContent =
-    "⏳ Inaingia...";
-
-
-  const { data, error } =
-    await supabaseClient.auth.signInWithPassword({
-
-      email: email,
-
-      password: password
-
-    });
-
-
-  if (error) {
-
-    message.textContent =
-      "❌ " + error.message;
-
-    return;
-  }
-
-
-  message.textContent =
-    "✅ Umeingia!";
-
-
-  setTimeout(function() {
-
-    closeModals();
-
-    updateAuthUI();
-
-  }, 700);
-
-}
-
-
-/* =========================
-   LOGOUT
-========================= */
-
-async function logout() {
-
-  await supabaseClient.auth.signOut();
-
-  updateAuthUI();
-
-}
-
-
-/* =========================
-   AUTH UI
-========================= */
-
-async function updateAuthUI() {
-
-  const {
-    data: {
-      session
     }
-  } =
-    await supabaseClient.auth.getSession();
 
 
-  const authArea =
-    document.getElementById(
-      "authArea"
-    );
+    document
+      .querySelectorAll(".nav-btn")
+      .forEach(function(btn) {
 
-  const userArea =
-    document.getElementById(
-      "userArea"
-    );
+        btn.classList.toggle(
+          "active",
+          btn.dataset.page === page
+        );
 
-  const userName =
-    document.getElementById(
-      "userName"
-    );
+      });
 
 
-  if (session && session.user) {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
 
-    authArea.style.display =
-      "none";
 
-    userArea.style.display =
-      "block";
+    if (page === "games") {
 
-    userName.textContent =
-      "👤 " +
-      (session.user.email || "Account");
+      displayGames(
+        filterGamesByCategory(
+          allGames,
+          currentCategory
+        )
+      );
 
-  } else {
+    }
 
-    authArea.style.display =
-      "block";
 
-    userArea.style.display =
-      "none";
+    if (page === "updates") {
+
+      displayUpdates();
+
+    }
 
   }
 
-}
+
+  function focusSearch() {
+
+    document
+      .getElementById("search")
+      .focus();
+
+  }
 
 
-/* =========================
-   MODALS
-========================= */
+  /* =========================
+     REGISTER
+  ========================= */
 
-function showRegister() {
+  async function registerUser() {
 
-  document.getElementById(
-    "loginModal"
-  ).style.display = "none";
-
-  document.getElementById(
-    "registerModal"
-  ).style.display = "block";
-
-}
+    const email =
+      document
+        .getElementById("registerEmail")
+        .value
+        .trim();
 
 
-function showLogin() {
-
-  document.getElementById(
-    "registerModal"
-  ).style.display = "none";
-
-  document.getElementById(
-    "loginModal"
-  ).style.display = "block";
-
-}
+    const password =
+      document
+        .getElementById("registerPassword")
+        .value;
 
 
-function closeModals() {
-
-  document.getElementById(
-    "registerModal"
-  ).style.display = "none";
-
-  document.getElementById(
-    "loginModal"
-  ).style.display = "none";
-
-}
+    const message =
+      document.getElementById(
+        "registerMessage"
+      );
 
 
-/* =========================
-   LOAD GAMES
-========================= */
+    if (!email || !password) {
 
-async function loadGames() {
+      message.textContent =
+        "⚠️ Weka email na password.";
 
-  const message =
-    document.getElementById(
-      "message"
-    );
+      return;
 
-  message.style.display =
-    "block";
-
-  message.textContent =
-    "⏳ Inasoma database...";
+    }
 
 
-  try {
+    if (password.length < 6) {
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("games")
-        .select("*");
+      message.textContent =
+        "⚠️ Password iwe angalau characters 6.";
+
+      return;
+
+    }
 
 
-    console.log(
-      "SUPABASE DATA:",
-      data
-    );
+    message.textContent =
+      "⏳ Inatengeneza account...";
 
-    console.log(
-      "SUPABASE ERROR:",
-      error
-    );
+
+    const { error } =
+      await supabaseClient.auth.signUp({
+
+        email: email,
+
+        password: password
+
+      });
 
 
     if (error) {
 
       message.textContent =
-        "❌ Supabase Error: " +
-        error.message;
+        "❌ " + error.message;
 
       return;
+
     }
 
 
-    if (!data || data.length === 0) {
+    message.textContent =
+      "✅ Account imetengenezwa!";
+
+
+    setTimeout(function() {
+
+      closeModals();
+
+      showLogin();
+
+    }, 1200);
+
+  }
+
+
+  /* =========================
+     LOGIN
+  ========================= */
+
+  async function loginUser() {
+
+    const email =
+      document
+        .getElementById("loginEmail")
+        .value
+        .trim();
+
+
+    const password =
+      document
+        .getElementById("loginPassword")
+        .value;
+
+
+    const message =
+      document.getElementById(
+        "loginMessage"
+      );
+
+
+    if (!email || !password) {
 
       message.textContent =
-        "⚠️ Database imefunguka lakini hakuna game.";
+        "⚠️ Weka email na password.";
 
+      return;
+
+    }
+
+
+    message.textContent =
+      "⏳ Inaingia...";
+
+
+    const { error } =
+      await supabaseClient.auth
+        .signInWithPassword({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+    if (error) {
+
+      message.textContent =
+        "❌ " + error.message;
+
+      return;
+
+    }
+
+
+    message.textContent =
+      "✅ Umeingia!";
+
+
+    setTimeout(function() {
+
+      closeModals();
+
+      updateAuthUI();
+
+      showPage("account");
+
+    }, 700);
+
+  }
+
+
+  /* =========================
+     LOGOUT
+  ========================= */
+
+  async function logout() {
+
+    await supabaseClient.auth.signOut();
+
+    updateAuthUI();
+
+  }
+
+
+  /* =========================
+     AUTH UI
+  ========================= */
+
+  async function updateAuthUI() {
+
+    const {
+      data: {
+        session
+      }
+    } =
+      await supabaseClient.auth
+        .getSession();
+
+
+    const authArea =
+      document.getElementById(
+        "authArea"
+      );
+
+
+    const userArea =
+      document.getElementById(
+        "userArea"
+      );
+
+
+    const userName =
+      document.getElementById(
+        "userName"
+      );
+
+
+    if (session && session.user) {
+
+      authArea.style.display =
+        "none";
+
+      userArea.style.display =
+        "block";
+
+
+      userName.textContent =
+        "👤 " +
+        (
+          session.user.email ||
+          "Account"
+        );
+
+    } else {
+
+      authArea.style.display =
+        "block";
+
+      userArea.style.display =
+        "none";
+
+    }
+
+  }
+
+
+  /* =========================
+     MODALS
+  ========================= */
+
+  function showRegister() {
+
+    document.getElementById(
+      "loginModal"
+    ).style.display = "none";
+
+
+    document.getElementById(
+      "registerModal"
+    ).style.display = "block";
+
+  }
+
+
+  function showLogin() {
+
+    document.getElementById(
+      "registerModal"
+    ).style.display = "none";
+
+
+    document.getElementById(
+      "loginModal"
+    ).style.display = "block";
+
+  }
+
+
+  function closeModals() {
+
+    document.getElementById(
+      "registerModal"
+    ).style.display = "none";
+
+
+    document.getElementById(
+      "loginModal"
+    ).style.display = "none";
+
+  }
+
+
+  /* =========================
+     LOAD GAMES
+  ========================= */
+
+  async function loadGames() {
+
+    const message =
+      document.getElementById(
+        "message"
+      );
+
+
+    message.style.display =
+      "block";
+
+
+    message.textContent =
+      "⏳ Inasoma database...";
+
+
+    try {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("games")
+          .select("*");
+
+
+      console.log(
+        "SUPABASE DATA:",
+        data
+      );
+
+
+      console.log(
+        "SUPABASE ERROR:",
+        error
+      );
+
+
+      if (error) {
+
+        message.textContent =
+          "❌ Supabase Error: " +
+          error.message;
+
+        return;
+
+      }
+
+
+      allGames =
+        data || [];
+
+
+      if (allGames.length === 0) {
+
+        message.textContent =
+          "⚠️ Database imefunguka lakini hakuna game.";
+
+        return;
+
+      }
+
+
+      message.style.display =
+        "none";
+
+
+      displayGames(
+        allGames
+      );
+
+
+      displayRecommended();
+
+      displayUpdates();
+
+      setupHero();
+
+
+    } catch (err) {
+
+      message.textContent =
+        "❌ Error: " +
+        err.message;
+
+    }
+
+  }
+
+
+  /* =========================
+     GAME CARD
+  ========================= */
+
+  function gameCardHTML(
+    game,
+    index = 0
+  ) {
+
+    const image =
+      game.image
+
+        ? `
+          <img
+            src="${escapeHTML(game.image)}"
+            alt="${escapeHTML(game.name || "Game")}"
+            loading="lazy"
+          >
+        `
+
+        : `
+          <div
+            style="
+              height:100%;
+              display:grid;
+              place-items:center;
+              font-size:42px;
+            "
+          >
+            🎮
+          </div>
+        `;
+
+
+    const badge =
+      index < 3
+
+        ? `
+          <span class="new-badge">
+            New
+          </span>
+        `
+
+        : "";
+
+
+    return `
+
+      <article class="game">
+
+        <div class="game-img-wrap">
+
+          ${image}
+
+          ${badge}
+
+        </div>
+
+
+        <div class="game-info">
+
+          <h3>
+            🎮
+            ${escapeHTML(
+              game.name || "Game"
+            )}
+          </h3>
+
+
+          <div class="details">
+
+            📱
+            ${escapeHTML(
+              game.platform ||
+              "Android"
+            )}
+
+            <br>
+
+            📦
+            ${escapeHTML(
+              game.size ||
+              "Unknown"
+            )}
+
+            <br>
+
+            🗂️
+            ${escapeHTML(
+              game.category ||
+              "Games"
+            )}
+
+          </div>
+
+
+          <a
+            class="download"
+            href="${escapeHTML(
+              game.url || "#"
+            )}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ⬇️ DOWNLOAD
+          </a>
+
+        </div>
+
+      </article>
+
+    `;
+
+  }
+
+
+  function displayGames(games) {
+
+    const container =
+      document.getElementById(
+        "games"
+      );
+
+
+    if (
+      !games ||
+      games.length === 0
+    ) {
+
+      container.innerHTML =
+        `
+          <p style="color:#9aa9bd;">
+            Hakuna game iliyopatikana.
+          </p>
+        `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      games
+        .map(function(game, i) {
+
+          return gameCardHTML(
+            game,
+            i
+          );
+
+        })
+        .join("");
+
+  }
+
+
+  function displayRecommended() {
+
+    const container =
+      document.getElementById(
+        "recommendedGames"
+      );
+
+
+    const games =
+      allGames.slice(0, 3);
+
+
+    if (!games.length) {
+
+      container.innerHTML =
+        `
+          <p style="color:#9aa9bd;">
+            Hakuna recommendations bado.
+          </p>
+        `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      games
+        .map(function(game, i) {
+
+          return gameCardHTML(
+            game,
+            i
+          );
+
+        })
+        .join("");
+
+  }
+
+
+  function displayUpdates() {
+
+    const container =
+      document.getElementById(
+        "updatesGames"
+      );
+
+
+    const games =
+      allGames.slice(0, 6);
+
+
+    if (!games.length) {
+
+      container.innerHTML =
+        `
+          <p style="color:#9aa9bd;">
+            Hakuna updates bado.
+          </p>
+        `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      games
+        .map(function(game, i) {
+
+          return gameCardHTML(
+            game,
+            i
+          );
+
+        })
+        .join("");
+
+  }
+
+
+  /* =========================
+     SEARCH
+  ========================= */
+
+  function searchGames() {
+
+    const search =
+      document
+        .getElementById("search")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    if (search) {
+
+      showPage("games");
+
+    }
+
+
+    const filtered =
+      allGames.filter(function(game) {
+
+        return (
+
+          (game.name || "")
+            .toLowerCase()
+            .includes(search)
+
+          ||
+
+          (game.platform || "")
+            .toLowerCase()
+            .includes(search)
+
+          ||
+
+          (game.category || "")
+            .toLowerCase()
+            .includes(search)
+
+        );
+
+      });
+
+
+    displayGames(
+      filtered
+    );
+
+  }
+
+
+  /* =========================
+     CATEGORIES
+  ========================= */
+
+  function filterGamesByCategory(
+    games,
+    category
+  ) {
+
+    if (
+      category === "All Games" ||
+      category === "Popular"
+    ) {
+
+      return games;
+
+    }
+
+
+    return games.filter(
+      function(game) {
+
+        return (
+
+          (game.category || "")
+            .toLowerCase() ===
+          category.toLowerCase()
+
+          ||
+
+          (game.platform || "")
+            .toLowerCase() ===
+          category.toLowerCase()
+
+        );
+
+      }
+    );
+
+  }
+
+
+  function filterCategory(
+    category,
+    button
+  ) {
+
+    currentCategory =
+      category;
+
+
+    document
+      .querySelectorAll(
+        ".category-btn"
+      )
+      .forEach(function(btn) {
+
+        btn.classList.remove(
+          "active"
+        );
+
+      });
+
+
+    if (button) {
+
+      button.classList.add(
+        "active"
+      );
+
+    }
+
+
+    showPage("games");
+
+
+    displayGames(
+      filterGamesByCategory(
+        allGames,
+        category
+      )
+    );
+
+  }
+
+
+  /* =========================
+     HERO
+  ========================= */
+
+  function setupHero() {
+
+    if (!allGames.length) {
       return;
     }
 
 
-    allGames = data;
+    const first =
+      allGames[0];
 
 
-    message.textContent =
-      "✅ Games zimepatikana: " +
-      data.length;
+    const heroImage =
+      document.getElementById(
+        "heroImage"
+      );
 
 
-    displayGames(data);
+    document.getElementById(
+      "heroTitle"
+    ).textContent =
+      first.name ||
+      "Games mpya zipo hapa";
 
 
-  } catch (err) {
+    document.getElementById(
+      "heroText"
+    ).textContent =
+      "Game mpya kwenye Danygama Games • " +
+      (
+        first.category ||
+        "Gaming"
+      );
 
-    message.textContent =
-      "❌ Error: " +
-      err.message;
+
+    if (first.image) {
+
+      heroImage.src =
+        first.image;
+
+      heroImage.style.display =
+        "block";
+
+    }
 
   }
 
-}
 
+  /* =========================
+     HELP
+  ========================= */
 
-/* =========================
-   DISPLAY GAMES
-========================= */
+  function contactAdmin() {
 
-function displayGames(games) {
-
-  const container =
-    document.getElementById(
-      "games"
+    alert(
+      "Tutaunganisha hapa WhatsApp au email ya admin."
     );
 
-
-  container.innerHTML = "";
-
-
-  if (games.length === 0) {
-
-    container.innerHTML =
-      "<p>Hakuna game iliyopatikana.</p>";
-
-    return;
-
   }
 
 
-  games.forEach(function(game) {
+  /* =========================
+     SECURITY
+  ========================= */
 
-    const card =
+  function escapeHTML(value) {
+
+    const div =
       document.createElement(
         "div"
       );
 
 
-    card.className =
-      "game";
+    div.textContent =
+      value ?? "";
 
 
-    const image =
-      game.image
+    return div.innerHTML;
 
-        ? `<img src="${escapeHTML(game.image)}" alt="${escapeHTML(game.name)}">`
-
-        : "";
-
-
-    card.innerHTML = `
-
-      ${image}
-
-      <div class="game-info">
-
-        <h2>
-          🎮 ${escapeHTML(game.name)}
-        </h2>
-
-        <div class="details">
-
-          📱 Platform:
-          ${escapeHTML(game.platform || "")}
-
-          <br>
-
-          📦 Size:
-          ${escapeHTML(game.size || "")}
-
-          <br>
-
-          🗂️ Category:
-          ${escapeHTML(game.category || "")}
-
-        </div>
-
-        <a
-          class="download"
-          href="${escapeHTML(game.url || "#")}"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          ⬇️ DOWNLOAD
-        </a>
-
-      </div>
-
-    `;
-
-
-    container.appendChild(card);
-
-  });
-
-}
-
-
-/* =========================
-   SEARCH
-========================= */
-
-function searchGames() {
-
-  const search =
-    document
-      .getElementById("search")
-      .value
-      .toLowerCase()
-      .trim();
-
-
-  const filtered =
-    allGames.filter(function(game) {
-
-      return (
-
-        (game.name || "")
-          .toLowerCase()
-          .includes(search)
-
-        ||
-
-        (game.platform || "")
-          .toLowerCase()
-          .includes(search)
-
-        ||
-
-        (game.category || "")
-          .toLowerCase()
-          .includes(search)
-
-      );
-
-    });
-
-
-  displayGames(filtered);
-
-}
-
-
-/* =========================
-   SECURITY
-========================= */
-
-function escapeHTML(value) {
-
-  const div =
-    document.createElement(
-      "div"
-    );
-
-  div.textContent =
-    value ?? "";
-
-  return div.innerHTML;
-
-}
-
-
-/* =========================
-   START
-========================= */
-
-loadGames();
-
-updateAuthUI();
-
-
-/* =========================
-   AUTH STATE LISTENER
-========================= */
-
-supabaseClient.auth.onAuthStateChange(
-  function() {
-    updateAuthUI();
   }
-);
+
+
+  /* =========================
+     START
+  ========================= */
+
+  loadGames();
+
+  updateAuthUI();
+
+
+  /* =========================
+     AUTH STATE
+  ========================= */
+
+  supabaseClient.auth
+    .onAuthStateChange(
+      function() {
+
+        updateAuthUI();
+
+      }
+    );
 
 </script>
 
