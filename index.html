@@ -55,7 +55,9 @@
     }
 
     button,
-    input {
+    input,
+    textarea,
+    select {
       font: inherit;
     }
 
@@ -510,6 +512,153 @@
       background: #202f47;
     }
 
+    /* MARKETPLACE */
+
+    .market-actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .market-btn {
+      border: 0;
+      color: white;
+      background: var(--blue);
+      padding: 11px 15px;
+      border-radius: 11px;
+      font-weight: 900;
+    }
+
+    .market-btn.secondary {
+      background: #202f47;
+    }
+
+    .market-form {
+      display: none;
+      background: linear-gradient(145deg, #10213a, #0b1729);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .market-form h2 {
+      margin-top: 0;
+    }
+
+    .market-input,
+    .market-textarea {
+      width: 100%;
+      padding: 13px;
+      margin: 7px 0;
+      border-radius: 11px;
+      border: 1px solid #30425d;
+      background: #0b1729;
+      color: white;
+      outline: none;
+    }
+
+    .market-input:focus,
+    .market-textarea:focus {
+      border-color: var(--blue);
+    }
+
+    .market-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .market-message {
+      text-align: center;
+      color: #ffd166;
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .team-card {
+      background: linear-gradient(180deg, #102039, #0b1729);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(0,0,0,.16);
+    }
+
+    .team-image {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+      background: #101b2d;
+    }
+
+    .team-placeholder {
+      width: 100%;
+      height: 190px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 40%, #173c70, #0b1729 65%);
+      font-size: 55px;
+    }
+
+    .team-info {
+      padding: 14px;
+    }
+
+    .team-info h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .team-details {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .team-description {
+      color: #c7d3e2;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 9px;
+      word-break: break-word;
+    }
+
+    .team-price {
+      color: #36d98a;
+      font-size: 20px;
+      font-weight: 900;
+      margin-top: 10px;
+    }
+
+    .contact-team {
+      display: block;
+      width: 100%;
+      border: 0;
+      background: #13a866;
+      color: white;
+      padding: 11px;
+      border-radius: 11px;
+      margin-top: 11px;
+      font-weight: 900;
+    }
+
+    .market-empty {
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+      border: 1px dashed rgba(255,255,255,.12);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+    }
+
     /* MODALS */
 
     .modal {
@@ -519,6 +668,7 @@
       inset: 0;
       background: rgba(0,0,0,.78);
       padding: 20px;
+      overflow-y: auto;
     }
 
     .modal-content {
@@ -604,7 +754,7 @@
       backdrop-filter: blur(18px);
       border-top: 1px solid rgba(255,255,255,.1);
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       padding: 8px max(10px, calc((100vw - 1100px)/2));
     }
 
@@ -664,7 +814,13 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .game-img-wrap {
+      .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .game-img-wrap,
+      .team-image,
+      .team-placeholder {
         height: 165px;
       }
     }
@@ -681,30 +837,41 @@
         padding-right: 14px;
       }
 
-      .game-grid {
+      .game-grid,
+      .team-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
       }
 
-      .game-img-wrap {
+      .game-img-wrap,
+      .team-image,
+      .team-placeholder {
         height: 145px;
       }
 
-      .game-info {
+      .game-info,
+      .team-info {
         padding: 10px;
       }
 
-      .game h3 {
+      .game h3,
+      .team-info h3 {
         font-size: 14px;
       }
 
-      .details {
+      .details,
+      .team-details {
         font-size: 11px;
       }
 
-      .download {
+      .download,
+      .contact-team {
         font-size: 11px;
         padding: 10px 5px;
+      }
+
+      .team-price {
+        font-size: 17px;
       }
 
       .hero h2 {
@@ -713,6 +880,19 @@
 
       .hero p {
         font-size: 13px;
+      }
+
+      .bottom-nav {
+        padding-left: 3px;
+        padding-right: 3px;
+      }
+
+      .nav-btn {
+        font-size: 9px;
+      }
+
+      .nav-icon {
+        font-size: 19px;
       }
     }
   </style>
@@ -873,10 +1053,10 @@
 
       <button
         class="quick-btn q-green"
-        onclick="showPage('games')"
+        onclick="showPage('marketplace')"
       >
-        <span>🏆</span>
-        Tournaments
+        <span>🛒</span>
+        Marketplace
       </button>
 
       <button
@@ -1011,6 +1191,153 @@
     <div
       id="games"
       class="game-grid"
+    ></div>
+
+  </main>
+
+
+  <!-- MARKETPLACE -->
+
+  <main
+    id="marketplacePage"
+    class="page"
+  >
+
+    <div class="page-title">
+
+      <div>
+
+        <h1>
+          🛒 Marketplace
+        </h1>
+
+        <p>
+          Nunua au uza vikosi na teams za games.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="market-actions">
+
+      <button
+        class="market-btn"
+        onclick="showSellTeamForm()"
+      >
+        ➕ Uza Kikosi
+      </button>
+
+      <button
+        class="market-btn secondary"
+        onclick="loadMarketplace()"
+      >
+        🔄 Refresh
+      </button>
+
+    </div>
+
+
+    <!-- SELL FORM -->
+
+    <div
+      id="sellTeamForm"
+      class="market-form"
+    >
+
+      <h2>
+        ➕ Uza Kikosi
+      </h2>
+
+      <p style="color:#9aa9bd;">
+        Jaza taarifa za kikosi chako ili watu wengine waweze kukiona.
+      </p>
+
+
+      <input
+        id="teamName"
+        class="market-input"
+        type="text"
+        placeholder="Jina la kikosi mfano: Danygama FC"
+      >
+
+
+      <input
+        id="gameName"
+        class="market-input"
+        type="text"
+        placeholder="Game mfano: eFootball 2026"
+      >
+
+
+      <input
+        id="teamPlatform"
+        class="market-input"
+        type="text"
+        placeholder="Platform mfano: Android / PS3 / PS4"
+      >
+
+
+      <input
+        id="teamPrice"
+        class="market-input"
+        type="number"
+        min="0"
+        placeholder="Bei kwa TSh mfano: 10000"
+      >
+
+
+      <input
+        id="teamImage"
+        class="market-input"
+        type="url"
+        placeholder="Link ya picha ya kikosi"
+      >
+
+
+      <textarea
+        id="teamDescription"
+        class="market-textarea"
+        placeholder="Elezea kikosi, players, rating, features n.k."
+      ></textarea>
+
+
+      <input
+        id="teamContact"
+        class="market-input"
+        type="text"
+        placeholder="WhatsApp/Namba ya kuwasiliana"
+      >
+
+
+      <button
+        class="submit-btn"
+        onclick="sellTeam()"
+      >
+        🛒 WEKA KIKOSI SOKONI
+      </button>
+
+
+      <div
+        id="marketMessage"
+        class="market-message"
+      ></div>
+
+    </div>
+
+
+    <div
+      id="marketMessageLoading"
+      class="market-message"
+    >
+      ⏳ Inapakia vikosi...
+    </div>
+
+
+    <div
+      id="marketplaceTeams"
+      class="team-grid"
     ></div>
 
   </main>
@@ -1245,6 +1572,21 @@
 
   <button
     class="nav-btn"
+    data-page="marketplace"
+    onclick="showPage('marketplace')"
+  >
+    <span class="nav-icon">
+      🛒
+    </span>
+
+    <span>
+      Soko
+    </span>
+  </button>
+
+
+  <button
+    class="nav-btn"
     data-page="updates"
     onclick="showPage('updates')"
   >
@@ -1418,8 +1760,7 @@
     "https://octyeeoameulsdlaaqbc.supabase.co";
 
   /*
-    WEKA HAPA SUPABASE ANON/PUBLISHABLE KEY YAKO.
-    Usitumie service_role/secret key kwenye website.
+    SUPABASE ANON/PUBLISHABLE KEY
   */
 
   const SUPABASE_KEY =
@@ -1500,6 +1841,13 @@
     if (page === "updates") {
 
       displayUpdates();
+
+    }
+
+
+    if (page === "marketplace") {
+
+      loadMarketplace();
 
     }
 
@@ -2317,6 +2665,661 @@
         "block";
 
     }
+
+  }
+
+
+  /* =========================
+     MARKETPLACE
+  ========================= */
+
+  async function loadMarketplace() {
+
+    const loading =
+      document.getElementById(
+        "marketMessageLoading"
+      );
+
+    const container =
+      document.getElementById(
+        "marketplaceTeams"
+      );
+
+
+    if (!loading || !container) {
+      return;
+    }
+
+
+    loading.style.display =
+      "block";
+
+
+    loading.textContent =
+      "⏳ Inapakia vikosi...";
+
+
+    try {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("team_marketplace")
+          .select("*")
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
+
+
+      console.log(
+        "MARKETPLACE DATA:",
+        data
+      );
+
+
+      console.log(
+        "MARKETPLACE ERROR:",
+        error
+      );
+
+
+      if (error) {
+
+        loading.textContent =
+          "❌ " +
+          error.message;
+
+        return;
+
+      }
+
+
+      loading.style.display =
+        "none";
+
+
+      if (
+        !data ||
+        data.length === 0
+      ) {
+
+        container.innerHTML =
+          `
+            <div class="market-empty">
+              🛒<br><br>
+              Hakuna kikosi kinachouzwa bado.<br>
+              Kuwa wa kwanza kuuza kikosi chako!
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      container.innerHTML =
+        data
+          .map(function(team) {
+
+            return teamCardHTML(
+              team
+            );
+
+          })
+          .join("");
+
+
+    } catch (error) {
+
+      console.error(
+        "MARKETPLACE CATCH ERROR:",
+        error
+      );
+
+
+      loading.textContent =
+        "❌ Error: " +
+        error.message;
+
+    }
+
+  }
+
+
+  function teamCardHTML(team) {
+
+    const image =
+      team.image
+        ? `
+          <img
+            class="team-image"
+            src="${escapeHTML(team.image)}"
+            alt="${escapeHTML(team.team_name || "Kikosi")}"
+            loading="lazy"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+          >
+          <div
+            class="team-placeholder"
+            style="display:none;"
+          >
+            ⚽
+          </div>
+        `
+        : `
+          <div class="team-placeholder">
+            ⚽
+          </div>
+        `;
+
+
+    const price =
+      Number(team.price || 0).toLocaleString(
+        "en-TZ"
+      );
+
+
+    const contact =
+      String(
+        team.contact || ""
+      );
+
+
+    const safeContact =
+      encodeURIComponent(
+        contact
+      );
+
+
+    return `
+
+      <article class="team-card">
+
+        ${image}
+
+
+        <div class="team-info">
+
+          <h3>
+            ⚽
+            ${escapeHTML(
+              team.team_name ||
+              "Kikosi"
+            )}
+          </h3>
+
+
+          <div class="team-details">
+
+            🎮 Game:
+            ${escapeHTML(
+              team.game_name ||
+              "Unknown"
+            )}
+
+            <br>
+
+            📱 Platform:
+            ${escapeHTML(
+              team.platform ||
+              "Unknown"
+            )}
+
+          </div>
+
+
+          ${
+            team.description
+              ? `
+                <div class="team-description">
+                  ${escapeHTML(
+                    team.description
+                  )}
+                </div>
+              `
+              : ""
+          }
+
+
+          <div class="team-price">
+
+            TSh ${price}
+
+          </div>
+
+
+          <button
+            class="contact-team"
+            data-contact="${safeContact}"
+            onclick="contactSellerEncoded(this.dataset.contact)"
+          >
+            📞 Wasiliana na Seller
+          </button>
+
+        </div>
+
+      </article>
+
+    `;
+
+  }
+
+
+  function showSellTeamForm() {
+
+    supabaseClient.auth
+      .getSession()
+      .then(function(result) {
+
+        const session =
+          result.data.session;
+
+
+        if (
+          !session ||
+          !session.user
+        ) {
+
+          alert(
+            "🔐 Ingia kwanza kwenye account ili kuuza kikosi."
+          );
+
+          showLogin();
+
+          return;
+
+        }
+
+
+        const form =
+          document.getElementById(
+            "sellTeamForm"
+          );
+
+
+        if (
+          form.style.display ===
+          "block"
+        ) {
+
+          form.style.display =
+            "none";
+
+        } else {
+
+          form.style.display =
+            "block";
+
+          form.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+
+        }
+
+      });
+
+  }
+
+
+  async function sellTeam() {
+
+    const {
+      data: {
+        session
+      }
+    } =
+      await supabaseClient.auth
+        .getSession();
+
+
+    const message =
+      document.getElementById(
+        "marketMessage"
+      );
+
+
+    if (
+      !session ||
+      !session.user
+    ) {
+
+      message.textContent =
+        "🔐 Ingia kwanza ili kuuza kikosi.";
+
+      showLogin();
+
+      return;
+
+    }
+
+
+    const teamName =
+      document
+        .getElementById(
+          "teamName"
+        )
+        .value
+        .trim();
+
+
+    const gameName =
+      document
+        .getElementById(
+          "gameName"
+        )
+        .value
+        .trim();
+
+
+    const platform =
+      document
+        .getElementById(
+          "teamPlatform"
+        )
+        .value
+        .trim();
+
+
+    const price =
+      document
+        .getElementById(
+          "teamPrice"
+        )
+        .value
+        .trim();
+
+
+    const image =
+      document
+        .getElementById(
+          "teamImage"
+        )
+        .value
+        .trim();
+
+
+    const description =
+      document
+        .getElementById(
+          "teamDescription"
+        )
+        .value
+        .trim();
+
+
+    const contact =
+      document
+        .getElementById(
+          "teamContact"
+        )
+        .value
+        .trim();
+
+
+    if (
+      !teamName ||
+      !gameName ||
+      !platform ||
+      !price ||
+      !contact
+    ) {
+
+      message.textContent =
+        "⚠️ Jaza Team Name, Game, Platform, Bei na Contact.";
+
+      return;
+
+    }
+
+
+    if (
+      Number(price) < 0
+    ) {
+
+      message.textContent =
+        "⚠️ Bei si sahihi.";
+
+      return;
+
+    }
+
+
+    message.textContent =
+      "⏳ Inaweka kikosi sokoni...";
+
+
+    try {
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("team_marketplace")
+          .insert([
+
+            {
+              user_id:
+                session.user.id,
+
+              seller_email:
+                session.user.email,
+
+              team_name:
+                teamName,
+
+              game_name:
+                gameName,
+
+              platform:
+                platform,
+
+              price:
+                Number(price),
+
+              image:
+                image ||
+                null,
+
+              description:
+                description ||
+                null,
+
+              contact:
+                contact
+
+            }
+
+          ]);
+
+
+      if (error) {
+
+        console.error(
+          "SELL TEAM ERROR:",
+          error
+        );
+
+
+        message.textContent =
+          "❌ " +
+          error.message;
+
+        return;
+
+      }
+
+
+      message.textContent =
+        "✅ Kikosi kimewekwa sokoni!";
+
+
+      document.getElementById(
+        "teamName"
+      ).value = "";
+
+
+      document.getElementById(
+        "gameName"
+      ).value = "";
+
+
+      document.getElementById(
+        "teamPlatform"
+      ).value = "";
+
+
+      document.getElementById(
+        "teamPrice"
+      ).value = "";
+
+
+      document.getElementById(
+        "teamImage"
+      ).value = "";
+
+
+      document.getElementById(
+        "teamDescription"
+      ).value = "";
+
+
+      document.getElementById(
+        "teamContact"
+      ).value = "";
+
+
+      await loadMarketplace();
+
+
+      setTimeout(function() {
+
+        document.getElementById(
+          "sellTeamForm"
+        ).style.display =
+          "none";
+
+        message.textContent = "";
+
+      }, 1200);
+
+
+    } catch (error) {
+
+      console.error(
+        "SELL TEAM CATCH:",
+        error
+      );
+
+
+      message.textContent =
+        "❌ Error: " +
+        error.message;
+
+    }
+
+  }
+
+
+  function contactSellerEncoded(
+    encodedContact
+  ) {
+
+    let contact = "";
+
+
+    try {
+
+      contact =
+        decodeURIComponent(
+          encodedContact
+        );
+
+    } catch (error) {
+
+      contact =
+        encodedContact;
+
+    }
+
+
+    contact =
+      contact.trim();
+
+
+    if (!contact) {
+
+      alert(
+        "❌ Seller hajaweka namba ya mawasiliano."
+      );
+
+      return;
+
+    }
+
+
+    let number =
+      contact.replace(
+        /[^0-9+]/g,
+        ""
+      );
+
+
+    /*
+      Tanzania:
+      07XXXXXXXX -> 2557XXXXXXXX
+      06XXXXXXXX -> 2556XXXXXXXX
+    */
+
+    if (
+      number.startsWith("0")
+    ) {
+
+      number =
+        "255" +
+        number.substring(1);
+
+    }
+
+
+    if (
+      number.startsWith("+")
+    ) {
+
+      number =
+        number.substring(1);
+
+    }
+
+
+    if (
+      number.length >= 10
+    ) {
+
+      const whatsappURL =
+        "https://wa.me/" +
+        number;
+
+
+      window.open(
+        whatsappURL,
+        "_blank"
+      );
+
+
+      return;
+
+    }
+
+
+    alert(
+      "📞 Contact ya seller: " +
+      contact
+    );
 
   }
 
