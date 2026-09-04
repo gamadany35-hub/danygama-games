@@ -498,6 +498,12 @@
       line-height: 1.6;
     }
 
+    .admin-number {
+      color: #36d98a;
+      font-weight: 900;
+      font-size: 16px;
+    }
+
     .auth-btn {
       border: 0;
       padding: 11px 16px;
@@ -679,6 +685,17 @@
       font-weight: 900;
     }
 
+    .contact-team:hover {
+      filter: brightness(1.08);
+    }
+
+    .seller-contact {
+      color: #9aa9bd;
+      font-size: 11px;
+      margin-top: 7px;
+      word-break: break-word;
+    }
+
     .market-empty {
       color: var(--muted);
       background: rgba(255,255,255,.03);
@@ -686,6 +703,7 @@
       border-radius: 15px;
       padding: 20px;
       text-align: center;
+      grid-column: 1 / -1;
     }
 
     /* MODALS */
@@ -922,6 +940,10 @@
 
       .nav-icon {
         font-size: 19px;
+      }
+
+      .admin-number {
+        font-size: 14px;
       }
     }
   </style>
@@ -1333,6 +1355,7 @@
 
       <div class="image-help">
         Chagua picha moja kwa moja kutoka kwenye simu yako.
+        Picha iwe chini ya 8MB.
       </div>
 
       <input
@@ -1357,11 +1380,30 @@
       ></textarea>
 
 
+      <label
+        for="teamContact"
+        style="
+          display:block;
+          color:#dbe5f2;
+          font-weight:800;
+          margin-top:10px;
+        "
+      >
+        📱 WhatsApp ya Seller
+      </label>
+
+      <div class="image-help">
+        Weka namba yako mwenyewe. Mnunuzi akibonyeza
+        "Wasiliana na Seller" ataenda kwenye WhatsApp yako.
+        Mfano: 0786538998
+      </div>
+
       <input
         id="teamContact"
         class="market-input"
-        type="text"
-        placeholder="WhatsApp/Namba ya kuwasiliana"
+        type="tel"
+        inputmode="tel"
+        placeholder="Mfano: 0786538998"
       >
 
 
@@ -1462,14 +1504,22 @@
       <p>
         Kama una tatizo la kutafuta game,
         download link, account au una swali
-        kuhusu website, unaweza kuwasiliana na admin.
+        kuhusu website, unaweza kuwasiliana na admin
+        kupitia WhatsApp.
+      </p>
+
+      <p>
+        📱 WhatsApp Admin:
+        <span class="admin-number">
+          +255 786 538 998
+        </span>
       </p>
 
       <button
         class="auth-btn"
         onclick="contactAdmin()"
       >
-        📩 Wasiliana na Admin
+        📱 Wasiliana na Admin WhatsApp
       </button>
 
     </div>
@@ -1495,7 +1545,13 @@
 
       <p>
         <b>Unataka game iongezwe?</b><br>
-        Wasiliana na admin.
+        Wasiliana na admin kupitia WhatsApp.
+      </p>
+
+      <p>
+        <b>Unataka kuuza kikosi?</b><br>
+        Ingia kwenye account, fungua Marketplace
+        kisha bonyeza <b>Uza Kikosi</b>.
       </p>
 
     </div>
@@ -1813,9 +1869,6 @@
   const SUPABASE_URL =
     "https://octyeeoameulsdlaaqbc.supabase.co";
 
-  /*
-    SUPABASE ANON/PUBLISHABLE KEY
-  */
 
   const SUPABASE_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
@@ -2845,6 +2898,10 @@
   }
 
 
+  /* =========================
+     TEAM CARD
+  ========================= */
+
   function teamCardHTML(team) {
 
     const image =
@@ -2880,7 +2937,7 @@
     const contact =
       String(
         team.contact || ""
-      );
+      ).trim();
 
 
     const safeContact =
@@ -2940,9 +2997,14 @@
 
 
           <div class="team-price">
-
             TSh ${price}
+          </div>
 
+
+          <div class="seller-contact">
+            📱 Seller: ${escapeHTML(
+              maskPhoneNumber(contact)
+            )}
           </div>
 
 
@@ -2951,7 +3013,7 @@
             data-contact="${safeContact}"
             onclick="contactSellerEncoded(this.dataset.contact)"
           >
-            📞 Wasiliana na Seller
+            📱 Wasiliana na Seller WhatsApp
           </button>
 
         </div>
@@ -2959,6 +3021,51 @@
       </article>
 
     `;
+
+  }
+
+
+  /* =========================
+     MASK SELLER NUMBER
+  ========================= */
+
+  function maskPhoneNumber(number) {
+
+    const clean =
+      String(number || "")
+        .trim();
+
+
+    if (!clean) {
+      return "Haijawekwa";
+    }
+
+
+    /*
+      Tunaonyesha sehemu ya namba tu
+      kwa usalama kwenye card.
+    */
+
+    const digits =
+      clean.replace(
+        /[^0-9]/g,
+        ""
+      );
+
+
+    if (digits.length >= 7) {
+
+      return (
+        "****" +
+        digits.substring(
+          digits.length - 6
+        )
+      );
+
+    }
+
+
+    return "****";
 
   }
 
@@ -3010,6 +3117,24 @@
     }
 
 
+    if (file.size > 8 * 1024 * 1024) {
+
+      alert(
+        "❌ Picha ni kubwa sana. Tumia picha chini ya 8MB."
+      );
+
+      event.target.value = "";
+
+      preview.src = "";
+
+      preview.style.display =
+        "none";
+
+      return;
+
+    }
+
+
     const reader =
       new FileReader();
 
@@ -3041,7 +3166,11 @@
   ) {
 
     if (!file) {
-      return null;
+
+      throw new Error(
+        "Chagua picha ya kikosi."
+      );
+
     }
 
 
@@ -3053,10 +3182,6 @@
 
     }
 
-
-    /*
-      Limit ya picha: 8MB
-    */
 
     if (file.size > 8 * 1024 * 1024) {
 
@@ -3214,6 +3339,82 @@
 
 
   /* =========================
+     VALIDATE PHONE
+  ========================= */
+
+  function normalizeTanzaniaNumber(
+    contact
+  ) {
+
+    let number =
+      String(
+        contact || ""
+      ).trim();
+
+
+    if (!number) {
+      return "";
+    }
+
+
+    number =
+      number.replace(
+        /[\s\-().]/g,
+        ""
+      );
+
+
+    /*
+      +255XXXXXXXXX
+      -> 255XXXXXXXXX
+    */
+
+    if (
+      number.startsWith("+255")
+    ) {
+
+      number =
+        number.substring(1);
+
+    }
+
+
+    /*
+      0XXXXXXXXX
+      -> 255XXXXXXXXX
+    */
+
+    if (
+      number.startsWith("0")
+    ) {
+
+      number =
+        "255" +
+        number.substring(1);
+
+    }
+
+
+    /*
+      Ikiwa mtu ameandika 255...
+      tunaacha hivyo.
+    */
+
+    if (
+      /^255[67]\d{8}$/.test(number)
+    ) {
+
+      return number;
+
+    }
+
+
+    return "";
+
+  }
+
+
+  /* =========================
      SELL TEAM
   ========================= */
 
@@ -3320,7 +3521,7 @@
     ) {
 
       message.textContent =
-        "⚠️ Jaza Team Name, Game, Platform, Bei na Contact.";
+        "⚠️ Jaza Team Name, Game, Platform, Bei na WhatsApp.";
 
       return;
 
@@ -3343,6 +3544,22 @@
 
       message.textContent =
         "⚠️ Chagua picha ya kikosi kwanza.";
+
+      return;
+
+    }
+
+
+    const whatsappNumber =
+      normalizeTanzaniaNumber(
+        contact
+      );
+
+
+    if (!whatsappNumber) {
+
+      message.textContent =
+        "⚠️ Weka namba sahihi ya Tanzania, mfano 0786538998.";
 
       return;
 
@@ -3418,8 +3635,14 @@
                 description ||
                 null,
 
+              /*
+                Tuna-save namba ya
+                WhatsApp katika format
+                ya 255XXXXXXXXX.
+              */
+
               contact:
-                contact
+                whatsappNumber
 
             }
 
@@ -3566,7 +3789,7 @@
     if (!contact) {
 
       alert(
-        "❌ Seller hajaweka namba ya mawasiliano."
+        "❌ Seller hajaweka namba ya WhatsApp."
       );
 
       return;
@@ -3574,63 +3797,39 @@
     }
 
 
-    let number =
-      contact.replace(
-        /[^0-9+]/g,
-        ""
+    const number =
+      normalizeTanzaniaNumber(
+        contact
       );
 
 
-    /*
-      Tanzania:
-      07XXXXXXXX -> 2557XXXXXXXX
-      06XXXXXXXX -> 2556XXXXXXXX
-    */
+    if (!number) {
 
-    if (
-      number.startsWith("0")
-    ) {
-
-      number =
-        "255" +
-        number.substring(1);
-
-    }
-
-
-    if (
-      number.startsWith("+")
-    ) {
-
-      number =
-        number.substring(1);
-
-    }
-
-
-    if (
-      number.length >= 10
-    ) {
-
-      const whatsappURL =
-        "https://wa.me/" +
-        number;
-
-
-      window.open(
-        whatsappURL,
-        "_blank"
+      alert(
+        "❌ Namba ya seller si sahihi."
       );
-
 
       return;
 
     }
 
 
-    alert(
-      "📞 Contact ya seller: " +
-      contact
+    const message =
+      encodeURIComponent(
+        "Habari, nimeona kikosi chako kwenye Danygama Games Marketplace. Niko interested kukinunua."
+      );
+
+
+    const whatsappURL =
+      "https://wa.me/" +
+      number +
+      "?text=" +
+      message;
+
+
+    window.open(
+      whatsappURL,
+      "_blank"
     );
 
   }
@@ -3641,6 +3840,11 @@
   ========================= */
 
   function contactAdmin() {
+
+    /*
+      HII NI NAMBA YA ADMIN
+      NA SI NAMBA YA SELLER.
+    */
 
     const adminNumber =
       "255786538998";
