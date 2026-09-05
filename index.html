@@ -1382,7 +1382,7 @@ const SUPABASE_URL =
 "https://octyeeoameulsdlaaqbc.supabase.co";
 
 const SUPABASE_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoib2N0eWVlb2FtZXVsc2RsYWFxYmMiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODA0MTczNCwiZXhwIjoyMTAzNjE3NzM0fQ.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
 
 const supabaseClient =
 window.supabase.createClient(
@@ -1725,13 +1725,16 @@ const links=[];
 
 /*
 LINK 1:
-Column ya zamani ni "url".
+Column mpya ni "download_url_1".
 */
 
-if(game.url && String(game.url).trim()){
+if(
+game.download_url_1 &&
+String(game.download_url_1).trim()
+){
 
 links.push({
-url:String(game.url).trim(),
+url:String(game.download_url_1).trim(),
 label:"⬇️ DOWNLOAD PART 1",
 className:""
 });
@@ -1740,13 +1743,16 @@ className:""
 
 /*
 LINK 2:
-Column mpya ni "url2".
+Column mpya ni "download_url_2".
 */
 
-if(game.url2 && String(game.url2).trim()){
+if(
+game.download_url_2 &&
+String(game.download_url_2).trim()
+){
 
 links.push({
-url:String(game.url2).trim(),
+url:String(game.download_url_2).trim(),
 label:"⬇️ DOWNLOAD PART 2",
 className:"part2"
 });
@@ -1755,13 +1761,16 @@ className:"part2"
 
 /*
 LINK 3:
-Column mpya ni "url3".
+Column mpya ni "download_url_3".
 */
 
-if(game.url3 && String(game.url3).trim()){
+if(
+game.download_url_3 &&
+String(game.download_url_3).trim()
+){
 
 links.push({
-url:String(game.url3).trim(),
+url:String(game.download_url_3).trim(),
 label:"⬇️ DOWNLOAD PART 3",
 className:"part3"
 });
