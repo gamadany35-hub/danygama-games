@@ -1725,16 +1725,32 @@ const links=[];
 
 /*
 LINK 1:
-Column mpya ni "download_url_1".
+Kwanza tumia column mpya "download_url_1".
+Kama haipo au iko tupu, tumia column ya zamani "url".
+Hii inafanya games za zamani na mpya zote zifanye kazi.
 */
 
-if(
+const link1 =
+(
 game.download_url_1 &&
 String(game.download_url_1).trim()
-){
+)
+?
+String(game.download_url_1).trim()
+:
+(
+game.url &&
+String(game.url).trim()
+?
+String(game.url).trim()
+:
+""
+);
+
+if(link1){
 
 links.push({
-url:String(game.download_url_1).trim(),
+url:link1,
 label:"⬇️ DOWNLOAD PART 1",
 className:""
 });
