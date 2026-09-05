@@ -1,3918 +1,3014 @@
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#07101f">
-
-  <title>Danygama Games</title>
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6QDDJEXQVD"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-6QDDJEXQVD');
-  </script>
-
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #07101f;
-      --panel: #0d1a2e;
-      --panel2: #101f35;
-      --line: rgba(255,255,255,.09);
-      --text: #f7fbff;
-      --muted: #9aa9bd;
-      --blue: #1688ff;
-      --blue2: #35a7ff;
-      --purple: #7047ff;
-      --green: #13a866;
-      --orange: #e88713;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at 80% 10%, rgba(22,136,255,.14), transparent 30%),
-        radial-gradient(circle at 10% 50%, rgba(112,71,255,.08), transparent 28%),
-        var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 88px;
-    }
-
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    /* TOP HEADER */
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 18px 18px 12px;
-    }
-
-    .menu-btn,
-    .icon-btn {
-      width: 42px;
-      height: 42px;
-      border: 1px solid var(--line);
-      border-radius: 13px;
-      background: rgba(255,255,255,.04);
-      color: white;
-      display: grid;
-      place-items: center;
-      font-size: 20px;
-      flex: 0 0 auto;
-    }
-
-    .brand {
-      flex: 1;
-      min-width: 0;
-      font-weight: 900;
-      line-height: 1;
-    }
-
-    .brand-main {
-      color: white;
-      font-size: 20px;
-    }
-
-    .brand-blue {
-      color: var(--blue2);
-      font-size: 20px;
-    }
-
-    .top-actions {
-      display: flex;
-      gap: 7px;
-      align-items: center;
-    }
-
-    .avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, #173b70, #5c38b8);
-      border: 2px solid rgba(53,167,255,.5);
-      font-size: 19px;
-    }
-
-    /* SEARCH */
-
-    .search-wrap {
-      padding: 0 18px 15px;
-    }
-
-    .search-box {
-      position: relative;
-    }
-
-    #search {
-      width: 100%;
-      padding: 15px 18px 15px 48px;
-      border-radius: 17px;
-      border: 1px solid rgba(255,255,255,.1);
-      background: rgba(13,26,46,.95);
-      color: white;
-      outline: none;
-      font-size: 15px;
-    }
-
-    #search:focus {
-      border-color: rgba(22,136,255,.65);
-      box-shadow: 0 0 0 3px rgba(22,136,255,.1);
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 17px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #9fb0c7;
-      font-size: 19px;
-    }
-
-    /* PAGES */
-
-    .page {
-      display: none;
-      padding: 0 18px 25px;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    .page-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin: 10px 0 15px;
-    }
-
-    .page-title h1 {
-      margin: 0;
-      font-size: 25px;
-    }
-
-    .page-title p {
-      margin: 5px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    /* HERO */
-
-    .hero {
-      min-height: 320px;
-      border-radius: 23px;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid rgba(255,255,255,.1);
-
-      background:
-        linear-gradient(
-          100deg,
-          rgba(3,10,23,.97) 0%,
-          rgba(4,18,42,.72) 48%,
-          rgba(7,12,28,.28) 100%
-        ),
-        radial-gradient(
-          circle at 75% 35%,
-          #185bd1,
-          #0a1730 52%,
-          #050a14 100%
-        );
-
-      display: flex;
-      align-items: flex-end;
-      padding: 28px;
-      margin-bottom: 16px;
-    }
-
-    .hero-image {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: .38;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 600px;
-    }
-
-    .hero-tag {
-      display: inline-block;
-      background: var(--blue);
-      padding: 7px 12px;
-      border-radius: 30px;
-      font-size: 12px;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .hero h2 {
-      margin: 0 0 8px;
-      font-size: clamp(28px, 6vw, 46px);
-    }
-
-    .hero p {
-      margin: 0 0 17px;
-      color: #c3d1e3;
-      font-size: 14px;
-    }
-
-    .hero-btn {
-      border: 0;
-      background: white;
-      color: #07101f;
-      padding: 12px 18px;
-      border-radius: 12px;
-      font-weight: 900;
-    }
-
-    /* WELCOME */
-
-    .streak {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: linear-gradient(
-        100deg,
-        rgba(28,43,69,.96),
-        rgba(17,26,46,.96)
-      );
-      border: 1px solid var(--line);
-      border-radius: 17px;
-      padding: 15px 16px;
-      margin-bottom: 16px;
-    }
-
-    .streak-icon {
-      width: 43px;
-      height: 43px;
-      border-radius: 13px;
-      display: grid;
-      place-items: center;
-      background: rgba(255,145,0,.12);
-      font-size: 22px;
-    }
-
-    .streak strong {
-      display: block;
-    }
-
-    .streak small {
-      color: var(--muted);
-      display: block;
-      margin-top: 4px;
-    }
-
-    /* QUICK BUTTONS */
-
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 23px;
-    }
-
-    .quick-btn {
-      border: 0;
-      color: white;
-      min-height: 66px;
-      border-radius: 15px;
-      font-weight: 800;
-      padding: 10px 7px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
-    }
-
-    .quick-btn span {
-      display: block;
-      font-size: 20px;
-      margin-bottom: 4px;
-    }
-
-    .q-blue {
-      background: linear-gradient(135deg, #0875db, #1462d0);
-    }
-
-    .q-purple {
-      background: linear-gradient(135deg, #6d35db, #4930b8);
-    }
-
-    .q-green {
-      background: linear-gradient(135deg, #0a9b62, #08794e);
-    }
-
-    .q-orange {
-      background: linear-gradient(135deg, #df8611, #bc5f0b);
-    }
-
-    /* SECTION */
-
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin: 18px 0 12px;
-    }
-
-    .section-head h2 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-    .view-all {
-      color: #3ca7ff;
-      border: 0;
-      background: none;
-      font-weight: 800;
-    }
-
-    /* GAMES */
-
-    .game-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .game {
-      background: linear-gradient(180deg, #102039, #0b1729);
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      box-shadow: 0 10px 30px rgba(0,0,0,.16);
-    }
-
-    .game-img-wrap {
-      height: 190px;
-      position: relative;
-      background: #101b2d;
-    }
-
-    .game img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .new-badge {
-      position: absolute;
-      left: 10px;
-      bottom: 10px;
-      background: var(--blue);
-      color: white;
-      border-radius: 20px;
-      padding: 5px 9px;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .game-info {
-      padding: 13px;
-    }
-
-    .game h3 {
-      font-size: 16px;
-      margin: 0 0 8px;
-      line-height: 1.25;
-    }
-
-    .details {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.65;
-    }
-
-    .download {
-      display: block;
-      text-align: center;
-      text-decoration: none;
-      background: var(--blue);
-      color: white;
-      padding: 11px;
-      border-radius: 11px;
-      margin-top: 11px;
-      font-weight: 900;
-      font-size: 13px;
-    }
-
-    .download:hover {
-      filter: brightness(1.08);
-    }
-
-    /* CATEGORIES */
-
-    .categories {
-      display: flex;
-      gap: 9px;
-      overflow-x: auto;
-      padding-bottom: 7px;
-    }
-
-    .category-btn {
-      white-space: nowrap;
-      border: 1px solid var(--line);
-      color: #dbe5f2;
-      background: #101c30;
-      padding: 11px 14px;
-      border-radius: 30px;
-      font-weight: 700;
-    }
-
-    .category-btn.active {
-      background: var(--blue);
-      border-color: var(--blue);
-      color: white;
-    }
-
-    /* ACCOUNT / HELP */
-
-    .account-card,
-    .help-card {
-      background: linear-gradient(145deg, #10213a, #0b1729);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 22px;
-      margin-top: 15px;
-    }
-
-    .account-avatar {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, #138cff, #653ee0);
-      font-size: 30px;
-      margin-bottom: 14px;
-    }
-
-    .account-card h2,
-    .help-card h2 {
-      margin: 0 0 7px;
-    }
-
-    .account-card p,
-    .help-card p {
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .admin-number {
-      color: #36d98a;
-      font-weight: 900;
-      font-size: 16px;
-    }
-
-    .auth-btn {
-      border: 0;
-      padding: 11px 16px;
-      margin: 4px 4px 4px 0;
-      border-radius: 10px;
-      background: var(--blue);
-      color: white;
-      font-weight: bold;
-    }
-
-    .auth-btn.secondary {
-      background: #202f47;
-    }
-
-    /* MARKETPLACE */
-
-    .market-actions {
-      display: flex;
-      gap: 9px;
-      flex-wrap: wrap;
-      margin-bottom: 15px;
-    }
-
-    .market-btn {
-      border: 0;
-      color: white;
-      background: var(--blue);
-      padding: 11px 15px;
-      border-radius: 11px;
-      font-weight: 900;
-    }
-
-    .market-btn.secondary {
-      background: #202f47;
-    }
-
-    .market-form {
-      display: none;
-      background: linear-gradient(145deg, #10213a, #0b1729);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px;
-      margin-bottom: 18px;
-    }
-
-    .market-form h2 {
-      margin-top: 0;
-    }
-
-    .market-input,
-    .market-textarea {
-      width: 100%;
-      padding: 13px;
-      margin: 7px 0;
-      border-radius: 11px;
-      border: 1px solid #30425d;
-      background: #0b1729;
-      color: white;
-      outline: none;
-    }
-
-    .market-input:focus,
-    .market-textarea:focus {
-      border-color: var(--blue);
-    }
-
-    .market-file {
-      width: 100%;
-      padding: 13px;
-      margin: 7px 0;
-      border-radius: 11px;
-      border: 1px solid #30425d;
-      background: #0b1729;
-      color: white;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .image-preview {
-      display: none;
-      width: 100%;
-      max-height: 260px;
-      object-fit: cover;
-      border-radius: 13px;
-      margin-top: 8px;
-      border: 1px solid #30425d;
-    }
-
-    .image-help {
-      color: #9aa9bd;
-      font-size: 12px;
-      line-height: 1.5;
-      margin: 4px 0 8px;
-    }
-
-    .market-textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-
-    .market-message {
-      text-align: center;
-      color: #ffd166;
-      margin: 10px 0;
-      line-height: 1.5;
-    }
-
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .team-card {
-      background: linear-gradient(180deg, #102039, #0b1729);
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      box-shadow: 0 10px 30px rgba(0,0,0,.16);
-    }
-
-    .team-image {
-      width: 100%;
-      height: 190px;
-      object-fit: cover;
-      display: block;
-      background: #101b2d;
-    }
-
-    .team-placeholder {
-      width: 100%;
-      height: 190px;
-      display: grid;
-      place-items: center;
-      background:
-        radial-gradient(circle at 50% 40%, #173c70, #0b1729 65%);
-      font-size: 55px;
-    }
-
-    .team-info {
-      padding: 14px;
-    }
-
-    .team-info h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-    }
-
-    .team-details {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    .team-description {
-      color: #c7d3e2;
-      font-size: 13px;
-      line-height: 1.5;
-      margin-top: 9px;
-      word-break: break-word;
-    }
-
-    .team-price {
-      color: #36d98a;
-      font-size: 20px;
-      font-weight: 900;
-      margin-top: 10px;
-    }
-
-    .contact-team {
-      display: block;
-      width: 100%;
-      border: 0;
-      background: #13a866;
-      color: white;
-      padding: 11px;
-      border-radius: 11px;
-      margin-top: 11px;
-      font-weight: 900;
-    }
-
-    .contact-team:hover {
-      filter: brightness(1.08);
-    }
-
-    .seller-contact {
-      color: #9aa9bd;
-      font-size: 11px;
-      margin-top: 7px;
-      word-break: break-word;
-    }
-
-    .market-empty {
-      color: var(--muted);
-      background: rgba(255,255,255,.03);
-      border: 1px dashed rgba(255,255,255,.12);
-      border-radius: 15px;
-      padding: 20px;
-      text-align: center;
-      grid-column: 1 / -1;
-    }
-
-    /* MODALS */
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      inset: 0;
-      background: rgba(0,0,0,.78);
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    .modal-content {
-      max-width: 410px;
-      margin: 70px auto;
-      background: #101c30;
-      padding: 24px;
-      border-radius: 18px;
-      border: 1px solid var(--line);
-    }
-
-    .modal-content h2 {
-      text-align: center;
-      margin-top: 0;
-    }
-
-    .close-btn {
-      float: right;
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 25px;
-    }
-
-    .auth-input {
-      width: 100%;
-      padding: 13px;
-      margin: 8px 0;
-      border-radius: 10px;
-      border: 1px solid #30425d;
-      background: #0b1729;
-      color: white;
-      font-size: 15px;
-      outline: none;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 13px;
-      margin-top: 10px;
-      border: 0;
-      border-radius: 10px;
-      background: var(--blue);
-      color: white;
-      font-weight: 900;
-    }
-
-    .switch-auth {
-      text-align: center;
-      margin-top: 14px;
-      color: #9eacc0;
-    }
-
-    .switch-auth button {
-      background: none;
-      border: none;
-      color: #48aaff;
-      font-weight: bold;
-    }
-
-    .authMessage {
-      text-align: center;
-      margin-top: 10px;
-      color: #ffd166;
-    }
-
-    #message {
-      text-align: center;
-      padding: 25px;
-      color: var(--muted);
-    }
-
-    /* BOTTOM NAVIGATION */
-
-    .bottom-nav {
-      position: fixed;
-      z-index: 5000;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 78px;
-      background: rgba(7,16,31,.96);
-      backdrop-filter: blur(18px);
-      border-top: 1px solid rgba(255,255,255,.1);
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      padding: 8px max(10px, calc((100vw - 1100px)/2));
-    }
-
-    .nav-btn {
-      border: 0;
-      background: transparent;
-      color: #8797ad;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .nav-icon {
-      font-size: 21px;
-      line-height: 1;
-    }
-
-    .nav-btn.active {
-      color: #2c9cff;
-    }
-
-    .nav-btn.active .nav-icon {
-      filter: drop-shadow(0 0 8px rgba(44,156,255,.6));
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 760px) {
-
-      .topbar {
-        padding-top: 13px;
-      }
-
-      .brand-main,
-      .brand-blue {
-        font-size: 17px;
-      }
-
-      .top-actions .icon-btn {
-        display: none;
-      }
-
-      .hero {
-        min-height: 300px;
-        padding: 20px;
-      }
-
-      .quick-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .game-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .team-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .game-img-wrap,
-      .team-image,
-      .team-placeholder {
-        height: 165px;
-      }
-    }
-
-    @media (max-width: 480px) {
-
-      .page {
-        padding-left: 14px;
-        padding-right: 14px;
-      }
-
-      .search-wrap {
-        padding-left: 14px;
-        padding-right: 14px;
-      }
-
-      .game-grid,
-      .team-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      .game-img-wrap,
-      .team-image,
-      .team-placeholder {
-        height: 145px;
-      }
-
-      .game-info,
-      .team-info {
-        padding: 10px;
-      }
-
-      .game h3,
-      .team-info h3 {
-        font-size: 14px;
-      }
-
-      .details,
-      .team-details {
-        font-size: 11px;
-      }
-
-      .download,
-      .contact-team {
-        font-size: 11px;
-        padding: 10px 5px;
-      }
-
-      .team-price {
-        font-size: 17px;
-      }
-
-      .hero h2 {
-        font-size: 28px;
-      }
-
-      .hero p {
-        font-size: 13px;
-      }
-
-      .bottom-nav {
-        padding-left: 3px;
-        padding-right: 3px;
-      }
-
-      .nav-btn {
-        font-size: 9px;
-      }
-
-      .nav-icon {
-        font-size: 19px;
-      }
-
-      .admin-number {
-        font-size: 14px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07101f">
+<title>Danygama Games</title>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QDDJEXQVD"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6QDDJEXQVD');
+</script>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+
+:root{
+--bg:#07101f;
+--panel:#0d1a2e;
+--panel2:#101f35;
+--line:rgba(255,255,255,.09);
+--text:#f7fbff;
+--muted:#9aa9bd;
+--blue:#1688ff;
+--blue2:#35a7ff;
+--purple:#7047ff;
+--green:#13a866;
+--orange:#e88713;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:
+radial-gradient(circle at 80% 10%,rgba(22,136,255,.14),transparent 30%),
+radial-gradient(circle at 10% 50%,rgba(112,71,255,.08),transparent 28%),
+var(--bg);
+color:var(--text);
+min-height:100vh;
+padding-bottom:88px;
+}
+
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+
+.app{
+width:100%;
+max-width:1100px;
+margin:auto;
+}
+
+.topbar{
+display:flex;
+align-items:center;
+gap:14px;
+padding:18px 18px 12px;
+}
+
+.menu-btn,.icon-btn{
+width:42px;
+height:42px;
+border:1px solid var(--line);
+border-radius:13px;
+background:rgba(255,255,255,.04);
+color:white;
+display:grid;
+place-items:center;
+font-size:20px;
+flex:0 0 auto;
+}
+
+.brand{
+flex:1;
+min-width:0;
+font-weight:900;
+line-height:1;
+}
+
+.brand-main,.brand-blue{font-size:20px}
+.brand-main{color:white}
+.brand-blue{color:var(--blue2)}
+
+.top-actions{
+display:flex;
+gap:7px;
+align-items:center;
+}
+
+.avatar{
+width:42px;
+height:42px;
+border-radius:50%;
+display:grid;
+place-items:center;
+background:linear-gradient(135deg,#173b70,#5c38b8);
+border:2px solid rgba(53,167,255,.5);
+font-size:19px;
+}
+
+.search-wrap{padding:0 18px 15px}
+
+.search-box{position:relative}
+
+#search{
+width:100%;
+padding:15px 18px 15px 48px;
+border-radius:17px;
+border:1px solid rgba(255,255,255,.1);
+background:rgba(13,26,46,.95);
+color:white;
+outline:none;
+font-size:15px;
+}
+
+#search:focus{
+border-color:rgba(22,136,255,.65);
+box-shadow:0 0 0 3px rgba(22,136,255,.1);
+}
+
+.search-icon{
+position:absolute;
+left:17px;
+top:50%;
+transform:translateY(-50%);
+color:#9fb0c7;
+font-size:19px;
+}
+
+.page{
+display:none;
+padding:0 18px 25px;
+}
+
+.page.active{display:block}
+
+.page-title{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin:10px 0 15px;
+}
+
+.page-title h1{
+margin:0;
+font-size:25px;
+}
+
+.page-title p{
+margin:5px 0 0;
+color:var(--muted);
+font-size:13px;
+}
+
+.hero{
+min-height:320px;
+border-radius:23px;
+overflow:hidden;
+position:relative;
+border:1px solid rgba(255,255,255,.1);
+background:
+linear-gradient(100deg,rgba(3,10,23,.97) 0%,rgba(4,18,42,.72) 48%,rgba(7,12,28,.28) 100%),
+radial-gradient(circle at 75% 35%,#185bd1,#0a1730 52%,#050a14 100%);
+display:flex;
+align-items:flex-end;
+padding:28px;
+margin-bottom:16px;
+}
+
+.hero-image{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+opacity:.38;
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+max-width:600px;
+}
+
+.hero-tag{
+display:inline-block;
+background:var(--blue);
+padding:7px 12px;
+border-radius:30px;
+font-size:12px;
+font-weight:800;
+margin-bottom:10px;
+}
+
+.hero h2{
+margin:0 0 8px;
+font-size:clamp(28px,6vw,46px);
+}
+
+.hero p{
+margin:0 0 17px;
+color:#c3d1e3;
+font-size:14px;
+}
+
+.hero-btn{
+border:0;
+background:white;
+color:#07101f;
+padding:12px 18px;
+border-radius:12px;
+font-weight:900;
+}
+
+.streak{
+display:flex;
+align-items:center;
+gap:14px;
+background:linear-gradient(100deg,rgba(28,43,69,.96),rgba(17,26,46,.96));
+border:1px solid var(--line);
+border-radius:17px;
+padding:15px 16px;
+margin-bottom:16px;
+}
+
+.streak-icon{
+width:43px;
+height:43px;
+border-radius:13px;
+display:grid;
+place-items:center;
+background:rgba(255,145,0,.12);
+font-size:22px;
+}
+
+.streak strong{display:block}
+.streak small{
+color:var(--muted);
+display:block;
+margin-top:4px;
+}
+
+.quick-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+margin-bottom:23px;
+}
+
+.quick-btn{
+border:0;
+color:white;
+min-height:66px;
+border-radius:15px;
+font-weight:800;
+padding:10px 7px;
+box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+.quick-btn span{
+display:block;
+font-size:20px;
+margin-bottom:4px;
+}
+
+.q-blue{background:linear-gradient(135deg,#0875db,#1462d0)}
+.q-purple{background:linear-gradient(135deg,#6d35db,#4930b8)}
+.q-green{background:linear-gradient(135deg,#0a9b62,#08794e)}
+.q-orange{background:linear-gradient(135deg,#df8611,#bc5f0b)}
+
+.section-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin:18px 0 12px;
+}
+
+.section-head h2{
+margin:0;
+font-size:20px;
+}
+
+.view-all{
+color:#3ca7ff;
+border:0;
+background:none;
+font-weight:800;
+}
+
+.game-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px;
+}
+
+.game{
+background:linear-gradient(180deg,#102039,#0b1729);
+border-radius:18px;
+overflow:hidden;
+border:1px solid var(--line);
+box-shadow:0 10px 30px rgba(0,0,0,.16);
+}
+
+.game-img-wrap{
+height:190px;
+position:relative;
+background:#101b2d;
+}
+
+.game img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
+.new-badge{
+position:absolute;
+left:10px;
+bottom:10px;
+background:var(--blue);
+color:white;
+border-radius:20px;
+padding:5px 9px;
+font-size:11px;
+font-weight:800;
+}
+
+.game-info{padding:13px}
+
+.game h3{
+font-size:16px;
+margin:0 0 8px;
+line-height:1.25;
+}
+
+.details{
+color:var(--muted);
+font-size:12px;
+line-height:1.65;
+}
+
+.download{
+display:block;
+text-align:center;
+text-decoration:none;
+background:var(--blue);
+color:white;
+padding:11px;
+border-radius:11px;
+margin-top:9px;
+font-weight:900;
+font-size:13px;
+}
+
+.download.part2{background:#7047ff}
+.download.part3{background:#13a866}
+
+.download:hover{filter:brightness(1.08)}
+
+.categories{
+display:flex;
+gap:9px;
+overflow-x:auto;
+padding-bottom:7px;
+}
+
+.category-btn{
+white-space:nowrap;
+border:1px solid var(--line);
+color:#dbe5f2;
+background:#101c30;
+padding:11px 14px;
+border-radius:30px;
+font-weight:700;
+}
+
+.category-btn.active{
+background:var(--blue);
+border-color:var(--blue);
+color:white;
+}
+
+.account-card,.help-card{
+background:linear-gradient(145deg,#10213a,#0b1729);
+border:1px solid var(--line);
+border-radius:20px;
+padding:22px;
+margin-top:15px;
+}
+
+.account-avatar{
+width:70px;
+height:70px;
+border-radius:50%;
+display:grid;
+place-items:center;
+background:linear-gradient(135deg,#138cff,#653ee0);
+font-size:30px;
+margin-bottom:14px;
+}
+
+.account-card h2,.help-card h2{margin:0 0 7px}
+
+.account-card p,.help-card p{
+color:var(--muted);
+line-height:1.6;
+}
+
+.admin-number{
+color:#36d98a;
+font-weight:900;
+font-size:16px;
+}
+
+.auth-btn{
+border:0;
+padding:11px 16px;
+margin:4px 4px 4px 0;
+border-radius:10px;
+background:var(--blue);
+color:white;
+font-weight:bold;
+}
+
+.auth-btn.secondary{background:#202f47}
+
+.market-actions{
+display:flex;
+gap:9px;
+flex-wrap:wrap;
+margin-bottom:15px;
+}
+
+.market-btn{
+border:0;
+color:white;
+background:var(--blue);
+padding:11px 15px;
+border-radius:11px;
+font-weight:900;
+}
+
+.market-btn.secondary{background:#202f47}
+
+.market-form{
+display:none;
+background:linear-gradient(145deg,#10213a,#0b1729);
+border:1px solid var(--line);
+border-radius:20px;
+padding:18px;
+margin-bottom:18px;
+}
+
+.market-form h2{margin-top:0}
+
+.market-input,.market-textarea{
+width:100%;
+padding:13px;
+margin:7px 0;
+border-radius:11px;
+border:1px solid #30425d;
+background:#0b1729;
+color:white;
+outline:none;
+}
+
+.market-input:focus,.market-textarea:focus{
+border-color:var(--blue);
+}
+
+.market-file{
+width:100%;
+padding:13px;
+margin:7px 0;
+border-radius:11px;
+border:1px solid #30425d;
+background:#0b1729;
+color:white;
+outline:none;
+cursor:pointer;
+}
+
+.image-preview{
+display:none;
+width:100%;
+max-height:260px;
+object-fit:cover;
+border-radius:13px;
+margin-top:8px;
+border:1px solid #30425d;
+}
+
+.image-help{
+color:#9aa9bd;
+font-size:12px;
+line-height:1.5;
+margin:4px 0 8px;
+}
+
+.market-textarea{
+min-height:100px;
+resize:vertical;
+}
+
+.market-message{
+text-align:center;
+color:#ffd166;
+margin:10px 0;
+line-height:1.5;
+}
+
+.team-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px;
+}
+
+.team-card{
+background:linear-gradient(180deg,#102039,#0b1729);
+border-radius:18px;
+overflow:hidden;
+border:1px solid var(--line);
+box-shadow:0 10px 30px rgba(0,0,0,.16);
+}
+
+.team-image{
+width:100%;
+height:190px;
+object-fit:cover;
+display:block;
+background:#101b2d;
+}
+
+.team-placeholder{
+width:100%;
+height:190px;
+display:grid;
+place-items:center;
+background:radial-gradient(circle at 50% 40%,#173c70,#0b1729 65%);
+font-size:55px;
+}
+
+.team-info{padding:14px}
+
+.team-info h3{
+margin:0 0 8px;
+font-size:17px;
+}
+
+.team-details{
+color:var(--muted);
+font-size:12px;
+line-height:1.7;
+}
+
+.team-description{
+color:#c7d3e2;
+font-size:13px;
+line-height:1.5;
+margin-top:9px;
+word-break:break-word;
+}
+
+.team-price{
+color:#36d98a;
+font-size:20px;
+font-weight:900;
+margin-top:10px;
+}
+
+.contact-team{
+display:block;
+width:100%;
+border:0;
+background:#13a866;
+color:white;
+padding:11px;
+border-radius:11px;
+margin-top:11px;
+font-weight:900;
+}
+
+.contact-team:hover{filter:brightness(1.08)}
+
+.seller-contact{
+color:#9aa9bd;
+font-size:11px;
+margin-top:7px;
+word-break:break-word;
+}
+
+.market-empty{
+color:var(--muted);
+background:rgba(255,255,255,.03);
+border:1px dashed rgba(255,255,255,.12);
+border-radius:15px;
+padding:20px;
+text-align:center;
+grid-column:1/-1;
+}
+
+.modal{
+display:none;
+position:fixed;
+z-index:9999;
+inset:0;
+background:rgba(0,0,0,.78);
+padding:20px;
+overflow-y:auto;
+}
+
+.modal-content{
+max-width:410px;
+margin:70px auto;
+background:#101c30;
+padding:24px;
+border-radius:18px;
+border:1px solid var(--line);
+}
+
+.modal-content h2{
+text-align:center;
+margin-top:0;
+}
+
+.close-btn{
+float:right;
+background:transparent;
+border:none;
+color:white;
+font-size:25px;
+}
+
+.auth-input{
+width:100%;
+padding:13px;
+margin:8px 0;
+border-radius:10px;
+border:1px solid #30425d;
+background:#0b1729;
+color:white;
+font-size:15px;
+outline:none;
+}
+
+.submit-btn{
+width:100%;
+padding:13px;
+margin-top:10px;
+border:0;
+border-radius:10px;
+background:var(--blue);
+color:white;
+font-weight:900;
+}
+
+.switch-auth{
+text-align:center;
+margin-top:14px;
+color:#9eacc0;
+}
+
+.switch-auth button{
+background:none;
+border:none;
+color:#48aaff;
+font-weight:bold;
+}
+
+.authMessage{
+text-align:center;
+margin-top:10px;
+color:#ffd166;
+}
+
+#message{
+text-align:center;
+padding:25px;
+color:var(--muted);
+}
+
+.bottom-nav{
+position:fixed;
+z-index:5000;
+left:0;
+right:0;
+bottom:0;
+height:78px;
+background:rgba(7,16,31,.96);
+backdrop-filter:blur(18px);
+border-top:1px solid rgba(255,255,255,.1);
+display:grid;
+grid-template-columns:repeat(6,1fr);
+padding:8px max(10px,calc((100vw - 1100px)/2));
+}
+
+.nav-btn{
+border:0;
+background:transparent;
+color:#8797ad;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:4px;
+font-size:11px;
+font-weight:700;
+}
+
+.nav-icon{
+font-size:21px;
+line-height:1;
+}
+
+.nav-btn.active{color:#2c9cff}
+
+.nav-btn.active .nav-icon{
+filter:drop-shadow(0 0 8px rgba(44,156,255,.6));
+}
+
+@media(max-width:760px){
+.topbar{padding-top:13px}
+.brand-main,.brand-blue{font-size:17px}
+.top-actions .icon-btn{display:none}
+.hero{min-height:300px;padding:20px}
+.quick-grid{grid-template-columns:repeat(2,1fr)}
+.game-grid{grid-template-columns:repeat(2,1fr)}
+.team-grid{grid-template-columns:repeat(2,1fr)}
+.game-img-wrap,.team-image,.team-placeholder{height:165px}
+}
+
+@media(max-width:480px){
+.page{padding-left:14px;padding-right:14px}
+.search-wrap{padding-left:14px;padding-right:14px}
+.game-grid,.team-grid{
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:10px;
+}
+.game-img-wrap,.team-image,.team-placeholder{height:145px}
+.game-info,.team-info{padding:10px}
+.game h3,.team-info h3{font-size:14px}
+.details,.team-details{font-size:11px}
+.download,.contact-team{
+font-size:11px;
+padding:10px 5px;
+}
+.team-price{font-size:17px}
+.hero h2{font-size:28px}
+.hero p{font-size:13px}
+.bottom-nav{padding-left:3px;padding-right:3px}
+.nav-btn{font-size:9px}
+.nav-icon{font-size:19px}
+.admin-number{font-size:14px}
+}
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-  <!-- HEADER -->
+<header class="topbar">
 
-  <header class="topbar">
+<button class="menu-btn" onclick="showPage('home')">☰</button>
 
-    <button
-      class="menu-btn"
-      onclick="showPage('home')"
-    >
-      ☰
-    </button>
+<div class="brand">
+<span class="brand-main">🎮 DANYGAMA</span><br>
+<span class="brand-blue">GAMES</span>
+</div>
 
-    <div class="brand">
-      <span class="brand-main">🎮 DANYGAMA</span><br>
-      <span class="brand-blue">GAMES</span>
-    </div>
+<div class="top-actions">
 
-    <div class="top-actions">
+<button class="icon-btn" onclick="focusSearch()">⌕</button>
 
-      <button
-        class="icon-btn"
-        onclick="focusSearch()"
-      >
-        ⌕
-      </button>
+<button class="icon-btn" onclick="showPage('updates')">🔔</button>
 
-      <button
-        class="icon-btn"
-        onclick="showPage('updates')"
-      >
-        🔔
-      </button>
+<button class="avatar" onclick="showPage('account')">👤</button>
 
-      <button
-        class="avatar"
-        onclick="showPage('account')"
-      >
-        👤
-      </button>
+</div>
+</header>
 
-    </div>
+<div class="search-wrap">
+<div class="search-box">
 
-  </header>
+<span class="search-icon">⌕</span>
 
+<input
+id="search"
+type="search"
+placeholder="Tafuta games, patches, mods..."
+oninput="searchGames()"
+>
 
-  <!-- SEARCH -->
+</div>
+</div>
 
-  <div class="search-wrap">
+<!-- HOME -->
 
-    <div class="search-box">
+<main id="homePage" class="page active">
 
-      <span class="search-icon">
-        ⌕
-      </span>
+<section class="hero">
 
-      <input
-        id="search"
-        type="search"
-        placeholder="Tafuta games, patches, mods..."
-        oninput="searchGames()"
-      >
+<img id="heroImage" class="hero-image" alt="" style="display:none;">
 
-    </div>
+<div class="hero-content">
 
-  </div>
+<span class="hero-tag">🔥 DANYGAMA GAMES</span>
 
+<h2 id="heroTitle">Games mpya zipo hapa</h2>
 
-  <!-- HOME -->
+<p id="heroText">
+Pata games, patches na mods kwenye sehemu moja.
+</p>
 
-  <main
-    id="homePage"
-    class="page active"
-  >
+<button class="hero-btn" onclick="showPage('games')">
+🎮 Tazama Games
+</button>
 
-    <section class="hero">
+</div>
+</section>
 
-      <img
-        id="heroImage"
-        class="hero-image"
-        alt=""
-        style="display:none;"
-      >
+<div class="streak">
 
-      <div class="hero-content">
+<div class="streak-icon">🔥</div>
 
-        <span class="hero-tag">
-          🔥 DANYGAMA GAMES
-        </span>
+<div>
+<strong>Karibu Danygama Games</strong>
 
-        <h2 id="heroTitle">
-          Games mpya zipo hapa
-        </h2>
-
-        <p id="heroText">
-          Pata games, patches na mods kwenye sehemu moja.
-        </p>
-
-        <button
-          class="hero-btn"
-          onclick="showPage('games')"
-        >
-          🎮 Tazama Games
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <div class="streak">
-
-      <div class="streak-icon">
-        🔥
-      </div>
-
-      <div>
-
-        <strong>
-          Karibu Danygama Games
-        </strong>
-
-        <small>
-          Rudi tena kuona games na updates mpya.
-        </small>
-
-      </div>
-
-    </div>
-
-
-    <!-- QUICK BUTTONS -->
-
-    <div class="quick-grid">
-
-      <button
-        class="quick-btn q-blue"
-        onclick="showPage('updates')"
-      >
-        <span>🔄</span>
-        Updates
-      </button>
-
-      <button
-        class="quick-btn q-purple"
-        onclick="showPage('games')"
-      >
-        <span>📊</span>
-        Popular
-      </button>
-
-      <button
-        class="quick-btn q-green"
-        onclick="showPage('marketplace')"
-      >
-        <span>🛒</span>
-        Marketplace
-      </button>
-
-      <button
-        class="quick-btn q-orange"
-        onclick="showPage('help')"
-      >
-        <span>🎓</span>
-        Msaada
-      </button>
-
-    </div>
-
-
-    <!-- RECOMMENDED -->
-
-    <div class="section-head">
-
-      <h2>
-        Recommended for you
-      </h2>
-
-      <button
-        class="view-all"
-        onclick="showPage('games')"
-      >
-        View All ›
-      </button>
-
-    </div>
-
-    <div
-      id="recommendedGames"
-      class="game-grid"
-    ></div>
-
-
-    <!-- CATEGORIES -->
-
-    <div class="section-head">
-
-      <h2>
-        Categories
-      </h2>
-
-      <button
-        class="view-all"
-        onclick="showPage('games')"
-      >
-        View All ›
-      </button>
-
-    </div>
-
-
-    <div class="categories">
-
-      <button
-        class="category-btn active"
-        onclick="filterCategory('All Games', this)"
-      >
-        ▦ All Games
-      </button>
-
-      <button
-        class="category-btn"
-        onclick="filterCategory('Football', this)"
-      >
-        ⚽ Football
-      </button>
-
-      <button
-        class="category-btn"
-        onclick="filterCategory('PPSSPP', this)"
-      >
-        🎮 PPSSPP
-      </button>
-
-      <button
-        class="category-btn"
-        onclick="filterCategory('Racing', this)"
-      >
-        🚗 Racing
-      </button>
-
-      <button
-        class="category-btn"
-        onclick="filterCategory('Adventure', this)"
-      >
-        🏔 Adventure
-      </button>
-
-      <button
-        class="category-btn"
-        onclick="filterCategory('Android', this)"
-      >
-        📱 Android
-      </button>
-
-    </div>
-
-  </main>
-
-
-  <!-- GAMES -->
-
-  <main
-    id="gamesPage"
-    class="page"
-  >
-
-    <div class="page-title">
-
-      <div>
-
-        <h1>
-          🎮 Games
-        </h1>
-
-        <p>
-          Games zote zilizopo kwenye Danygama Games.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <div id="message">
-      ⏳ Inapakia games...
-    </div>
-
-    <div
-      id="games"
-      class="game-grid"
-    ></div>
-
-  </main>
-
-
-  <!-- MARKETPLACE -->
-
-  <main
-    id="marketplacePage"
-    class="page"
-  >
-
-    <div class="page-title">
-
-      <div>
-
-        <h1>
-          🛒 Marketplace
-        </h1>
-
-        <p>
-          Nunua au uza vikosi na teams za games.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <div class="market-actions">
-
-      <button
-        class="market-btn"
-        onclick="showSellTeamForm()"
-      >
-        ➕ Uza Kikosi
-      </button>
-
-      <button
-        class="market-btn secondary"
-        onclick="loadMarketplace()"
-      >
-        🔄 Refresh
-      </button>
-
-    </div>
-
-
-    <!-- SELL FORM -->
-
-    <div
-      id="sellTeamForm"
-      class="market-form"
-    >
-
-      <h2>
-        ➕ Uza Kikosi
-      </h2>
-
-      <p style="color:#9aa9bd;">
-        Jaza taarifa za kikosi chako ili watu wengine waweze kukiona.
-      </p>
-
-
-      <input
-        id="teamName"
-        class="market-input"
-        type="text"
-        placeholder="Jina la kikosi mfano: Danygama FC"
-      >
-
-
-      <input
-        id="gameName"
-        class="market-input"
-        type="text"
-        placeholder="Game mfano: eFootball 2026"
-      >
-
-
-      <input
-        id="teamPlatform"
-        class="market-input"
-        type="text"
-        placeholder="Platform mfano: Android / PS3 / PS4"
-      >
-
-
-      <input
-        id="teamPrice"
-        class="market-input"
-        type="number"
-        min="0"
-        placeholder="Bei kwa TSh mfano: 10000"
-      >
-
-
-      <!-- DIRECT IMAGE UPLOAD -->
-
-      <label
-        for="teamImageFile"
-        style="
-          display:block;
-          color:#dbe5f2;
-          font-weight:800;
-          margin-top:10px;
-        "
-      >
-        📷 Picha ya Kikosi
-      </label>
-
-      <div class="image-help">
-        Chagua picha moja kwa moja kutoka kwenye simu yako.
-        Picha iwe chini ya 8MB.
-      </div>
-
-      <input
-        id="teamImageFile"
-        class="market-file"
-        type="file"
-        accept="image/*"
-        onchange="previewTeamImage(event)"
-      >
-
-      <img
-        id="teamImagePreview"
-        class="image-preview"
-        alt="Preview ya picha ya kikosi"
-      >
-
-
-      <textarea
-        id="teamDescription"
-        class="market-textarea"
-        placeholder="Elezea kikosi, players, rating, features n.k."
-      ></textarea>
-
-
-      <label
-        for="teamContact"
-        style="
-          display:block;
-          color:#dbe5f2;
-          font-weight:800;
-          margin-top:10px;
-        "
-      >
-        📱 WhatsApp ya Seller
-      </label>
-
-      <div class="image-help">
-        Weka namba yako mwenyewe. Mnunuzi akibonyeza
-        "Wasiliana na Seller" ataenda kwenye WhatsApp yako.
-        Mfano: 0786538998
-      </div>
-
-      <input
-        id="teamContact"
-        class="market-input"
-        type="tel"
-        inputmode="tel"
-        placeholder="Mfano: 0786538998"
-      >
-
-
-      <button
-        class="submit-btn"
-        onclick="sellTeam()"
-      >
-        🛒 WEKA KIKOSI SOKONI
-      </button>
-
-
-      <div
-        id="marketMessage"
-        class="market-message"
-      ></div>
-
-    </div>
-
-
-    <div
-      id="marketMessageLoading"
-      class="market-message"
-    >
-      ⏳ Inapakia vikosi...
-    </div>
-
-
-    <div
-      id="marketplaceTeams"
-      class="team-grid"
-    ></div>
-
-  </main>
-
-
-  <!-- UPDATES -->
-
-  <main
-    id="updatesPage"
-    class="page"
-  >
-
-    <div class="page-title">
-
-      <div>
-
-        <h1>
-          🔄 Updates
-        </h1>
-
-        <p>
-          Games na patches zilizoongezwa hivi karibuni.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <div
-      id="updatesGames"
-      class="game-grid"
-    ></div>
-
-  </main>
-
-
-  <!-- HELP -->
-
-  <main
-    id="helpPage"
-    class="page"
-  >
-
-    <div class="page-title">
-
-      <div>
-
-        <h1>
-          💬 Msaada
-        </h1>
-
-        <p>
-          Unahitaji msaada kuhusu website au game?
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <div class="help-card">
-
-      <h2>
-        Karibu Danygama Games 👋
-      </h2>
-
-      <p>
-        Kama una tatizo la kutafuta game,
-        download link, account au una swali
-        kuhusu website, unaweza kuwasiliana na admin
-        kupitia WhatsApp.
-      </p>
-
-      <p>
-        📱 WhatsApp Admin:
-        <span class="admin-number">
-          +255 786 538 998
-        </span>
-      </p>
-
-      <button
-        class="auth-btn"
-        onclick="contactAdmin()"
-      >
-        📱 Wasiliana na Admin WhatsApp
-      </button>
-
-    </div>
-
-
-    <div class="help-card">
-
-      <h2>
-        ❓ Maswali ya haraka
-      </h2>
-
-      <p>
-        <b>Game haionekani?</b><br>
-        Jaribu kutafuta kwa jina la game
-        au fungua Games.
-      </p>
-
-      <p>
-        <b>Download haifanyi?</b><br>
-        Angalia kama internet yako iko vizuri
-        na ujaribu link tena.
-      </p>
-
-      <p>
-        <b>Unataka game iongezwe?</b><br>
-        Wasiliana na admin kupitia WhatsApp.
-      </p>
-
-      <p>
-        <b>Unataka kuuza kikosi?</b><br>
-        Ingia kwenye account, fungua Marketplace
-        kisha bonyeza <b>Uza Kikosi</b>.
-      </p>
-
-    </div>
-
-  </main>
-
-
-  <!-- ACCOUNT -->
-
-  <main
-    id="accountPage"
-    class="page"
-  >
-
-    <div class="page-title">
-
-      <div>
-
-        <h1>
-          👤 Account
-        </h1>
-
-        <p>
-          Simamia account yako ya Danygama Games.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <div class="account-card">
-
-      <div class="account-avatar">
-        👤
-      </div>
-
-
-      <div id="authArea">
-
-        <h2>
-          Karibu!
-        </h2>
-
-        <p>
-          Jisajili au ingia ili kutumia account yako.
-        </p>
-
-        <button
-          class="auth-btn"
-          onclick="showRegister()"
-        >
-          📝 Jisajili
-        </button>
-
-        <button
-          class="auth-btn secondary"
-          onclick="showLogin()"
-        >
-          🔐 Ingia
-        </button>
-
-      </div>
-
-
-      <div
-        id="userArea"
-        style="display:none;"
-      >
-
-        <h2 id="userName">
-          Account
-        </h2>
-
-        <p>
-          Umeingia kwenye account yako.
-        </p>
-
-        <button
-          class="auth-btn"
-          onclick="logout()"
-        >
-          🚪 Toka
-        </button>
-
-      </div>
-
-    </div>
-
-  </main>
+<small>
+Rudi tena kuona games na updates mpya.
+</small>
+</div>
 
 </div>
 
+<div class="quick-grid">
+
+<button class="quick-btn q-blue" onclick="showPage('updates')">
+<span>🔄</span>
+Updates
+</button>
+
+<button class="quick-btn q-purple" onclick="showPage('games')">
+<span>📊</span>
+Popular
+</button>
+
+<button class="quick-btn q-green" onclick="showPage('marketplace')">
+<span>🛒</span>
+Marketplace
+</button>
+
+<button class="quick-btn q-orange" onclick="showPage('help')">
+<span>🎓</span>
+Msaada
+</button>
+
+</div>
+
+<div class="section-head">
+
+<h2>Recommended for you</h2>
+
+<button class="view-all" onclick="showPage('games')">
+View All ›
+</button>
+
+</div>
+
+<div id="recommendedGames" class="game-grid"></div>
+
+<div class="section-head">
+
+<h2>Categories</h2>
+
+<button class="view-all" onclick="showPage('games')">
+View All ›
+</button>
+
+</div>
+
+<div class="categories">
+
+<button class="category-btn active"
+onclick="filterCategory('All Games',this)">
+▦ All Games
+</button>
+
+<button class="category-btn"
+onclick="filterCategory('Football',this)">
+⚽ Football
+</button>
+
+<button class="category-btn"
+onclick="filterCategory('PPSSPP',this)">
+🎮 PPSSPP
+</button>
+
+<button class="category-btn"
+onclick="filterCategory('Racing',this)">
+🚗 Racing
+</button>
+
+<button class="category-btn"
+onclick="filterCategory('Adventure',this)">
+🏔 Adventure
+</button>
+
+<button class="category-btn"
+onclick="filterCategory('Android',this)">
+📱 Android
+</button>
+
+</div>
+
+</main>
+
+<!-- GAMES -->
+
+<main id="gamesPage" class="page">
+
+<div class="page-title">
+
+<div>
+<h1>🎮 Games</h1>
+
+<p>
+Games zote zilizopo kwenye Danygama Games.
+</p>
+</div>
+
+</div>
+
+<div id="message">
+⏳ Inapakia games...
+</div>
+
+<div id="games" class="game-grid"></div>
+
+</main>
+
+<!-- MARKETPLACE -->
+
+<main id="marketplacePage" class="page">
+
+<div class="page-title">
+
+<div>
+
+<h1>🛒 Marketplace</h1>
+
+<p>
+Nunua au uza vikosi na teams za games.
+</p>
+
+</div>
+
+</div>
+
+<div class="market-actions">
+
+<button class="market-btn" onclick="showSellTeamForm()">
+➕ Uza Kikosi
+</button>
+
+<button class="market-btn secondary" onclick="loadMarketplace()">
+🔄 Refresh
+</button>
+
+</div>
+
+<div id="sellTeamForm" class="market-form">
+
+<h2>➕ Uza Kikosi</h2>
+
+<p style="color:#9aa9bd;">
+Jaza taarifa za kikosi chako ili watu wengine waweze kukiona.
+</p>
+
+<input
+id="teamName"
+class="market-input"
+type="text"
+placeholder="Jina la kikosi mfano: Danygama FC"
+>
+
+<input
+id="gameName"
+class="market-input"
+type="text"
+placeholder="Game mfano: eFootball 2026"
+>
+
+<input
+id="teamPlatform"
+class="market-input"
+type="text"
+placeholder="Platform mfano: Android / PS3 / PS4"
+>
+
+<input
+id="teamPrice"
+class="market-input"
+type="number"
+min="0"
+placeholder="Bei kwa TSh mfano: 10000"
+>
+
+<label
+for="teamImageFile"
+style="display:block;color:#dbe5f2;font-weight:800;margin-top:10px;"
+>
+📷 Picha ya Kikosi
+</label>
+
+<div class="image-help">
+Chagua picha moja kwa moja kutoka kwenye simu yako.
+Picha iwe chini ya 8MB.
+</div>
+
+<input
+id="teamImageFile"
+class="market-file"
+type="file"
+accept="image/*"
+onchange="previewTeamImage(event)"
+>
+
+<img
+id="teamImagePreview"
+class="image-preview"
+alt="Preview ya picha ya kikosi"
+>
+
+<textarea
+id="teamDescription"
+class="market-textarea"
+placeholder="Elezea kikosi, players, rating, features n.k."
+></textarea>
+
+<label
+for="teamContact"
+style="display:block;color:#dbe5f2;font-weight:800;margin-top:10px;"
+>
+📱 WhatsApp ya Seller
+</label>
+
+<div class="image-help">
+Weka namba yako mwenyewe. Mnunuzi akibonyeza
+"Wasiliana na Seller" ataenda kwenye WhatsApp yako.
+Mfano: 0786538998
+</div>
+
+<input
+id="teamContact"
+class="market-input"
+type="tel"
+inputmode="tel"
+placeholder="Mfano: 0786538998"
+>
+
+<button class="submit-btn" onclick="sellTeam()">
+🛒 WEKA KIKOSI SOKONI
+</button>
+
+<div id="marketMessage" class="market-message"></div>
+
+</div>
+
+<div id="marketMessageLoading" class="market-message">
+⏳ Inapakia vikosi...
+</div>
+
+<div id="marketplaceTeams" class="team-grid"></div>
+
+</main>
+
+<!-- UPDATES -->
+
+<main id="updatesPage" class="page">
+
+<div class="page-title">
+
+<div>
+
+<h1>🔄 Updates</h1>
+
+<p>
+Games na patches zilizoongezwa hivi karibuni.
+</p>
+
+</div>
+
+</div>
+
+<div id="updatesGames" class="game-grid"></div>
+
+</main>
+
+<!-- HELP -->
+
+<main id="helpPage" class="page">
+
+<div class="page-title">
+
+<div>
+
+<h1>💬 Msaada</h1>
+
+<p>
+Unahitaji msaada kuhusu website au game?
+</p>
+
+</div>
+
+</div>
+
+<div class="help-card">
+
+<h2>Karibu Danygama Games 👋</h2>
+
+<p>
+Kama una tatizo la kutafuta game,
+download link, account au una swali
+kuhusu website, unaweza kuwasiliana na admin
+kupitia WhatsApp.
+</p>
+
+<p>
+📱 WhatsApp Admin:
+<span class="admin-number">
++255 786 538 998
+</span>
+</p>
+
+<button class="auth-btn" onclick="contactAdmin()">
+📱 Wasiliana na Admin WhatsApp
+</button>
+
+</div>
+
+<div class="help-card">
+
+<h2>❓ Maswali ya haraka</h2>
+
+<p>
+<b>Game haionekani?</b><br>
+Jaribu kutafuta kwa jina la game
+au fungua Games.
+</p>
+
+<p>
+<b>Download haifanyi?</b><br>
+Angalia kama internet yako iko vizuri
+na ujaribu link tena.
+</p>
+
+<p>
+<b>Unataka game iongezwe?</b><br>
+Wasiliana na admin kupitia WhatsApp.
+</p>
+
+<p>
+<b>Unataka kuuza kikosi?</b><br>
+Ingia kwenye account, fungua Marketplace
+kisha bonyeza <b>Uza Kikosi</b>.
+</p>
+
+</div>
+
+</main>
+
+<!-- ACCOUNT -->
+
+<main id="accountPage" class="page">
+
+<div class="page-title">
+
+<div>
+
+<h1>👤 Account</h1>
+
+<p>
+Simamia account yako ya Danygama Games.
+</p>
+
+</div>
+
+</div>
+
+<div class="account-card">
+
+<div class="account-avatar">👤</div>
+
+<div id="authArea">
+
+<h2>Karibu!</h2>
+
+<p>
+Jisajili au ingia ili kutumia account yako.
+</p>
+
+<button class="auth-btn" onclick="showRegister()">
+📝 Jisajili
+</button>
+
+<button class="auth-btn secondary" onclick="showLogin()">
+🔐 Ingia
+</button>
+
+</div>
+
+<div id="userArea" style="display:none;">
+
+<h2 id="userName">Account</h2>
+
+<p>
+Umeingia kwenye account yako.
+</p>
+
+<button class="auth-btn" onclick="logout()">
+🚪 Toka
+</button>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
 
 <!-- BOTTOM NAVIGATION -->
 
 <nav class="bottom-nav">
 
-  <button
-    class="nav-btn active"
-    data-page="home"
-    onclick="showPage('home')"
-  >
-    <span class="nav-icon">
-      ⌂
-    </span>
+<button class="nav-btn active" data-page="home"
+onclick="showPage('home')">
 
-    <span>
-      Home
-    </span>
-  </button>
+<span class="nav-icon">⌂</span>
+<span>Home</span>
 
+</button>
 
-  <button
-    class="nav-btn"
-    data-page="games"
-    onclick="showPage('games')"
-  >
-    <span class="nav-icon">
-      🎮
-    </span>
+<button class="nav-btn" data-page="games"
+onclick="showPage('games')">
 
-    <span>
-      Games
-    </span>
-  </button>
+<span class="nav-icon">🎮</span>
+<span>Games</span>
 
+</button>
 
-  <button
-    class="nav-btn"
-    data-page="marketplace"
-    onclick="showPage('marketplace')"
-  >
-    <span class="nav-icon">
-      🛒
-    </span>
+<button class="nav-btn" data-page="marketplace"
+onclick="showPage('marketplace')">
 
-    <span>
-      Soko
-    </span>
-  </button>
+<span class="nav-icon">🛒</span>
+<span>Soko</span>
 
+</button>
 
-  <button
-    class="nav-btn"
-    data-page="updates"
-    onclick="showPage('updates')"
-  >
-    <span class="nav-icon">
-      ⇩
-    </span>
+<button class="nav-btn" data-page="updates"
+onclick="showPage('updates')">
 
-    <span>
-      Updates
-    </span>
-  </button>
+<span class="nav-icon">⇩</span>
+<span>Updates</span>
 
+</button>
 
-  <button
-    class="nav-btn"
-    data-page="help"
-    onclick="showPage('help')"
-  >
-    <span class="nav-icon">
-      💬
-    </span>
+<button class="nav-btn" data-page="help"
+onclick="showPage('help')">
 
-    <span>
-      Msaada
-    </span>
-  </button>
+<span class="nav-icon">💬</span>
+<span>Msaada</span>
 
+</button>
 
-  <button
-    class="nav-btn"
-    data-page="account"
-    onclick="showPage('account')"
-  >
-    <span class="nav-icon">
-      ♙
-    </span>
+<button class="nav-btn" data-page="account"
+onclick="showPage('account')">
 
-    <span>
-      Account
-    </span>
-  </button>
+<span class="nav-icon">♙</span>
+<span>Account</span>
+
+</button>
 
 </nav>
 
-
 <!-- REGISTER MODAL -->
 
-<div
-  id="registerModal"
-  class="modal"
+<div id="registerModal" class="modal">
+
+<div class="modal-content">
+
+<button class="close-btn" onclick="closeModals()">×</button>
+
+<h2>📝 Jisajili</h2>
+
+<input
+id="registerEmail"
+class="auth-input"
+type="email"
+placeholder="Email"
 >
 
-  <div class="modal-content">
+<input
+id="registerPassword"
+class="auth-input"
+type="password"
+placeholder="Password"
+>
 
-    <button
-      class="close-btn"
-      onclick="closeModals()"
-    >
-      ×
-    </button>
+<button class="submit-btn" onclick="registerUser()">
+JISAJILI
+</button>
 
-    <h2>
-      📝 Jisajili
-    </h2>
+<div id="registerMessage" class="authMessage"></div>
 
-    <input
-      id="registerEmail"
-      class="auth-input"
-      type="email"
-      placeholder="Email"
-    >
+<div class="switch-auth">
 
-    <input
-      id="registerPassword"
-      class="auth-input"
-      type="password"
-      placeholder="Password"
-    >
+Tayari una account?
 
-    <button
-      class="submit-btn"
-      onclick="registerUser()"
-    >
-      JISAJILI
-    </button>
-
-    <div
-      id="registerMessage"
-      class="authMessage"
-    ></div>
-
-    <div class="switch-auth">
-
-      Tayari una account?
-
-      <button onclick="showLogin()">
-        Ingia
-      </button>
-
-    </div>
-
-  </div>
+<button onclick="showLogin()">Ingia</button>
 
 </div>
 
+</div>
+</div>
 
 <!-- LOGIN MODAL -->
 
-<div
-  id="loginModal"
-  class="modal"
+<div id="loginModal" class="modal">
+
+<div class="modal-content">
+
+<button class="close-btn" onclick="closeModals()">×</button>
+
+<h2>🔐 Ingia</h2>
+
+<input
+id="loginEmail"
+class="auth-input"
+type="email"
+placeholder="Email"
 >
 
-  <div class="modal-content">
+<input
+id="loginPassword"
+class="auth-input"
+type="password"
+placeholder="Password"
+>
 
-    <button
-      class="close-btn"
-      onclick="closeModals()"
-    >
-      ×
-    </button>
+<button class="submit-btn" onclick="loginUser()">
+INGIA
+</button>
 
-    <h2>
-      🔐 Ingia
-    </h2>
+<div id="loginMessage" class="authMessage"></div>
 
-    <input
-      id="loginEmail"
-      class="auth-input"
-      type="email"
-      placeholder="Email"
-    >
+<div class="switch-auth">
 
-    <input
-      id="loginPassword"
-      class="auth-input"
-      type="password"
-      placeholder="Password"
-    >
+Huna account?
 
-    <button
-      class="submit-btn"
-      onclick="loginUser()"
-    >
-      INGIA
-    </button>
-
-    <div
-      id="loginMessage"
-      class="authMessage"
-    ></div>
-
-    <div class="switch-auth">
-
-      Huna account?
-
-      <button onclick="showRegister()">
-        Jisajili
-      </button>
-
-    </div>
-
-  </div>
+<button onclick="showRegister()">Jisajili</button>
 
 </div>
 
+</div>
+</div>
 
 <script>
 
-  const SUPABASE_URL =
-    "https://octyeeoameulsdlaaqbc.supabase.co";
+const SUPABASE_URL =
+"https://octyeeoameulsdlaaqbc.supabase.co";
 
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
 
-  const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
+let allGames = [];
+let currentCategory = "All Games";
 
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+/* =========================
+PAGE NAVIGATION
+========================= */
 
+function showPage(page){
 
-  let allGames = [];
+document.querySelectorAll(".page")
+.forEach(function(p){
+p.classList.remove("active");
+});
 
-  let currentCategory =
-    "All Games";
+const target =
+document.getElementById(page+"Page");
 
+if(target){
+target.classList.add("active");
+}
 
-  /* =========================
-     PAGE NAVIGATION
-  ========================= */
+document.querySelectorAll(".nav-btn")
+.forEach(function(btn){
 
-  function showPage(page) {
+btn.classList.toggle(
+"active",
+btn.dataset.page === page
+);
 
-    document
-      .querySelectorAll(".page")
-      .forEach(function(p) {
+});
 
-        p.classList.remove("active");
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
 
-      });
+if(page==="games"){
+displayGames(
+filterGamesByCategory(
+allGames,
+currentCategory
+)
+);
+}
 
+if(page==="updates"){
+displayUpdates();
+}
 
-    const target =
-      document.getElementById(
-        page + "Page"
-      );
+if(page==="marketplace"){
+loadMarketplace();
+}
 
+}
 
-    if (target) {
+function focusSearch(){
 
-      target.classList.add("active");
+document.getElementById("search").focus();
 
-    }
+}
 
+/* =========================
+REGISTER
+========================= */
 
-    document
-      .querySelectorAll(".nav-btn")
-      .forEach(function(btn) {
+async function registerUser(){
 
-        btn.classList.toggle(
-          "active",
-          btn.dataset.page === page
-        );
+const email =
+document.getElementById("registerEmail")
+.value.trim();
 
-      });
+const password =
+document.getElementById("registerPassword")
+.value;
 
+const message =
+document.getElementById("registerMessage");
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
+if(!email || !password){
 
+message.textContent =
+"⚠️ Weka email na password.";
 
-    if (page === "games") {
+return;
+}
 
-      displayGames(
-        filterGamesByCategory(
-          allGames,
-          currentCategory
-        )
-      );
+if(password.length<6){
 
-    }
+message.textContent =
+"⚠️ Password iwe angalau characters 6.";
 
+return;
+}
 
-    if (page === "updates") {
+message.textContent =
+"⏳ Inatengeneza account...";
 
-      displayUpdates();
+const {error} =
+await supabaseClient.auth.signUp({
+email:email,
+password:password
+});
 
-    }
+if(error){
 
+message.textContent =
+"❌ "+error.message;
 
-    if (page === "marketplace") {
+return;
+}
 
-      loadMarketplace();
+message.textContent =
+"✅ Account imetengenezwa!";
 
-    }
+setTimeout(function(){
 
-  }
+closeModals();
+showLogin();
 
+},1200);
 
-  function focusSearch() {
+}
 
-    document
-      .getElementById("search")
-      .focus();
+/* =========================
+LOGIN
+========================= */
 
-  }
+async function loginUser(){
 
+const email =
+document.getElementById("loginEmail")
+.value.trim();
 
-  /* =========================
-     REGISTER
-  ========================= */
+const password =
+document.getElementById("loginPassword")
+.value;
 
-  async function registerUser() {
+const message =
+document.getElementById("loginMessage");
 
-    const email =
-      document
-        .getElementById("registerEmail")
-        .value
-        .trim();
+if(!email || !password){
 
+message.textContent =
+"⚠️ Weka email na password.";
 
-    const password =
-      document
-        .getElementById("registerPassword")
-        .value;
+return;
+}
 
+message.textContent =
+"⏳ Inaingia...";
 
-    const message =
-      document.getElementById(
-        "registerMessage"
-      );
+const {error} =
+await supabaseClient.auth
+.signInWithPassword({
+email:email,
+password:password
+});
 
+if(error){
 
-    if (!email || !password) {
+message.textContent =
+"❌ "+error.message;
 
-      message.textContent =
-        "⚠️ Weka email na password.";
+return;
+}
 
-      return;
+message.textContent =
+"✅ Umeingia!";
 
-    }
+setTimeout(function(){
 
+closeModals();
+updateAuthUI();
+showPage("account");
 
-    if (password.length < 6) {
+},700);
 
-      message.textContent =
-        "⚠️ Password iwe angalau characters 6.";
+}
 
-      return;
+/* =========================
+LOGOUT
+========================= */
 
-    }
+async function logout(){
 
+await supabaseClient.auth.signOut();
 
-    message.textContent =
-      "⏳ Inatengeneza account...";
+updateAuthUI();
 
+}
 
-    const { error } =
-      await supabaseClient.auth.signUp({
+/* =========================
+AUTH UI
+========================= */
 
-        email: email,
+async function updateAuthUI(){
 
-        password: password
+const {
+data:{session}
+} =
+await supabaseClient.auth.getSession();
 
-      });
+const authArea =
+document.getElementById("authArea");
 
+const userArea =
+document.getElementById("userArea");
 
-    if (error) {
+const userName =
+document.getElementById("userName");
 
-      message.textContent =
-        "❌ " + error.message;
+if(session && session.user){
 
-      return;
+authArea.style.display="none";
+userArea.style.display="block";
 
-    }
+userName.textContent =
+"👤 "+
+(session.user.email || "Account");
 
+}else{
 
-    message.textContent =
-      "✅ Account imetengenezwa!";
+authArea.style.display="block";
+userArea.style.display="none";
 
+}
 
-    setTimeout(function() {
+}
 
-      closeModals();
+/* =========================
+MODALS
+========================= */
 
-      showLogin();
+function showRegister(){
 
-    }, 1200);
+document.getElementById("loginModal")
+.style.display="none";
 
-  }
+document.getElementById("registerModal")
+.style.display="block";
 
+}
 
-  /* =========================
-     LOGIN
-  ========================= */
+function showLogin(){
 
-  async function loginUser() {
+document.getElementById("registerModal")
+.style.display="none";
 
-    const email =
-      document
-        .getElementById("loginEmail")
-        .value
-        .trim();
+document.getElementById("loginModal")
+.style.display="block";
 
+}
 
-    const password =
-      document
-        .getElementById("loginPassword")
-        .value;
+function closeModals(){
 
+document.getElementById("registerModal")
+.style.display="none";
 
-    const message =
-      document.getElementById(
-        "loginMessage"
-      );
+document.getElementById("loginModal")
+.style.display="none";
 
+}
 
-    if (!email || !password) {
+/* =========================
+LOAD GAMES
+========================= */
 
-      message.textContent =
-        "⚠️ Weka email na password.";
+async function loadGames(){
 
-      return;
+const message =
+document.getElementById("message");
 
-    }
+message.style.display="block";
 
+message.textContent =
+"⏳ Inasoma database...";
 
-    message.textContent =
-      "⏳ Inaingia...";
+try{
 
+const {
+data,
+error
+} =
+await supabaseClient
+.from("games")
+.select("*");
 
-    const { error } =
-      await supabaseClient.auth
-        .signInWithPassword({
+console.log("SUPABASE DATA:",data);
+console.log("SUPABASE ERROR:",error);
 
-          email: email,
+if(error){
 
-          password: password
+message.textContent =
+"❌ Supabase Error: "+
+error.message;
 
-        });
+return;
+}
 
+allGames=data || [];
 
-    if (error) {
+if(allGames.length===0){
 
-      message.textContent =
-        "❌ " + error.message;
+message.textContent =
+"⚠️ Database imefunguka lakini hakuna game.";
 
-      return;
+return;
+}
 
-    }
+message.style.display="none";
 
+displayGames(allGames);
+displayRecommended();
+displayUpdates();
+setupHero();
 
-    message.textContent =
-      "✅ Umeingia!";
+}catch(err){
 
+message.textContent =
+"❌ Error: "+err.message;
 
-    setTimeout(function() {
+}
 
-      closeModals();
+}
 
-      updateAuthUI();
+/* =========================
+DOWNLOAD LINKS
+========================= */
 
-      showPage("account");
+function getDownloadLinks(game){
 
-    }, 700);
+const links=[];
 
-  }
+/*
+LINK 1:
+Column ya zamani ni "url".
+*/
 
+if(game.url && String(game.url).trim()){
 
-  /* =========================
-     LOGOUT
-  ========================= */
+links.push({
+url:String(game.url).trim(),
+label:"⬇️ DOWNLOAD PART 1",
+className:""
+});
 
-  async function logout() {
+}
 
-    await supabaseClient.auth.signOut();
+/*
+LINK 2:
+Column mpya ni "url2".
+*/
 
-    updateAuthUI();
+if(game.url2 && String(game.url2).trim()){
 
-  }
+links.push({
+url:String(game.url2).trim(),
+label:"⬇️ DOWNLOAD PART 2",
+className:"part2"
+});
 
+}
 
-  /* =========================
-     AUTH UI
-  ========================= */
+/*
+LINK 3:
+Column mpya ni "url3".
+*/
 
-  async function updateAuthUI() {
+if(game.url3 && String(game.url3).trim()){
 
-    const {
-      data: {
-        session
-      }
-    } =
-      await supabaseClient.auth
-        .getSession();
+links.push({
+url:String(game.url3).trim(),
+label:"⬇️ DOWNLOAD PART 3",
+className:"part3"
+});
 
+}
 
-    const authArea =
-      document.getElementById(
-        "authArea"
-      );
+return links;
 
+}
 
-    const userArea =
-      document.getElementById(
-        "userArea"
-      );
+/* =========================
+GAME CARD
+========================= */
 
+function gameCardHTML(game,index=0){
 
-    const userName =
-      document.getElementById(
-        "userName"
-      );
+const image =
+game.image
+?
+`
+<img
+src="${escapeHTML(game.image)}"
+alt="${escapeHTML(game.name || "Game")}"
+loading="lazy"
+>
+`
+:
+`
+<div
+style="
+height:100%;
+display:grid;
+place-items:center;
+font-size:42px;
+"
+>
+🎮
+</div>
+`;
 
+const badge =
+index<3
+?
+`
+<span class="new-badge">New</span>
+`
+:
+"";
 
-    if (session && session.user) {
+const links =
+getDownloadLinks(game);
 
-      authArea.style.display =
-        "none";
+let downloadHTML="";
 
-      userArea.style.display =
-        "block";
+if(links.length===0){
 
+downloadHTML=
+`
+<div
+style="
+margin-top:11px;
+padding:11px;
+border-radius:11px;
+background:#202f47;
+color:#9aa9bd;
+text-align:center;
+font-size:12px;
+"
+>
+⚠️ Download link haijawekwa
+</div>
+`;
 
-      userName.textContent =
-        "👤 " +
-        (
-          session.user.email ||
-          "Account"
-        );
+}else{
 
-    } else {
+downloadHTML =
+links.map(function(link){
 
-      authArea.style.display =
-        "block";
+return `
+<a
+class="download ${link.className}"
+href="${escapeHTML(link.url)}"
+target="_blank"
+rel="noopener noreferrer"
+onclick="trackDownload('${escapeHTML(game.name || "Game")}','${escapeHTML(link.label)}')"
+>
+${link.label}
+</a>
+`;
 
-      userArea.style.display =
-        "none";
+}).join("");
 
-    }
+}
 
-  }
+return `
 
+<article class="game">
 
-  /* =========================
-     MODALS
-  ========================= */
+<div class="game-img-wrap">
 
-  function showRegister() {
+${image}
 
-    document.getElementById(
-      "loginModal"
-    ).style.display = "none";
+${badge}
 
+</div>
 
-    document.getElementById(
-      "registerModal"
-    ).style.display = "block";
+<div class="game-info">
 
-  }
+<h3>
+🎮
+${escapeHTML(game.name || "Game")}
+</h3>
 
+<div class="details">
 
-  function showLogin() {
+📱
+${escapeHTML(game.platform || "Android")}
 
-    document.getElementById(
-      "registerModal"
-    ).style.display = "none";
+<br>
 
+📦
+${escapeHTML(game.size || "Unknown")}
 
-    document.getElementById(
-      "loginModal"
-    ).style.display = "block";
+<br>
 
-  }
+🗂️
+${escapeHTML(game.category || "Games")}
 
+</div>
 
-  function closeModals() {
+${downloadHTML}
 
-    document.getElementById(
-      "registerModal"
-    ).style.display = "none";
+</div>
 
+</article>
 
-    document.getElementById(
-      "loginModal"
-    ).style.display = "none";
+`;
 
-  }
+}
 
+/* =========================
+DISPLAY GAMES
+========================= */
 
-  /* =========================
-     LOAD GAMES
-  ========================= */
+function displayGames(games){
 
-  async function loadGames() {
+const container =
+document.getElementById("games");
 
-    const message =
-      document.getElementById(
-        "message"
-      );
+if(!games || games.length===0){
 
+container.innerHTML=
+`
+<p style="color:#9aa9bd;">
+Hakuna game iliyopatikana.
+</p>
+`;
 
-    message.style.display =
-      "block";
+return;
+}
 
+container.innerHTML =
+games.map(function(game,i){
 
-    message.textContent =
-      "⏳ Inasoma database...";
+return gameCardHTML(game,i);
 
+}).join("");
 
-    try {
+}
 
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("games")
-          .select("*");
+/* =========================
+RECOMMENDED
+========================= */
 
+function displayRecommended(){
 
-      console.log(
-        "SUPABASE DATA:",
-        data
-      );
+const container =
+document.getElementById("recommendedGames");
 
+const games =
+allGames.slice(0,3);
 
-      console.log(
-        "SUPABASE ERROR:",
-        error
-      );
+if(!games.length){
 
+container.innerHTML=
+`
+<p style="color:#9aa9bd;">
+Hakuna recommendations bado.
+</p>
+`;
 
-      if (error) {
+return;
+}
 
-        message.textContent =
-          "❌ Supabase Error: " +
-          error.message;
+container.innerHTML =
+games.map(function(game,i){
 
-        return;
+return gameCardHTML(game,i);
 
-      }
+}).join("");
 
+}
 
-      allGames =
-        data || [];
+/* =========================
+UPDATES
+========================= */
 
+function displayUpdates(){
 
-      if (allGames.length === 0) {
+const container =
+document.getElementById("updatesGames");
 
-        message.textContent =
-          "⚠️ Database imefunguka lakini hakuna game.";
+const games =
+allGames.slice(0,6);
 
-        return;
+if(!games.length){
 
-      }
+container.innerHTML=
+`
+<p style="color:#9aa9bd;">
+Hakuna updates bado.
+</p>
+`;
 
+return;
+}
 
-      message.style.display =
-        "none";
+container.innerHTML =
+games.map(function(game,i){
 
+return gameCardHTML(game,i);
 
-      displayGames(
-        allGames
-      );
+}).join("");
 
+}
 
-      displayRecommended();
+/* =========================
+DOWNLOAD ANALYTICS
+========================= */
 
-      displayUpdates();
+function trackDownload(gameName,part){
 
-      setupHero();
+if(typeof gtag==="function"){
 
+gtag("event","download_game",{
 
-    } catch (err) {
+game_name:gameName,
+download_part:part
 
-      message.textContent =
-        "❌ Error: " +
-        err.message;
+});
 
-    }
+}
 
-  }
+}
 
+/* =========================
+SEARCH
+========================= */
 
-  /* =========================
-     GAME CARD
-  ========================= */
+function searchGames(){
 
-  function gameCardHTML(
-    game,
-    index = 0
-  ) {
+const search =
+document.getElementById("search")
+.value
+.toLowerCase()
+.trim();
 
-    const image =
-      game.image
+if(search){
+showPage("games");
+}
 
-        ? `
-          <img
-            src="${escapeHTML(game.image)}"
-            alt="${escapeHTML(game.name || "Game")}"
-            loading="lazy"
-          >
-        `
+const filtered =
+allGames.filter(function(game){
 
-        : `
-          <div
-            style="
-              height:100%;
-              display:grid;
-              place-items:center;
-              font-size:42px;
-            "
-          >
-            🎮
-          </div>
-        `;
+return (
 
+(game.name || "")
+.toLowerCase()
+.includes(search)
 
-    const badge =
-      index < 3
+||
 
-        ? `
-          <span class="new-badge">
-            New
-          </span>
-        `
+(game.platform || "")
+.toLowerCase()
+.includes(search)
 
-        : "";
+||
 
+(game.category || "")
+.toLowerCase()
+.includes(search)
 
-    return `
+);
 
-      <article class="game">
+});
 
-        <div class="game-img-wrap">
+displayGames(filtered);
 
-          ${image}
+}
 
-          ${badge}
+/* =========================
+CATEGORIES
+========================= */
 
-        </div>
+function filterGamesByCategory(
+games,
+category
+){
 
+if(
+category==="All Games" ||
+category==="Popular"
+){
 
-        <div class="game-info">
+return games;
 
-          <h3>
-            🎮
-            ${escapeHTML(
-              game.name || "Game"
-            )}
-          </h3>
+}
 
+return games.filter(
+function(game){
 
-          <div class="details">
+return (
 
-            📱
-            ${escapeHTML(
-              game.platform ||
-              "Android"
-            )}
+(game.category || "")
+.toLowerCase() ===
+category.toLowerCase()
 
-            <br>
+||
 
-            📦
-            ${escapeHTML(
-              game.size ||
-              "Unknown"
-            )}
+(game.platform || "")
+.toLowerCase() ===
+category.toLowerCase()
 
-            <br>
+);
 
-            🗂️
-            ${escapeHTML(
-              game.category ||
-              "Games"
-            )}
+}
+);
 
-          </div>
+}
 
+function filterCategory(
+category,
+button
+){
 
-          <a
-            class="download"
-            href="${escapeHTML(
-              game.url || "#"
-            )}"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            ⬇️ DOWNLOAD
-          </a>
+currentCategory=category;
 
-        </div>
+document
+.querySelectorAll(".category-btn")
+.forEach(function(btn){
 
-      </article>
+btn.classList.remove("active");
 
-    `;
+});
 
-  }
+if(button){
+button.classList.add("active");
+}
 
+showPage("games");
 
-  function displayGames(games) {
+displayGames(
+filterGamesByCategory(
+allGames,
+category
+)
+);
 
-    const container =
-      document.getElementById(
-        "games"
-      );
+}
 
+/* =========================
+HERO
+========================= */
 
-    if (
-      !games ||
-      games.length === 0
-    ) {
+function setupHero(){
 
-      container.innerHTML =
-        `
-          <p style="color:#9aa9bd;">
-            Hakuna game iliyopatikana.
-          </p>
-        `;
+if(!allGames.length){
+return;
+}
 
-      return;
+const first =
+allGames[0];
 
-    }
+const heroImage =
+document.getElementById("heroImage");
 
+document.getElementById("heroTitle")
+.textContent =
+first.name ||
+"Games mpya zipo hapa";
 
-    container.innerHTML =
-      games
-        .map(function(game, i) {
+document.getElementById("heroText")
+.textContent =
+"Game mpya kwenye Danygama Games • "+
+(first.category || "Gaming");
 
-          return gameCardHTML(
-            game,
-            i
-          );
+if(first.image){
 
-        })
-        .join("");
+heroImage.src=first.image;
+heroImage.style.display="block";
 
-  }
+}
 
+}
 
-  function displayRecommended() {
+/* =========================
+MARKETPLACE
+========================= */
 
-    const container =
-      document.getElementById(
-        "recommendedGames"
-      );
+async function loadMarketplace(){
 
+const loading =
+document.getElementById("marketMessageLoading");
 
-    const games =
-      allGames.slice(0, 3);
+const container =
+document.getElementById("marketplaceTeams");
 
+if(!loading || !container){
+return;
+}
 
-    if (!games.length) {
+loading.style.display="block";
 
-      container.innerHTML =
-        `
-          <p style="color:#9aa9bd;">
-            Hakuna recommendations bado.
-          </p>
-        `;
+loading.textContent =
+"⏳ Inapakia vikosi...";
 
-      return;
+try{
 
-    }
+const {
+data,
+error
+} =
+await supabaseClient
+.from("team_marketplace")
+.select("*")
+.order(
+"created_at",
+{ascending:false}
+);
 
+console.log(
+"MARKETPLACE DATA:",
+data
+);
 
-    container.innerHTML =
-      games
-        .map(function(game, i) {
+console.log(
+"MARKETPLACE ERROR:",
+error
+);
 
-          return gameCardHTML(
-            game,
-            i
-          );
+if(error){
 
-        })
-        .join("");
+loading.textContent =
+"❌ "+error.message;
 
-  }
+return;
+}
 
+loading.style.display="none";
 
-  function displayUpdates() {
+if(!data || data.length===0){
 
-    const container =
-      document.getElementById(
-        "updatesGames"
-      );
+container.innerHTML=
+`
+<div class="market-empty">
+🛒<br><br>
+Hakuna kikosi kinachouzwa bado.<br>
+Kuwa wa kwanza kuuza kikosi chako!
+</div>
+`;
 
+return;
+}
 
-    const games =
-      allGames.slice(0, 6);
+container.innerHTML =
+data.map(function(team){
 
+return teamCardHTML(team);
 
-    if (!games.length) {
+}).join("");
 
-      container.innerHTML =
-        `
-          <p style="color:#9aa9bd;">
-            Hakuna updates bado.
-          </p>
-        `;
+}catch(error){
 
-      return;
+console.error(
+"MARKETPLACE CATCH ERROR:",
+error
+);
 
-    }
+loading.textContent =
+"❌ Error: "+error.message;
 
+}
 
-    container.innerHTML =
-      games
-        .map(function(game, i) {
+}
 
-          return gameCardHTML(
-            game,
-            i
-          );
+/* =========================
+TEAM CARD
+========================= */
 
-        })
-        .join("");
+function teamCardHTML(team){
 
-  }
+const image =
+team.image
+?
+`
+<img
+class="team-image"
+src="${escapeHTML(team.image)}"
+alt="${escapeHTML(team.team_name || "Kikosi")}"
+loading="lazy"
+onerror="
+this.style.display='none';
+this.nextElementSibling.style.display='grid';
+"
+>
 
+<div
+class="team-placeholder"
+style="display:none;"
+>
+⚽
+</div>
+`
+:
+`
+<div class="team-placeholder">
+⚽
+</div>
+`;
 
-  /* =========================
-     SEARCH
-  ========================= */
+const price =
+Number(team.price || 0)
+.toLocaleString("en-TZ");
 
-  function searchGames() {
+const contact =
+String(team.contact || "")
+.trim();
 
-    const search =
-      document
-        .getElementById("search")
-        .value
-        .toLowerCase()
-        .trim();
+const safeContact =
+encodeURIComponent(contact);
 
+return `
 
-    if (search) {
+<article class="team-card">
 
-      showPage("games");
+${image}
 
-    }
+<div class="team-info">
 
+<h3>
+⚽
+${escapeHTML(
+team.team_name || "Kikosi"
+)}
+</h3>
 
-    const filtered =
-      allGames.filter(function(game) {
+<div class="team-details">
 
-        return (
+🎮 Game:
+${escapeHTML(
+team.game_name || "Unknown"
+)}
 
-          (game.name || "")
-            .toLowerCase()
-            .includes(search)
+<br>
 
-          ||
+📱 Platform:
+${escapeHTML(
+team.platform || "Unknown"
+)}
 
-          (game.platform || "")
-            .toLowerCase()
-            .includes(search)
+</div>
 
-          ||
+${
+team.description
+?
+`
+<div class="team-description">
+${escapeHTML(team.description)}
+</div>
+`
+:""
+}
 
-          (game.category || "")
-            .toLowerCase()
-            .includes(search)
+<div class="team-price">
+TSh ${price}
+</div>
 
-        );
+<div class="seller-contact">
+📱 Seller:
+${escapeHTML(maskPhoneNumber(contact))}
+</div>
 
-      });
+<button
+class="contact-team"
+data-contact="${safeContact}"
+onclick="contactSellerEncoded(this.dataset.contact)"
+>
+📱 Wasiliana na Seller WhatsApp
+</button>
 
+</div>
 
-    displayGames(
-      filtered
-    );
+</article>
 
-  }
+`;
 
+}
 
-  /* =========================
-     CATEGORIES
-  ========================= */
+/* =========================
+MASK PHONE
+========================= */
 
-  function filterGamesByCategory(
-    games,
-    category
-  ) {
+function maskPhoneNumber(number){
 
-    if (
-      category === "All Games" ||
-      category === "Popular"
-    ) {
+const clean =
+String(number || "")
+.trim();
 
-      return games;
+if(!clean){
+return "Haijawekwa";
+}
 
-    }
+const digits =
+clean.replace(
+/[^0-9]/g,
+""
+);
 
+if(digits.length>=7){
 
-    return games.filter(
-      function(game) {
+return (
+"****"+
+digits.substring(
+digits.length-6
+)
+);
 
-        return (
+}
 
-          (game.category || "")
-            .toLowerCase() ===
-          category.toLowerCase()
+return "****";
 
-          ||
+}
 
-          (game.platform || "")
-            .toLowerCase() ===
-          category.toLowerCase()
+/* =========================
+IMAGE PREVIEW
+========================= */
 
-        );
+function previewTeamImage(event){
 
-      }
-    );
+const file =
+event.target.files &&
+event.target.files[0];
 
-  }
+const preview =
+document.getElementById(
+"teamImagePreview"
+);
 
+if(!file){
 
-  function filterCategory(
-    category,
-    button
-  ) {
+preview.src="";
+preview.style.display="none";
 
-    currentCategory =
-      category;
+return;
+}
 
+if(!file.type.startsWith("image/")){
 
-    document
-      .querySelectorAll(
-        ".category-btn"
-      )
-      .forEach(function(btn) {
+alert(
+"❌ Tafadhali chagua picha tu."
+);
 
-        btn.classList.remove(
-          "active"
-        );
+event.target.value="";
+preview.src="";
+preview.style.display="none";
 
-      });
+return;
+}
 
+if(file.size>8*1024*1024){
 
-    if (button) {
+alert(
+"❌ Picha ni kubwa sana. Tumia picha chini ya 8MB."
+);
 
-      button.classList.add(
-        "active"
-      );
+event.target.value="";
+preview.src="";
+preview.style.display="none";
 
-    }
+return;
+}
 
+const reader =
+new FileReader();
 
-    showPage("games");
+reader.onload=function(e){
 
+preview.src=e.target.result;
+preview.style.display="block";
 
-    displayGames(
-      filterGamesByCategory(
-        allGames,
-        category
-      )
-    );
+};
 
-  }
+reader.readAsDataURL(file);
 
+}
 
-  /* =========================
-     HERO
-  ========================= */
+/* =========================
+UPLOAD MARKETPLACE IMAGE
+========================= */
 
-  function setupHero() {
+async function uploadMarketplaceImage(
+file,
+userId
+){
 
-    if (!allGames.length) {
-      return;
-    }
+if(!file){
 
+throw new Error(
+"Chagua picha ya kikosi."
+);
 
-    const first =
-      allGames[0];
+}
 
+if(!file.type.startsWith("image/")){
 
-    const heroImage =
-      document.getElementById(
-        "heroImage"
-      );
+throw new Error(
+"Faili lazima iwe picha."
+);
 
+}
 
-    document.getElementById(
-      "heroTitle"
-    ).textContent =
-      first.name ||
-      "Games mpya zipo hapa";
+if(file.size>8*1024*1024){
 
+throw new Error(
+"Picha ni kubwa sana. Tumia picha chini ya 8MB."
+);
 
-    document.getElementById(
-      "heroText"
-    ).textContent =
-      "Game mpya kwenye Danygama Games • " +
-      (
-        first.category ||
-        "Gaming"
-      );
+}
 
+const extension =
+(
+file.name.split(".").pop() ||
+"jpg"
+)
+.toLowerCase()
+.replace(
+/[^a-z0-9]/g,
+""
+);
 
-    if (first.image) {
+const fileName =
+"marketplace/"+
+userId+"/"+
+Date.now()+
+"_"+Math.random()
+.toString(36)
+.substring(2,10)+
+"."+extension;
 
-      heroImage.src =
-        first.image;
+const {
+error:uploadError
+} =
+await supabaseClient
+.storage
+.from("game-images")
+.upload(
+fileName,
+file,
+{
+cacheControl:"3600",
+upsert:false,
+contentType:file.type
+}
+);
 
-      heroImage.style.display =
-        "block";
+if(uploadError){
 
-    }
+console.error(
+"IMAGE UPLOAD ERROR:",
+uploadError
+);
 
-  }
+throw new Error(
+"Picha haikupakiwa: "+
+uploadError.message
+);
 
+}
 
-  /* =========================
-     MARKETPLACE
-  ========================= */
+const {data} =
+supabaseClient
+.storage
+.from("game-images")
+.getPublicUrl(fileName);
 
-  async function loadMarketplace() {
+if(!data || !data.publicUrl){
 
-    const loading =
-      document.getElementById(
-        "marketMessageLoading"
-      );
+throw new Error(
+"Imeshindwa kupata link ya picha."
+);
 
-    const container =
-      document.getElementById(
-        "marketplaceTeams"
-      );
+}
 
+return data.publicUrl;
 
-    if (!loading || !container) {
-      return;
-    }
+}
 
+/* =========================
+SHOW SELL FORM
+========================= */
 
-    loading.style.display =
-      "block";
+function showSellTeamForm(){
 
+supabaseClient.auth
+.getSession()
+.then(function(result){
 
-    loading.textContent =
-      "⏳ Inapakia vikosi...";
+const session =
+result.data.session;
 
+if(!session || !session.user){
 
-    try {
+alert(
+"🔐 Ingia kwanza kwenye account ili kuuza kikosi."
+);
 
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("team_marketplace")
-          .select("*")
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
+showLogin();
 
+return;
+}
 
-      console.log(
-        "MARKETPLACE DATA:",
-        data
-      );
+const form =
+document.getElementById(
+"sellTeamForm"
+);
 
+if(form.style.display==="block"){
 
-      console.log(
-        "MARKETPLACE ERROR:",
-        error
-      );
+form.style.display="none";
 
+}else{
 
-      if (error) {
+form.style.display="block";
 
-        loading.textContent =
-          "❌ " +
-          error.message;
+form.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
 
-        return;
+}
 
-      }
+});
 
+}
 
-      loading.style.display =
-        "none";
+/* =========================
+NORMALIZE TANZANIA NUMBER
+========================= */
 
+function normalizeTanzaniaNumber(
+contact
+){
 
-      if (
-        !data ||
-        data.length === 0
-      ) {
+let number =
+String(contact || "")
+.trim();
 
-        container.innerHTML =
-          `
-            <div class="market-empty">
-              🛒<br><br>
-              Hakuna kikosi kinachouzwa bado.<br>
-              Kuwa wa kwanza kuuza kikosi chako!
-            </div>
-          `;
+if(!number){
+return "";
+}
 
-        return;
+number =
+number.replace(
+/[\s\-().]/g,
+""
+);
 
-      }
+if(number.startsWith("+255")){
 
+number =
+number.substring(1);
 
-      container.innerHTML =
-        data
-          .map(function(team) {
+}
 
-            return teamCardHTML(
-              team
-            );
+if(number.startsWith("0")){
 
-          })
-          .join("");
+number =
+"255"+
+number.substring(1);
 
+}
 
-    } catch (error) {
+if(
+/^255[67]\d{8}$/.test(number)
+){
 
-      console.error(
-        "MARKETPLACE CATCH ERROR:",
-        error
-      );
+return number;
 
+}
 
-      loading.textContent =
-        "❌ Error: " +
-        error.message;
+return "";
 
-    }
+}
 
-  }
+/* =========================
+SELL TEAM
+========================= */
 
+async function sellTeam(){
 
-  /* =========================
-     TEAM CARD
-  ========================= */
+const {
+data:{session}
+} =
+await supabaseClient.auth
+.getSession();
 
-  function teamCardHTML(team) {
+const message =
+document.getElementById(
+"marketMessage"
+);
 
-    const image =
-      team.image
-        ? `
-          <img
-            class="team-image"
-            src="${escapeHTML(team.image)}"
-            alt="${escapeHTML(team.team_name || "Kikosi")}"
-            loading="lazy"
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
-          >
-          <div
-            class="team-placeholder"
-            style="display:none;"
-          >
-            ⚽
-          </div>
-        `
-        : `
-          <div class="team-placeholder">
-            ⚽
-          </div>
-        `;
+if(!session || !session.user){
 
+message.textContent =
+"🔐 Ingia kwanza ili kuuza kikosi.";
 
-    const price =
-      Number(team.price || 0).toLocaleString(
-        "en-TZ"
-      );
+showLogin();
 
+return;
+}
 
-    const contact =
-      String(
-        team.contact || ""
-      ).trim();
+const teamName =
+document.getElementById("teamName")
+.value.trim();
 
+const gameName =
+document.getElementById("gameName")
+.value.trim();
 
-    const safeContact =
-      encodeURIComponent(
-        contact
-      );
+const platform =
+document.getElementById("teamPlatform")
+.value.trim();
 
+const price =
+document.getElementById("teamPrice")
+.value.trim();
 
-    return `
+const imageFile =
+document.getElementById("teamImageFile")
+.files[0];
 
-      <article class="team-card">
+const description =
+document.getElementById("teamDescription")
+.value.trim();
 
-        ${image}
+const contact =
+document.getElementById("teamContact")
+.value.trim();
 
+if(
+!teamName ||
+!gameName ||
+!platform ||
+!price ||
+!contact
+){
 
-        <div class="team-info">
+message.textContent =
+"⚠️ Jaza Team Name, Game, Platform, Bei na WhatsApp.";
 
-          <h3>
-            ⚽
-            ${escapeHTML(
-              team.team_name ||
-              "Kikosi"
-            )}
-          </h3>
+return;
+}
 
+if(Number(price)<0){
 
-          <div class="team-details">
+message.textContent =
+"⚠️ Bei si sahihi.";
 
-            🎮 Game:
-            ${escapeHTML(
-              team.game_name ||
-              "Unknown"
-            )}
+return;
+}
 
-            <br>
+if(!imageFile){
 
-            📱 Platform:
-            ${escapeHTML(
-              team.platform ||
-              "Unknown"
-            )}
+message.textContent =
+"⚠️ Chagua picha ya kikosi kwanza.";
 
-          </div>
+return;
+}
 
+const whatsappNumber =
+normalizeTanzaniaNumber(contact);
 
-          ${
-            team.description
-              ? `
-                <div class="team-description">
-                  ${escapeHTML(
-                    team.description
-                  )}
-                </div>
-              `
-              : ""
-          }
+if(!whatsappNumber){
 
+message.textContent =
+"⚠️ Weka namba sahihi ya Tanzania, mfano 0786538998.";
 
-          <div class="team-price">
-            TSh ${price}
-          </div>
+return;
+}
 
+const submitButton =
+document.querySelector(
+"#sellTeamForm .submit-btn"
+);
 
-          <div class="seller-contact">
-            📱 Seller: ${escapeHTML(
-              maskPhoneNumber(contact)
-            )}
-          </div>
+submitButton.disabled=true;
+submitButton.style.opacity="0.6";
 
+message.textContent =
+"⏳ Inapakia picha...";
 
-          <button
-            class="contact-team"
-            data-contact="${safeContact}"
-            onclick="contactSellerEncoded(this.dataset.contact)"
-          >
-            📱 Wasiliana na Seller WhatsApp
-          </button>
+try{
 
-        </div>
+const imageUrl =
+await uploadMarketplaceImage(
+imageFile,
+session.user.id
+);
 
-      </article>
+message.textContent =
+"⏳ Inaweka kikosi sokoni...";
 
-    `;
+const {
+error
+} =
+await supabaseClient
+.from("team_marketplace")
+.insert([
 
-  }
+{
+user_id:session.user.id,
 
+seller_email:
+session.user.email,
 
-  /* =========================
-     MASK SELLER NUMBER
-  ========================= */
+team_name:
+teamName,
 
-  function maskPhoneNumber(number) {
+game_name:
+gameName,
 
-    const clean =
-      String(number || "")
-        .trim();
+platform:
+platform,
 
+price:
+Number(price),
 
-    if (!clean) {
-      return "Haijawekwa";
-    }
+image:
+imageUrl,
 
+description:
+description || null,
 
-    /*
-      Tunaonyesha sehemu ya namba tu
-      kwa usalama kwenye card.
-    */
+contact:
+whatsappNumber
 
-    const digits =
-      clean.replace(
-        /[^0-9]/g,
-        ""
-      );
+}
 
+]);
 
-    if (digits.length >= 7) {
+if(error){
 
-      return (
-        "****" +
-        digits.substring(
-          digits.length - 6
-        )
-      );
+console.error(
+"SELL TEAM ERROR:",
+error
+);
 
-    }
+message.textContent =
+"❌ "+error.message;
 
+return;
+}
 
-    return "****";
+message.textContent =
+"✅ Kikosi kimewekwa sokoni!";
 
-  }
+document.getElementById("teamName").value="";
+document.getElementById("gameName").value="";
+document.getElementById("teamPlatform").value="";
+document.getElementById("teamPrice").value="";
+document.getElementById("teamImageFile").value="";
+document.getElementById("teamImagePreview").src="";
+document.getElementById("teamImagePreview").style.display="none";
+document.getElementById("teamDescription").value="";
+document.getElementById("teamContact").value="";
 
+await loadMarketplace();
 
-  /* =========================
-     IMAGE PREVIEW
-  ========================= */
+setTimeout(function(){
 
-  function previewTeamImage(event) {
+document.getElementById(
+"sellTeamForm"
+).style.display="none";
 
-    const file =
-      event.target.files &&
-      event.target.files[0];
+message.textContent="";
 
+},1200);
 
-    const preview =
-      document.getElementById(
-        "teamImagePreview"
-      );
+}catch(error){
 
+console.error(
+"SELL TEAM CATCH:",
+error
+);
 
-    if (!file) {
+message.textContent =
+"❌ "+error.message;
 
-      preview.src = "";
+}finally{
 
-      preview.style.display =
-        "none";
+submitButton.disabled=false;
+submitButton.style.opacity="1";
 
-      return;
+}
 
-    }
+}
 
+/* =========================
+CONTACT SELLER
+========================= */
 
-    if (!file.type.startsWith("image/")) {
+function contactSellerEncoded(
+encodedContact
+){
 
-      alert(
-        "❌ Tafadhali chagua picha tu."
-      );
+let contact="";
 
-      event.target.value = "";
+try{
 
-      preview.src = "";
+contact =
+decodeURIComponent(
+encodedContact
+);
 
-      preview.style.display =
-        "none";
+}catch(error){
 
-      return;
+contact =
+encodedContact;
 
-    }
+}
 
+contact=contact.trim();
 
-    if (file.size > 8 * 1024 * 1024) {
+if(!contact){
 
-      alert(
-        "❌ Picha ni kubwa sana. Tumia picha chini ya 8MB."
-      );
+alert(
+"❌ Seller hajaweka namba ya WhatsApp."
+);
 
-      event.target.value = "";
+return;
+}
 
-      preview.src = "";
+const number =
+normalizeTanzaniaNumber(
+contact
+);
 
-      preview.style.display =
-        "none";
+if(!number){
 
-      return;
+alert(
+"❌ Namba ya seller si sahihi."
+);
 
-    }
+return;
+}
 
+const message =
+encodeURIComponent(
+"Habari, nimeona kikosi chako kwenye Danygama Games Marketplace. Niko interested kukinunua."
+);
 
-    const reader =
-      new FileReader();
+const whatsappURL =
+"https://wa.me/"+
+number+
+"?text="+
+message;
 
+window.open(
+whatsappURL,
+"_blank"
+);
 
-    reader.onload =
-      function(e) {
+}
 
-        preview.src =
-          e.target.result;
+/* =========================
+CONTACT ADMIN
+========================= */
 
-        preview.style.display =
-          "block";
+function contactAdmin(){
 
-      };
+const adminNumber =
+"255786538998";
 
+const message =
+encodeURIComponent(
+"Habari Danygama Games Admin, nahitaji msaada."
+);
 
-    reader.readAsDataURL(file);
+const whatsappURL =
+"https://wa.me/"+
+adminNumber+
+"?text="+
+message;
 
-  }
+window.open(
+whatsappURL,
+"_blank"
+);
 
+}
 
-  /* =========================
-     UPLOAD MARKETPLACE IMAGE
-  ========================= */
+/* =========================
+SECURITY
+========================= */
 
-  async function uploadMarketplaceImage(
-    file,
-    userId
-  ) {
+function escapeHTML(value){
 
-    if (!file) {
+const div =
+document.createElement("div");
 
-      throw new Error(
-        "Chagua picha ya kikosi."
-      );
+div.textContent =
+value ?? "";
 
-    }
+return div.innerHTML;
 
+}
 
-    if (!file.type.startsWith("image/")) {
+/* =========================
+START
+========================= */
 
-      throw new Error(
-        "Faili lazima iwe picha."
-      );
+loadGames();
 
-    }
+updateAuthUI();
 
+/* =========================
+AUTH STATE
+========================= */
 
-    if (file.size > 8 * 1024 * 1024) {
+supabaseClient.auth
+.onAuthStateChange(
+function(){
 
-      throw new Error(
-        "Picha ni kubwa sana. Tumia picha chini ya 8MB."
-      );
+updateAuthUI();
 
-    }
-
-
-    const extension =
-      (
-        file.name.split(".").pop() ||
-        "jpg"
-      )
-      .toLowerCase()
-      .replace(
-        /[^a-z0-9]/g,
-        ""
-      );
-
-
-    const fileName =
-      "marketplace/" +
-      userId +
-      "/" +
-      Date.now() +
-      "_" +
-      Math.random()
-        .toString(36)
-        .substring(2, 10) +
-      "." +
-      extension;
-
-
-    const {
-      error: uploadError
-    } =
-      await supabaseClient
-        .storage
-        .from("game-images")
-        .upload(
-          fileName,
-          file,
-          {
-            cacheControl: "3600",
-            upsert: false,
-            contentType: file.type
-          }
-        );
-
-
-    if (uploadError) {
-
-      console.error(
-        "IMAGE UPLOAD ERROR:",
-        uploadError
-      );
-
-      throw new Error(
-        "Picha haikupakiwa: " +
-        uploadError.message
-      );
-
-    }
-
-
-    const {
-      data
-    } =
-      supabaseClient
-        .storage
-        .from("game-images")
-        .getPublicUrl(
-          fileName
-        );
-
-
-    if (
-      !data ||
-      !data.publicUrl
-    ) {
-
-      throw new Error(
-        "Imeshindwa kupata link ya picha."
-      );
-
-    }
-
-
-    return data.publicUrl;
-
-  }
-
-
-  /* =========================
-     SHOW SELL FORM
-  ========================= */
-
-  function showSellTeamForm() {
-
-    supabaseClient.auth
-      .getSession()
-      .then(function(result) {
-
-        const session =
-          result.data.session;
-
-
-        if (
-          !session ||
-          !session.user
-        ) {
-
-          alert(
-            "🔐 Ingia kwanza kwenye account ili kuuza kikosi."
-          );
-
-          showLogin();
-
-          return;
-
-        }
-
-
-        const form =
-          document.getElementById(
-            "sellTeamForm"
-          );
-
-
-        if (
-          form.style.display ===
-          "block"
-        ) {
-
-          form.style.display =
-            "none";
-
-        } else {
-
-          form.style.display =
-            "block";
-
-          form.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-
-        }
-
-      });
-
-  }
-
-
-  /* =========================
-     VALIDATE PHONE
-  ========================= */
-
-  function normalizeTanzaniaNumber(
-    contact
-  ) {
-
-    let number =
-      String(
-        contact || ""
-      ).trim();
-
-
-    if (!number) {
-      return "";
-    }
-
-
-    number =
-      number.replace(
-        /[\s\-().]/g,
-        ""
-      );
-
-
-    /*
-      +255XXXXXXXXX
-      -> 255XXXXXXXXX
-    */
-
-    if (
-      number.startsWith("+255")
-    ) {
-
-      number =
-        number.substring(1);
-
-    }
-
-
-    /*
-      0XXXXXXXXX
-      -> 255XXXXXXXXX
-    */
-
-    if (
-      number.startsWith("0")
-    ) {
-
-      number =
-        "255" +
-        number.substring(1);
-
-    }
-
-
-    /*
-      Ikiwa mtu ameandika 255...
-      tunaacha hivyo.
-    */
-
-    if (
-      /^255[67]\d{8}$/.test(number)
-    ) {
-
-      return number;
-
-    }
-
-
-    return "";
-
-  }
-
-
-  /* =========================
-     SELL TEAM
-  ========================= */
-
-  async function sellTeam() {
-
-    const {
-      data: {
-        session
-      }
-    } =
-      await supabaseClient.auth
-        .getSession();
-
-
-    const message =
-      document.getElementById(
-        "marketMessage"
-      );
-
-
-    if (
-      !session ||
-      !session.user
-    ) {
-
-      message.textContent =
-        "🔐 Ingia kwanza ili kuuza kikosi.";
-
-      showLogin();
-
-      return;
-
-    }
-
-
-    const teamName =
-      document
-        .getElementById(
-          "teamName"
-        )
-        .value
-        .trim();
-
-
-    const gameName =
-      document
-        .getElementById(
-          "gameName"
-        )
-        .value
-        .trim();
-
-
-    const platform =
-      document
-        .getElementById(
-          "teamPlatform"
-        )
-        .value
-        .trim();
-
-
-    const price =
-      document
-        .getElementById(
-          "teamPrice"
-        )
-        .value
-        .trim();
-
-
-    const imageFile =
-      document
-        .getElementById(
-          "teamImageFile"
-        )
-        .files[0];
-
-
-    const description =
-      document
-        .getElementById(
-          "teamDescription"
-        )
-        .value
-        .trim();
-
-
-    const contact =
-      document
-        .getElementById(
-          "teamContact"
-        )
-        .value
-        .trim();
-
-
-    if (
-      !teamName ||
-      !gameName ||
-      !platform ||
-      !price ||
-      !contact
-    ) {
-
-      message.textContent =
-        "⚠️ Jaza Team Name, Game, Platform, Bei na WhatsApp.";
-
-      return;
-
-    }
-
-
-    if (
-      Number(price) < 0
-    ) {
-
-      message.textContent =
-        "⚠️ Bei si sahihi.";
-
-      return;
-
-    }
-
-
-    if (!imageFile) {
-
-      message.textContent =
-        "⚠️ Chagua picha ya kikosi kwanza.";
-
-      return;
-
-    }
-
-
-    const whatsappNumber =
-      normalizeTanzaniaNumber(
-        contact
-      );
-
-
-    if (!whatsappNumber) {
-
-      message.textContent =
-        "⚠️ Weka namba sahihi ya Tanzania, mfano 0786538998.";
-
-      return;
-
-    }
-
-
-    const submitButton =
-      document.querySelector(
-        "#sellTeamForm .submit-btn"
-      );
-
-
-    submitButton.disabled =
-      true;
-
-
-    submitButton.style.opacity =
-      "0.6";
-
-
-    message.textContent =
-      "⏳ Inapakia picha...";
-
-
-    try {
-
-      /*
-        Upload picha moja kwa moja
-        kwenda Supabase Storage
-      */
-
-      const imageUrl =
-        await uploadMarketplaceImage(
-          imageFile,
-          session.user.id
-        );
-
-
-      message.textContent =
-        "⏳ Inaweka kikosi sokoni...";
-
-
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("team_marketplace")
-          .insert([
-
-            {
-              user_id:
-                session.user.id,
-
-              seller_email:
-                session.user.email,
-
-              team_name:
-                teamName,
-
-              game_name:
-                gameName,
-
-              platform:
-                platform,
-
-              price:
-                Number(price),
-
-              image:
-                imageUrl,
-
-              description:
-                description ||
-                null,
-
-              /*
-                Tuna-save namba ya
-                WhatsApp katika format
-                ya 255XXXXXXXXX.
-              */
-
-              contact:
-                whatsappNumber
-
-            }
-
-          ]);
-
-
-      if (error) {
-
-        console.error(
-          "SELL TEAM ERROR:",
-          error
-        );
-
-
-        message.textContent =
-          "❌ " +
-          error.message;
-
-        return;
-
-      }
-
-
-      message.textContent =
-        "✅ Kikosi kimewekwa sokoni!";
-
-
-      document.getElementById(
-        "teamName"
-      ).value = "";
-
-
-      document.getElementById(
-        "gameName"
-      ).value = "";
-
-
-      document.getElementById(
-        "teamPlatform"
-      ).value = "";
-
-
-      document.getElementById(
-        "teamPrice"
-      ).value = "";
-
-
-      document.getElementById(
-        "teamImageFile"
-      ).value = "";
-
-
-      document.getElementById(
-        "teamImagePreview"
-      ).src = "";
-
-
-      document.getElementById(
-        "teamImagePreview"
-      ).style.display =
-        "none";
-
-
-      document.getElementById(
-        "teamDescription"
-      ).value = "";
-
-
-      document.getElementById(
-        "teamContact"
-      ).value = "";
-
-
-      await loadMarketplace();
-
-
-      setTimeout(function() {
-
-        document.getElementById(
-          "sellTeamForm"
-        ).style.display =
-          "none";
-
-        message.textContent = "";
-
-      }, 1200);
-
-
-    } catch (error) {
-
-      console.error(
-        "SELL TEAM CATCH:",
-        error
-      );
-
-
-      message.textContent =
-        "❌ " +
-        error.message;
-
-    } finally {
-
-      submitButton.disabled =
-        false;
-
-      submitButton.style.opacity =
-        "1";
-
-    }
-
-  }
-
-
-  /* =========================
-     CONTACT SELLER
-  ========================= */
-
-  function contactSellerEncoded(
-    encodedContact
-  ) {
-
-    let contact = "";
-
-
-    try {
-
-      contact =
-        decodeURIComponent(
-          encodedContact
-        );
-
-    } catch (error) {
-
-      contact =
-        encodedContact;
-
-    }
-
-
-    contact =
-      contact.trim();
-
-
-    if (!contact) {
-
-      alert(
-        "❌ Seller hajaweka namba ya WhatsApp."
-      );
-
-      return;
-
-    }
-
-
-    const number =
-      normalizeTanzaniaNumber(
-        contact
-      );
-
-
-    if (!number) {
-
-      alert(
-        "❌ Namba ya seller si sahihi."
-      );
-
-      return;
-
-    }
-
-
-    const message =
-      encodeURIComponent(
-        "Habari, nimeona kikosi chako kwenye Danygama Games Marketplace. Niko interested kukinunua."
-      );
-
-
-    const whatsappURL =
-      "https://wa.me/" +
-      number +
-      "?text=" +
-      message;
-
-
-    window.open(
-      whatsappURL,
-      "_blank"
-    );
-
-  }
-
-
-  /* =========================
-     HELP / ADMIN WHATSAPP
-  ========================= */
-
-  function contactAdmin() {
-
-    /*
-      HII NI NAMBA YA ADMIN
-      NA SI NAMBA YA SELLER.
-    */
-
-    const adminNumber =
-      "255786538998";
-
-
-    const message =
-      encodeURIComponent(
-        "Habari Danygama Games Admin, nahitaji msaada."
-      );
-
-
-    const whatsappURL =
-      "https://wa.me/" +
-      adminNumber +
-      "?text=" +
-      message;
-
-
-    window.open(
-      whatsappURL,
-      "_blank"
-    );
-
-  }
-
-
-  /* =========================
-     SECURITY
-  ========================= */
-
-  function escapeHTML(value) {
-
-    const div =
-      document.createElement(
-        "div"
-      );
-
-
-    div.textContent =
-      value ?? "";
-
-
-    return div.innerHTML;
-
-  }
-
-
-  /* =========================
-     START
-  ========================= */
-
-  loadGames();
-
-  updateAuthUI();
-
-
-  /* =========================
-     AUTH STATE
-  ========================= */
-
-  supabaseClient.auth
-    .onAuthStateChange(
-      function() {
-
-        updateAuthUI();
-
-      }
-    );
+}
+);
 
 </script>
 
