@@ -107,6 +107,12 @@
       border-top: 1px solid #303a4e;
       margin: 25px 0;
     }
+
+    .link-title {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -115,6 +121,8 @@
 <div class="box">
 
   <h1>🎮 DANYGAMA GAMES</h1>
+
+  <!-- LOGIN -->
 
   <div id="login">
 
@@ -132,12 +140,16 @@
       placeholder="Password"
     >
 
-    <button onclick="login()">LOGIN</button>
+    <button onclick="login()">
+      LOGIN
+    </button>
 
     <p id="loginMessage" class="message"></p>
 
   </div>
 
+
+  <!-- ADMIN PANEL -->
 
   <div id="panel">
 
@@ -188,11 +200,41 @@
 
     <img id="preview">
 
+
+    <!-- DOWNLOAD LINKS -->
+
+    <label class="link-title">
+      🔗 Download Link 1
+    </label>
+
     <input
-      id="url"
+      id="download_url_1"
       type="url"
-      placeholder="Download URL"
+      placeholder="Weka Download Link 1"
     >
+
+
+    <label class="link-title">
+      🔗 Download Link 2
+    </label>
+
+    <input
+      id="download_url_2"
+      type="url"
+      placeholder="Weka Download Link 2"
+    >
+
+
+    <label class="link-title">
+      🔗 Download Link 3
+    </label>
+
+    <input
+      id="download_url_3"
+      type="url"
+      placeholder="Weka Download Link 3"
+    >
+
 
     <button onclick="addGame()">
       💾 SAVE GAME
@@ -227,6 +269,8 @@ const supabaseClient =
     SUPABASE_KEY
   );
 
+
+/* LOGIN */
 
 async function login() {
 
@@ -267,6 +311,8 @@ async function login() {
 }
 
 
+/* SHOW PANEL */
+
 function showPanel() {
 
   document.getElementById("login").style.display =
@@ -279,6 +325,8 @@ function showPanel() {
 }
 
 
+/* LOGOUT */
+
 async function logout() {
 
   await supabaseClient.auth.signOut();
@@ -290,6 +338,8 @@ async function logout() {
     "block";
 }
 
+
+/* IMAGE PREVIEW */
 
 function previewImage(event) {
 
@@ -311,6 +361,8 @@ function previewImage(event) {
     "block";
 }
 
+
+/* UPLOAD IMAGE */
 
 async function uploadImage(file) {
 
@@ -356,6 +408,8 @@ async function uploadImage(file) {
 }
 
 
+/* ADD GAME */
+
 async function addGame() {
 
   const name =
@@ -370,69 +424,132 @@ async function addGame() {
   const category =
     document.getElementById("category").value.trim();
 
-  const url =
-       document.getElementById("url").value.trim();
+
+  const download1 =
+    document
+      .getElementById("download_url_1")
+      .value
+      .trim();
+
+  const download2 =
+    document
+      .getElementById("download_url_2")
+      .value
+      .trim();
+
+  const download3 =
+    document
+      .getElementById("download_url_3")
+      .value
+      .trim();
+
 
   const imageFile =
-    document.getElementById("imageFile").files[0];
+    document
+      .getElementById("imageFile")
+      .files[0];
+
 
   const message =
     document.getElementById("message");
+
+
+  /* LINK 1 NI LAZIMA */
 
   if (
     !name ||
     !platform ||
     !size ||
     !category ||
-    !url ||
+    !download1 ||
     !imageFile
   ) {
+
     message.textContent =
-      "⚠️ Jaza taarifa zote na chagua picha.";
+      "⚠️ Jaza taarifa zote, Download Link 1 na chagua picha.";
+
     return;
   }
+
 
   try {
 
     message.textContent =
       "⏳ Inapakia picha...";
 
+
     const imageUrl =
       await uploadImage(imageFile);
 
+
     message.textContent =
       "⏳ Inahifadhi game...";
+
 
     const { error } =
       await supabaseClient
         .from("games")
         .insert({
+
           name: name,
+
           platform: platform,
+
           size: size,
+
           category: category,
+
           image: imageUrl,
-          url: url
+
+          /* OLD LINK */
+          url: download1,
+
+          /* NEW LINKS */
+          download_url_1: download1,
+
+          download_url_2:
+            download2 || null,
+
+          download_url_3:
+            download3 || null
+
         });
+
 
     if (error) {
       throw error;
     }
 
+
     message.textContent =
-      "✅ Game na picha vimeongezwa!";
+      "✅ Game na download links vimeongezwa!";
+
+
+    /* CLEAR FORM */
 
     document.getElementById("name").value = "";
+
     document.getElementById("platform").value = "";
+
     document.getElementById("size").value = "";
+
     document.getElementById("category").value = "";
-    document.getElementById("url").value = "";
+
+    document.getElementById("download_url_1").value = "";
+
+    document.getElementById("download_url_2").value = "";
+
+    document.getElementById("download_url_3").value = "";
+
     document.getElementById("imageFile").value = "";
+
 
     document.getElementById("preview").style.display =
       "none";
 
+
     loadGames();
+
 
   } catch (error) {
 
@@ -443,6 +560,8 @@ async function addGame() {
 }
 
 
+/* LOAD GAMES */
+
 async function loadGames() {
 
   const container =
@@ -450,6 +569,7 @@ async function loadGames() {
 
   container.innerHTML =
     "⏳ Inapakia games...";
+
 
   const { data, error } =
     await supabaseClient
@@ -459,19 +579,27 @@ async function loadGames() {
         ascending: false
       });
 
+
   if (error) {
+
     container.innerHTML =
       "❌ " + error.message;
+
     return;
   }
+
 
   if (!data || data.length === 0) {
+
     container.innerHTML =
       "Hakuna games bado.";
+
     return;
   }
 
+
   container.innerHTML = "";
+
 
   data.forEach(function(game) {
 
@@ -481,14 +609,56 @@ async function loadGames() {
     div.className =
       "game";
 
+
     let imageHTML = "";
 
+
     if (game.image) {
+
       imageHTML =
         `<img src="${escapeHTML(game.image)}" alt="Game image">`;
+
     }
 
+
+    let linksHTML = "";
+
+
+    if (game.download_url_1) {
+
+      linksHTML += `
+        <div>
+          🔗 Download Link 1
+        </div>
+      `;
+
+    }
+
+
+    if (game.download_url_2) {
+
+      linksHTML += `
+        <div>
+          🔗 Download Link 2
+        </div>
+      `;
+
+    }
+
+
+    if (game.download_url_3) {
+
+      linksHTML += `
+        <div>
+          🔗 Download Link 3
+        </div>
+      `;
+
+    }
+
+
     div.innerHTML = `
+
       ${imageHTML}
 
       <strong>
@@ -512,12 +682,18 @@ async function loadGames() {
 
       <br><br>
 
+      ${linksHTML}
+
+      <br>
+
       <button
         class="delete"
         onclick="deleteGame(${game.id})">
         🗑️ DELETE
       </button>
+
     `;
+
 
     container.appendChild(div);
 
@@ -525,6 +701,8 @@ async function loadGames() {
 
 }
 
+
+/* DELETE GAME */
 
 async function deleteGame(id) {
 
@@ -534,22 +712,34 @@ async function deleteGame(id) {
     return;
   }
 
+
   const { error } =
     await supabaseClient
       .from("games")
       .delete()
       .eq("id", id);
 
+
   if (error) {
-    alert("❌ " + error.message);
+
+    alert(
+      "❌ " + error.message
+    );
+
     return;
   }
 
-  alert("✅ Game imefutwa.");
+
+  alert(
+    "✅ Game imefutwa."
+  );
+
 
   loadGames();
 }
 
+
+/* ESCAPE HTML */
 
 function escapeHTML(value) {
 
@@ -563,14 +753,20 @@ function escapeHTML(value) {
 }
 
 
+/* CHECK SESSION */
+
 async function checkSession() {
 
   const { data } =
     await supabaseClient.auth.getSession();
 
+
   if (data.session) {
+
     showPanel();
+
   }
+
 }
 
 
