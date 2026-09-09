@@ -44,6 +44,7 @@ background:#07111f;
 color:white;
 min-height:100vh;
 padding-bottom:85px;
+transition:background .25s,color .25s;
 }
 
 button,
@@ -62,7 +63,206 @@ text-decoration:none;
 color:inherit;
 }
 
-/* HEADER */
+
+/* =========================================================
+   LIGHT / WHITE THEME
+========================================================= */
+
+body.light-theme{
+background:#f4f7fb;
+color:#172033;
+}
+
+body.light-theme header{
+background:rgba(255,255,255,.96);
+border-bottom:1px solid #dce4ee;
+}
+
+body.light-theme .logo{
+color:#172033;
+}
+
+body.light-theme .header-user{
+color:#667085;
+}
+
+body.light-theme .hero{
+background:linear-gradient(135deg,#ffffff,#eaf3ff);
+border-color:#cbdbea;
+}
+
+body.light-theme .hero p{
+color:#53657a;
+}
+
+body.light-theme .search-box input{
+background:#ffffff;
+border-color:#ccd8e5;
+color:#172033;
+}
+
+body.light-theme .category-btn{
+background:#ffffff;
+color:#53657a;
+border-color:#ccd8e5;
+}
+
+body.light-theme .category-btn.active{
+background:#ffd21c;
+color:#111;
+border-color:#ffd21c;
+}
+
+body.light-theme .section-title span{
+color:#718096;
+}
+
+body.light-theme .game-card{
+background:#ffffff;
+border-color:#d9e2ec;
+box-shadow:0 4px 18px rgba(20,40,70,.06);
+}
+
+body.light-theme .game-card:hover{
+border-color:#6da5d8;
+box-shadow:0 10px 30px rgba(20,40,70,.12);
+}
+
+body.light-theme .game-image{
+background:#e8eef5;
+}
+
+body.light-theme .badge{
+background:#edf3f8;
+color:#52667a;
+}
+
+body.light-theme .game-size{
+color:#718096;
+}
+
+body.light-theme .details-card{
+background:#ffffff;
+border-color:#d9e2ec;
+}
+
+body.light-theme .details-description{
+color:#52667a;
+}
+
+body.light-theme .empty{
+background:#ffffff;
+border-color:#cbd8e5;
+color:#718096;
+}
+
+body.light-theme .tiktok-card{
+background:linear-gradient(145deg,#ffffff,#f0f4f8);
+border-color:#d7e0e9;
+}
+
+body.light-theme .tiktok-card p{
+color:#66778a;
+}
+
+body.light-theme .form-card{
+background:#ffffff;
+border-color:#d9e2ec;
+}
+
+body.light-theme .form-group label{
+color:#66778a;
+}
+
+body.light-theme .form-group input,
+body.light-theme .form-group textarea,
+body.light-theme .form-group select{
+background:#f8fafc;
+border-color:#ccd8e5;
+color:#172033;
+}
+
+body.light-theme .market-card{
+background:#ffffff;
+border-color:#d9e2ec;
+}
+
+body.light-theme .market-card img{
+background:#e8eef5;
+}
+
+body.light-theme .market-seller{
+color:#718096;
+}
+
+body.light-theme .auth-box{
+background:#ffffff;
+border-color:#d9e2ec;
+}
+
+body.light-theme .auth-switch{
+color:#66778a;
+}
+
+body.light-theme .account-card{
+background:#ffffff;
+border-color:#d9e2ec;
+}
+
+body.light-theme .account-row{
+border-bottom-color:#e1e7ee;
+}
+
+body.light-theme .help-card{
+background:#ffffff;
+border-color:#d9e2ec;
+}
+
+body.light-theme .help-card p{
+color:#66778a;
+}
+
+body.light-theme .bottom-nav{
+background:rgba(255,255,255,.98);
+border-top-color:#d9e2ec;
+}
+
+body.light-theme .nav-btn{
+color:#718096;
+}
+
+body.light-theme .nav-btn.active{
+color:#d39e00;
+}
+
+body.light-theme .modal{
+background:rgba(15,23,42,.55);
+}
+
+body.light-theme .modal-box{
+background:#ffffff;
+border-color:#d9e2ec;
+}
+
+body.light-theme .modal-close{
+background:#edf2f7;
+color:#172033;
+}
+
+body.light-theme .modal-description{
+color:#52667a;
+}
+
+body.light-theme .toast{
+background:#ffffff;
+border-color:#d9e2ec;
+color:#172033;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 header{
 position:sticky;
@@ -71,7 +271,7 @@ z-index:1000;
 background:rgba(5,13,25,.96);
 backdrop-filter:blur(12px);
 border-bottom:1px solid #17304d;
-padding:14px 15px;
+padding:12px 15px;
 }
 
 .header-inner{
@@ -93,12 +293,45 @@ color:#fff;
 color:#ffd21c;
 }
 
+.header-right{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
 .header-user{
 font-size:13px;
 color:#9eb2c8;
 }
 
-/* PAGE */
+.theme-toggle{
+border:1px solid #36516b;
+background:#13253a;
+color:white;
+border-radius:12px;
+padding:9px 11px;
+font-size:12px;
+font-weight:900;
+display:flex;
+align-items:center;
+gap:5px;
+transition:.2s;
+}
+
+.theme-toggle:hover{
+transform:translateY(-2px);
+}
+
+body.light-theme .theme-toggle{
+background:#f0f4f8;
+border-color:#ccd8e5;
+color:#172033;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
 
 .page{
 display:none;
@@ -111,7 +344,10 @@ padding:18px 15px;
 display:block;
 }
 
-/* HERO */
+
+/* =========================================================
+   HERO
+========================================================= */
 
 .hero{
 background:
@@ -156,7 +392,10 @@ flex-wrap:wrap;
 margin-top:20px;
 }
 
-/* BUTTONS */
+
+/* =========================================================
+   BUTTONS
+========================================================= */
 
 .btn{
 border:0;
@@ -207,7 +446,10 @@ color:white;
 border:1px solid #444;
 }
 
-/* SEARCH */
+
+/* =========================================================
+   SEARCH
+========================================================= */
 
 .search-box{
 display:flex;
@@ -229,7 +471,10 @@ outline:none;
 border-color:#298be0;
 }
 
-/* CATEGORIES */
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
 
 .categories{
 display:flex;
@@ -256,7 +501,10 @@ border-color:#ffd21c;
 font-weight:bold;
 }
 
-/* SECTION */
+
+/* =========================================================
+   SECTION
+========================================================= */
 
 .section-title{
 display:flex;
@@ -275,7 +523,10 @@ font-size:12px;
 color:#8098ae;
 }
 
-/* GAME GRID */
+
+/* =========================================================
+   GAME GRID
+========================================================= */
 
 .game-grid{
 display:grid;
@@ -343,7 +594,10 @@ grid-template-columns:1fr;
 gap:7px;
 }
 
-/* DETAILS */
+
+/* =========================================================
+   DETAILS
+========================================================= */
 
 .details-wrap{
 max-width:850px;
@@ -410,7 +664,10 @@ background:#19a463;
 background:#8d52d9;
 }
 
-/* EMPTY */
+
+/* =========================================================
+   EMPTY
+========================================================= */
 
 .empty{
 background:#0d1b2b;
@@ -421,7 +678,10 @@ text-align:center;
 color:#839ab0;
 }
 
-/* TIKTOK */
+
+/* =========================================================
+   TIKTOK
+========================================================= */
 
 .tiktok-card{
 background:linear-gradient(145deg,#0b1624,#101f31);
@@ -475,7 +735,10 @@ font-size:35px;
 margin:0 auto 15px;
 }
 
-/* MARKETPLACE */
+
+/* =========================================================
+   MARKETPLACE
+========================================================= */
 
 .form-card{
 background:#0d1b2b;
@@ -558,7 +821,10 @@ color:#91a7bb;
 margin-bottom:10px;
 }
 
-/* AUTH */
+
+/* =========================================================
+   AUTH
+========================================================= */
 
 .auth-box{
 max-width:450px;
@@ -587,7 +853,10 @@ color:#ffd21c;
 font-weight:bold;
 }
 
-/* ACCOUNT */
+
+/* =========================================================
+   ACCOUNT
+========================================================= */
 
 .account-card{
 background:#0d1b2b;
@@ -610,7 +879,10 @@ border-bottom:1px solid #1c344a;
 border-bottom:0;
 }
 
-/* HELP */
+
+/* =========================================================
+   HELP
+========================================================= */
 
 .help-card{
 background:#0d1b2b;
@@ -629,7 +901,10 @@ color:#9db0c3;
 line-height:1.7;
 }
 
-/* BOTTOM NAV */
+
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
 
 .bottom-nav{
 position:fixed;
@@ -665,7 +940,10 @@ font-size:21px;
 color:#ffd21c;
 }
 
-/* MODAL */
+
+/* =========================================================
+   MODAL
+========================================================= */
 
 .modal{
 display:none;
@@ -730,7 +1008,10 @@ white-space:pre-line;
 margin-top:15px;
 }
 
-/* LOADING */
+
+/* =========================================================
+   LOADING
+========================================================= */
 
 .loading{
 text-align:center;
@@ -738,7 +1019,10 @@ padding:40px;
 color:#8ba3b8;
 }
 
-/* TOAST */
+
+/* =========================================================
+   TOAST
+========================================================= */
 
 .toast{
 position:fixed;
@@ -763,9 +1047,25 @@ opacity:1;
 transform:translateX(-50%) translateY(0);
 }
 
-/* RESPONSIVE */
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
 @media(max-width:600px){
+
+.logo{
+font-size:17px;
+}
+
+.header-user{
+display:none;
+}
+
+.theme-toggle{
+padding:8px 9px;
+font-size:11px;
+}
 
 .hero h1{
 font-size:27px;
@@ -818,7 +1118,10 @@ border-radius:18px 18px 0 0;
 
 }
 
-/* HIDE */
+
+/* =========================================================
+   HIDE
+========================================================= */
 
 .hidden{
 display:none!important;
@@ -838,8 +1141,20 @@ display:none!important;
 🎮 DANYGAMA <span>GAMES</span>
 </div>
 
+<div class="header-right">
+
 <div class="header-user" id="headerUser">
 Guest
+</div>
+
+<button
+id="themeToggle"
+class="theme-toggle"
+onclick="toggleTheme()"
+>
+🌙 DARK
+</button>
+
 </div>
 
 </div>
@@ -1480,10 +1795,8 @@ class="nav-btn active"
 data-page="homePage"
 onclick="showPage('homePage')"
 >
-
 <span class="icon">🏠</span>
 Home
-
 </button>
 
 
@@ -1492,10 +1805,8 @@ class="nav-btn"
 data-page="gamesPage"
 onclick="showPage('gamesPage')"
 >
-
 <span class="icon">🎮</span>
 Games
-
 </button>
 
 
@@ -1504,10 +1815,8 @@ class="nav-btn"
 data-page="marketPage"
 onclick="showPage('marketPage')"
 >
-
 <span class="icon">🛒</span>
 Market
-
 </button>
 
 
@@ -1516,10 +1825,8 @@ class="nav-btn"
 data-page="updatesPage"
 onclick="showPage('updatesPage')"
 >
-
 <span class="icon">🆕</span>
 Updates
-
 </button>
 
 
@@ -1528,10 +1835,8 @@ class="nav-btn"
 data-page="tiktokPage"
 onclick="showPage('tiktokPage')"
 >
-
 <span class="icon">🎵</span>
 TikTok
-
 </button>
 
 
@@ -1540,10 +1845,8 @@ class="nav-btn"
 data-page="helpPage"
 onclick="showPage('helpPage')"
 >
-
 <span class="icon">❓</span>
 Help
-
 </button>
 
 
@@ -1552,10 +1855,8 @@ class="nav-btn"
 data-page="accountPage"
 onclick="showPage('accountPage')"
 >
-
 <span class="icon">👤</span>
 Account
-
 </button>
 
 </nav>
@@ -1598,6 +1899,89 @@ let allGames = [];
 let currentCategory = "all";
 
 let currentUser = null;
+
+
+/* =========================================================
+   THEME
+========================================================= */
+
+function applyTheme(){
+
+const savedTheme =
+localStorage.getItem("danygama_theme");
+
+const button =
+document.getElementById("themeToggle");
+
+
+if(savedTheme === "light"){
+
+document.body.classList.add("light-theme");
+
+if(button){
+
+button.innerHTML =
+"🌙 DARK";
+
+}
+
+}else{
+
+document.body.classList.remove("light-theme");
+
+if(button){
+
+button.innerHTML =
+"☀️ WHITE";
+
+}
+
+}
+
+}
+
+
+function toggleTheme(){
+
+const isLight =
+document.body.classList.contains(
+"light-theme"
+);
+
+
+if(isLight){
+
+document.body.classList.remove(
+"light-theme"
+);
+
+localStorage.setItem(
+"danygama_theme",
+"dark"
+);
+
+}else{
+
+document.body.classList.add(
+"light-theme"
+);
+
+localStorage.setItem(
+"danygama_theme",
+"light"
+);
+
+}
+
+
+applyTheme();
+
+}
+
+
+/* Apply saved theme immediately */
+
+applyTheme();
 
 
 /* =========================================================
@@ -1682,18 +2066,6 @@ function getDownloadLinks(game){
 const links = [];
 
 
-/*
-LINK 1
-
-New column:
-download_url_1
-
-Old games:
-url
-
-The old url is used as fallback.
-*/
-
 const link1 =
 
 (
@@ -1735,10 +2107,6 @@ className:""
 }
 
 
-/*
-LINK 2
-*/
-
 if(
 game.download_url_2 &&
 String(game.download_url_2).trim()
@@ -1758,10 +2126,6 @@ className:"part2"
 
 }
 
-
-/*
-LINK 3
-*/
 
 if(
 game.download_url_3 &&
@@ -1858,11 +2222,6 @@ game.description
 
 }
 
-
-/*
-Fallback description for old games
-that do not have a description column.
-*/
 
 return `
 ${game.name || "This game"} ni game inayopatikana
@@ -2093,10 +2452,6 @@ String(value || "")
 .toLowerCase()
 .trim();
 
-
-/*
-Keep both search fields synchronized.
-*/
 
 const gameSearch =
 document.getElementById("gameSearch");
@@ -2336,10 +2691,6 @@ return;
 }
 
 
-/*
-Show latest/recommended games.
-*/
-
 const latest =
 games.slice(0,8);
 
@@ -2458,10 +2809,6 @@ document.getElementById(
 getGameDescription(game);
 
 
-/*
-DOWNLOAD BUTTONS
-*/
-
 const downloadContainer =
 document.getElementById(
 "modalDownloads"
@@ -2534,10 +2881,6 @@ document.body.style.overflow =
 
 }
 
-
-/*
-Close modal by clicking outside.
-*/
 
 document
 .getElementById("gameModal")
@@ -3140,14 +3483,6 @@ return "";
 }
 
 
-/*
-Tanzania local format:
-07XXXXXXXX
-
-Convert to:
-2557XXXXXXXX
-*/
-
 if(
 value.startsWith("0") &&
 value.length >= 9
@@ -3159,10 +3494,6 @@ value.substring(1);
 
 }
 
-
-/*
-If user entered 7XXXXXXXX
-*/
 
 if(
 value.startsWith("7") &&
@@ -3269,10 +3600,6 @@ showToast(
 
 try{
 
-/*
-Unique filename
-*/
-
 const extension =
 imageFile.name
 .split(".")
@@ -3282,10 +3609,6 @@ imageFile.name
 const fileName =
 `marketplace/${currentUser.id}-${Date.now()}.${extension}`;
 
-
-/*
-Upload to game-images bucket
-*/
 
 const {
 error:uploadError
@@ -3315,10 +3638,6 @@ return;
 }
 
 
-/*
-Get public URL
-*/
-
 const {
 data:publicData
 } =
@@ -3331,10 +3650,6 @@ supabaseClient
 const imageUrl =
 publicData.publicUrl;
 
-
-/*
-Insert Marketplace item
-*/
 
 const {
 error:insertError
@@ -3375,10 +3690,6 @@ showToast(
 "✅ Posted successfully!"
 );
 
-
-/*
-Reset form
-*/
 
 document
 .getElementById("marketForm")
@@ -3425,6 +3736,8 @@ closeGameModal();
 ========================================================= */
 
 async function initialize(){
+
+applyTheme();
 
 await checkUser();
 
