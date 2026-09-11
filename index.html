@@ -7,7 +7,7 @@
 
 <title>Danygama Games</title>
 
-<meta name="description" content="Danygama Games - Download and discover games, updates, marketplace and gaming content.">
+<meta name="description" content="Danygama Games - Download games, discover updates, marketplace, comments and gaming community.">
 
 <!-- GOOGLE ANALYTICS -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6QDDJEXQVD"></script>
@@ -27,6 +27,10 @@ gtag("config","G-6QDDJEXQVD");
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+/* =========================================================
+   RESET
+========================================================= */
 
 *{
 box-sizing:border-box;
@@ -63,9 +67,13 @@ text-decoration:none;
 color:inherit;
 }
 
+.hidden{
+display:none!important;
+}
+
 
 /* =========================================================
-   LIGHT / WHITE THEME
+   LIGHT THEME
 ========================================================= */
 
 body.light-theme{
@@ -91,8 +99,13 @@ background:linear-gradient(135deg,#ffffff,#eaf3ff);
 border-color:#cbdbea;
 }
 
-body.light-theme .hero p{
-color:#53657a;
+body.light-theme .hero p,
+body.light-theme .tiktok-card p,
+body.light-theme .help-card p,
+body.light-theme .about-text,
+body.light-theme .comment-text,
+body.light-theme .chat-message-text{
+color:#52667a;
 }
 
 body.light-theme .search-box input{
@@ -117,18 +130,23 @@ body.light-theme .section-title span{
 color:#718096;
 }
 
-body.light-theme .game-card{
+body.light-theme .game-card,
+body.light-theme .details-card,
+body.light-theme .form-card,
+body.light-theme .market-card,
+body.light-theme .auth-box,
+body.light-theme .account-card,
+body.light-theme .help-card,
+body.light-theme .about-card,
+body.light-theme .comments-card,
+body.light-theme .chat-card{
 background:#ffffff;
 border-color:#d9e2ec;
 box-shadow:0 4px 18px rgba(20,40,70,.06);
 }
 
-body.light-theme .game-card:hover{
-border-color:#6da5d8;
-box-shadow:0 10px 30px rgba(20,40,70,.12);
-}
-
-body.light-theme .game-image{
+body.light-theme .game-image,
+body.light-theme .market-card img{
 background:#e8eef5;
 }
 
@@ -137,13 +155,9 @@ background:#edf3f8;
 color:#52667a;
 }
 
-body.light-theme .game-size{
+body.light-theme .game-size,
+body.light-theme .market-seller{
 color:#718096;
-}
-
-body.light-theme .details-card{
-background:#ffffff;
-border-color:#d9e2ec;
 }
 
 body.light-theme .details-description{
@@ -156,70 +170,22 @@ border-color:#cbd8e5;
 color:#718096;
 }
 
-body.light-theme .tiktok-card{
-background:linear-gradient(145deg,#ffffff,#f0f4f8);
-border-color:#d7e0e9;
-}
-
-body.light-theme .tiktok-card p{
-color:#66778a;
-}
-
-body.light-theme .form-card{
-background:#ffffff;
-border-color:#d9e2ec;
-}
-
 body.light-theme .form-group label{
 color:#66778a;
 }
 
 body.light-theme .form-group input,
 body.light-theme .form-group textarea,
-body.light-theme .form-group select{
+body.light-theme .form-group select,
+body.light-theme .comment-form textarea,
+body.light-theme .chat-input{
 background:#f8fafc;
 border-color:#ccd8e5;
 color:#172033;
 }
 
-body.light-theme .market-card{
-background:#ffffff;
-border-color:#d9e2ec;
-}
-
-body.light-theme .market-card img{
-background:#e8eef5;
-}
-
-body.light-theme .market-seller{
-color:#718096;
-}
-
-body.light-theme .auth-box{
-background:#ffffff;
-border-color:#d9e2ec;
-}
-
-body.light-theme .auth-switch{
-color:#66778a;
-}
-
-body.light-theme .account-card{
-background:#ffffff;
-border-color:#d9e2ec;
-}
-
 body.light-theme .account-row{
 border-bottom-color:#e1e7ee;
-}
-
-body.light-theme .help-card{
-background:#ffffff;
-border-color:#d9e2ec;
-}
-
-body.light-theme .help-card p{
-color:#66778a;
 }
 
 body.light-theme .bottom-nav{
@@ -256,6 +222,17 @@ color:#52667a;
 body.light-theme .toast{
 background:#ffffff;
 border-color:#d9e2ec;
+color:#172033;
+}
+
+body.light-theme .comment-item,
+body.light-theme .chat-message{
+background:#f8fafc;
+border-color:#dce5ee;
+}
+
+body.light-theme .comment-user,
+body.light-theme .chat-user{
 color:#172033;
 }
 
@@ -302,6 +279,10 @@ gap:8px;
 .header-user{
 font-size:13px;
 color:#9eb2c8;
+max-width:180px;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
 }
 
 .theme-toggle{
@@ -312,14 +293,6 @@ border-radius:12px;
 padding:9px 11px;
 font-size:12px;
 font-weight:900;
-display:flex;
-align-items:center;
-gap:5px;
-transition:.2s;
-}
-
-.theme-toggle:hover{
-transform:translateY(-2px);
 }
 
 body.light-theme .theme-toggle{
@@ -382,7 +355,7 @@ color:#ffd21c;
 .hero p{
 color:#b7c8d9;
 line-height:1.6;
-max-width:650px;
+max-width:700px;
 }
 
 .hero-buttons{
@@ -875,10 +848,6 @@ padding:14px 0;
 border-bottom:1px solid #1c344a;
 }
 
-.account-row:last-child{
-border-bottom:0;
-}
-
 
 /* =========================================================
    HELP
@@ -903,6 +872,213 @@ line-height:1.7;
 
 
 /* =========================================================
+   ABOUT
+========================================================= */
+
+.about-card{
+background:#0d1b2b;
+border:1px solid #23415b;
+border-radius:20px;
+padding:22px;
+margin-bottom:15px;
+}
+
+.about-card h2{
+margin-bottom:12px;
+}
+
+.about-card h3{
+margin:18px 0 8px;
+color:#ffd21c;
+}
+
+.about-text{
+color:#b8c8d8;
+line-height:1.8;
+}
+
+.about-list{
+margin:12px 0 0 20px;
+line-height:1.9;
+color:#b8c8d8;
+}
+
+
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+.comments-card{
+background:#0d1b2b;
+border:1px solid #23415b;
+border-radius:20px;
+padding:20px;
+margin-bottom:18px;
+}
+
+.comment-form textarea{
+width:100%;
+min-height:110px;
+resize:vertical;
+background:#091624;
+border:1px solid #27435d;
+border-radius:12px;
+padding:13px;
+color:white;
+outline:none;
+margin-bottom:10px;
+}
+
+.comment-form textarea:focus,
+.chat-input:focus{
+border-color:#298be0;
+}
+
+.comments-list{
+display:grid;
+gap:12px;
+}
+
+.comment-item{
+background:#091624;
+border:1px solid #1e3851;
+border-radius:14px;
+padding:14px;
+}
+
+.comment-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:8px;
+}
+
+.comment-user{
+font-weight:900;
+color:white;
+}
+
+.comment-date{
+font-size:10px;
+color:#8098ae;
+}
+
+.comment-text{
+color:#b8c8d8;
+line-height:1.6;
+white-space:pre-line;
+word-break:break-word;
+}
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+.chat-card{
+background:#0d1b2b;
+border:1px solid #23415b;
+border-radius:20px;
+overflow:hidden;
+}
+
+.chat-header{
+padding:18px;
+border-bottom:1px solid #23415b;
+}
+
+.chat-header h2{
+margin-bottom:6px;
+}
+
+.chat-header p{
+color:#8fa6ba;
+font-size:13px;
+line-height:1.5;
+}
+
+.chat-messages{
+height:430px;
+overflow-y:auto;
+padding:15px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.chat-message{
+background:#091624;
+border:1px solid #1e3851;
+border-radius:14px;
+padding:11px 13px;
+max-width:90%;
+align-self:flex-start;
+}
+
+.chat-message.own{
+align-self:flex-end;
+background:#123a5d;
+border-color:#1f6598;
+}
+
+.chat-user{
+font-weight:900;
+font-size:12px;
+color:#ffd21c;
+margin-bottom:4px;
+}
+
+.chat-message-text{
+color:#d0dbe5;
+font-size:14px;
+line-height:1.55;
+white-space:pre-line;
+word-break:break-word;
+}
+
+.chat-time{
+font-size:9px;
+color:#8098ae;
+margin-top:5px;
+text-align:right;
+}
+
+.chat-login{
+padding:25px;
+text-align:center;
+color:#9db0c3;
+}
+
+.chat-input-area{
+display:flex;
+gap:8px;
+padding:13px;
+border-top:1px solid #23415b;
+}
+
+.chat-input{
+flex:1;
+background:#091624;
+border:1px solid #27435d;
+border-radius:12px;
+padding:12px;
+color:white;
+outline:none;
+}
+
+.chat-send{
+width:52px;
+border:0;
+border-radius:12px;
+background:#ffd21c;
+color:#111;
+font-size:20px;
+font-weight:900;
+}
+
+
+/* =========================================================
    BOTTOM NAV
 ========================================================= */
 
@@ -916,7 +1092,7 @@ background:rgba(5,13,24,.98);
 border-top:1px solid #203b55;
 z-index:2000;
 display:grid;
-grid-template-columns:repeat(7,1fr);
+grid-template-columns:repeat(10,1fr);
 padding:5px 3px;
 }
 
@@ -924,16 +1100,17 @@ padding:5px 3px;
 border:0;
 background:none;
 color:#7891a7;
-font-size:10px;
+font-size:9px;
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
 gap:3px;
+min-width:0;
 }
 
 .nav-btn .icon{
-font-size:21px;
+font-size:19px;
 }
 
 .nav-btn.active{
@@ -1089,19 +1266,27 @@ font-size:13px;
 }
 
 .bottom-nav{
-height:68px;
+height:70px;
 }
 
 .nav-btn{
-font-size:8px;
+font-size:7px;
 }
 
 .nav-btn .icon{
-font-size:18px;
+font-size:17px;
 }
 
 .details-content h1{
 font-size:23px;
+}
+
+.chat-messages{
+height:400px;
+}
+
+.chat-message{
+max-width:94%;
 }
 
 }
@@ -1111,20 +1296,11 @@ font-size:23px;
 .bottom-nav{
 left:50%;
 right:auto;
-width:700px;
+width:850px;
 transform:translateX(-50%);
 border-radius:18px 18px 0 0;
 }
 
-}
-
-
-/* =========================================================
-   HIDE
-========================================================= */
-
-.hidden{
-display:none!important;
 }
 
 </style>
@@ -1132,6 +1308,10 @@ display:none!important;
 </head>
 
 <body>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
 <header>
 
@@ -1152,7 +1332,7 @@ id="themeToggle"
 class="theme-toggle"
 onclick="toggleTheme()"
 >
-🌙 DARK
+☀️ WHITE
 </button>
 
 </div>
@@ -1162,7 +1342,9 @@ onclick="toggleTheme()"
 </header>
 
 
-<!-- HOME -->
+<!-- =========================================================
+     HOME
+========================================================= -->
 
 <section id="homePage" class="page active">
 
@@ -1185,6 +1367,10 @@ find updates and connect with the Danygama gaming community.
 
 <button class="btn btn-tiktok" onclick="showPage('tiktokPage')">
 🎵 MY TIKTOK
+</button>
+
+<button class="btn btn-blue" onclick="showPage('chatPage')">
+💬 COMMUNITY CHAT
 </button>
 
 </div>
@@ -1223,7 +1409,9 @@ Loading games...
 </section>
 
 
-<!-- GAMES -->
+<!-- =========================================================
+     GAMES
+========================================================= -->
 
 <section id="gamesPage" class="page">
 
@@ -1271,7 +1459,9 @@ Loading games...
 </section>
 
 
-<!-- MARKETPLACE -->
+<!-- =========================================================
+     MARKETPLACE
+========================================================= -->
 
 <section id="marketPage" class="page">
 
@@ -1404,7 +1594,9 @@ Loading Marketplace...
 </section>
 
 
-<!-- UPDATES -->
+<!-- =========================================================
+     UPDATES
+========================================================= -->
 
 <section id="updatesPage" class="page">
 
@@ -1429,7 +1621,283 @@ Loading updates...
 </section>
 
 
-<!-- HELP -->
+<!-- =========================================================
+     ABOUT
+========================================================= -->
+
+<section id="aboutPage" class="page">
+
+<div class="hero">
+
+<h1>ℹ️ ABOUT <span>DANYGAMA GAMES</span></h1>
+
+<p>
+Learn more about Danygama Games and our gaming community.
+</p>
+
+</div>
+
+
+<div class="about-card">
+
+<h2>🎮 What is Danygama Games?</h2>
+
+<p class="about-text">
+Danygama Games ni website ya gaming inayolenga kuwapa gamers
+sehemu moja ya kugundua games, updates, taarifa za games na
+kuungana na community ya gamers.
+</p>
+
+
+<h3>🎯 Our Goal</h3>
+
+<p class="about-text">
+Lengo letu ni kujenga gaming community ambayo gamers wanaweza
+kupata taarifa, kushirikiana, kutoa maoni na kuwasiliana
+na gamers wengine.
+</p>
+
+
+<h3>🔥 What You Can Do Here</h3>
+
+<ul class="about-list">
+
+<li>🎮 Kugundua na kuangalia games.</li>
+
+<li>⬇️ Kupata download links za games.</li>
+
+<li>🆕 Kuangalia game updates.</li>
+
+<li>🛒 Kutumia Team Marketplace.</li>
+
+<li>💬 Kutoa comments na maoni.</li>
+
+<li>👥 Kuchat na members wengine wa community.</li>
+
+<li>🎵 Kufuatilia Danygama kwenye TikTok.</li>
+
+</ul>
+
+</div>
+
+
+<div class="about-card">
+
+<h2>🤝 Danygama Gaming Community</h2>
+
+<p class="about-text">
+Community ni sehemu muhimu ya Danygama Games. Login kwenye
+account yako ili uweze kushiriki kwenye comments na
+Community Chat.
+</p>
+
+<div class="hero-buttons">
+
+<button
+class="btn btn-primary"
+onclick="showPage('chatPage')"
+>
+💬 OPEN CHAT
+</button>
+
+<button
+class="btn btn-blue"
+onclick="showPage('commentsPage')"
+>
+💭 COMMENTS
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     COMMENTS
+========================================================= -->
+
+<section id="commentsPage" class="page">
+
+<div class="hero">
+
+<h1>💬 <span>COMMENTS</span></h1>
+
+<p>
+Share your opinion about Danygama Games and read what other gamers
+are saying.
+</p>
+
+</div>
+
+
+<div class="comments-card">
+
+<h2 style="margin-bottom:14px;">
+📝 Leave Your Comment
+</h2>
+
+
+<div id="commentLoginBox" class="hidden">
+
+<p style="color:#9db0c3;line-height:1.6;margin-bottom:12px;">
+Login au Register ili uweze kutoa maoni.
+</p>
+
+<button
+class="btn btn-primary"
+onclick="showPage('accountPage')"
+>
+🔐 LOGIN / REGISTER
+</button>
+
+</div>
+
+
+<form
+id="commentForm"
+class="comment-form hidden"
+>
+
+<textarea
+id="commentText"
+maxlength="1000"
+placeholder="Andika maoni yako hapa..."
+required
+></textarea>
+
+
+<button
+class="btn btn-primary"
+type="submit"
+>
+📤 POST COMMENT
+</button>
+
+</form>
+
+</div>
+
+
+<div class="section-title">
+
+<h2>💭 Community Comments</h2>
+
+<span id="commentCount">
+0 Comments
+</span>
+
+</div>
+
+
+<div
+id="commentsList"
+class="comments-list"
+>
+
+<div class="loading">
+Loading comments...
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     COMMUNITY CHAT
+========================================================= -->
+
+<section id="chatPage" class="page">
+
+<div class="hero">
+
+<h1>👥 COMMUNITY <span>CHAT</span></h1>
+
+<p>
+Chat with other Danygama Games community members.
+Be respectful and keep the conversation about gaming.
+</p>
+
+</div>
+
+
+<div class="chat-card">
+
+<div class="chat-header">
+
+<h2>💬 Danygama Community Chat</h2>
+
+<p>
+Public community chat — messages can be seen by other registered users.
+</p>
+
+</div>
+
+
+<div
+id="chatMessages"
+class="chat-messages"
+>
+
+<div class="loading">
+Loading chat...
+</div>
+
+</div>
+
+
+<div
+id="chatLoginBox"
+class="chat-login hidden"
+>
+
+<p style="margin-bottom:12px;">
+Login au Register ili uweze kuingia kwenye Community Chat.
+</p>
+
+<button
+class="btn btn-primary"
+onclick="showPage('accountPage')"
+>
+🔐 LOGIN / REGISTER
+</button>
+
+</div>
+
+
+<form
+id="chatForm"
+class="chat-input-area hidden"
+>
+
+<input
+id="chatInput"
+class="chat-input"
+maxlength="500"
+placeholder="Andika ujumbe..."
+autocomplete="off"
+required
+>
+
+<button
+class="chat-send"
+type="submit"
+>
+➤
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     HELP
+========================================================= -->
 
 <section id="helpPage" class="page">
 
@@ -1483,6 +1951,30 @@ to advertise your gaming team.
 
 <div class="help-card">
 
+<h3>💬 Comments</h3>
+
+<p>
+Login to your account, open Comments and write your opinion.
+Your comment will be visible to the community.
+</p>
+
+</div>
+
+
+<div class="help-card">
+
+<h3>👥 Community Chat</h3>
+
+<p>
+Login to your account and open Community Chat to communicate
+with other registered gamers.
+</p>
+
+</div>
+
+
+<div class="help-card">
+
 <h3>🎵 TikTok</h3>
 
 <p>
@@ -1495,7 +1987,9 @@ account and follow the gaming content.
 </section>
 
 
-<!-- ACCOUNT -->
+<!-- =========================================================
+     ACCOUNT
+========================================================= -->
 
 <section id="accountPage" class="page">
 
@@ -1657,7 +2151,9 @@ onclick="logout()"
 </section>
 
 
-<!-- TIKTOK -->
+<!-- =========================================================
+     TIKTOK
+========================================================= -->
 
 <section id="tiktokPage" class="page">
 
@@ -1694,7 +2190,7 @@ gameplay and other gaming content.
 
 <h2>DANYGAMA</h2>
 
-<p style="margin-top:7px;color:#9baabd;">
+<p style="margin-top:7px;">
 Gaming • eFootball • Games • Updates
 </p>
 
@@ -1703,7 +2199,7 @@ Gaming • eFootball • Games • Updates
 
 <p>
 Hii ndiyo account rasmi ya TikTok ya Danygama.
-Bonyeza kitufe hapa chini kuifungua na kuona videos zako
+Bonyeza kitufe hapa chini kuifungua na kuona videos
 na content mpya.
 </p>
 
@@ -1723,7 +2219,9 @@ rel="noopener noreferrer"
 </section>
 
 
-<!-- GAME DETAILS MODAL -->
+<!-- =========================================================
+     GAME DETAILS MODAL
+========================================================= -->
 
 <div id="gameModal" class="modal">
 
@@ -1779,14 +2277,18 @@ class="download-list"
 </div>
 
 
-<!-- TOAST -->
+<!-- =========================================================
+     TOAST
+========================================================= -->
 
 <div id="toast" class="toast">
 Message
 </div>
 
 
-<!-- BOTTOM NAV -->
+<!-- =========================================================
+     BOTTOM NAV
+========================================================= -->
 
 <nav class="bottom-nav">
 
@@ -1832,6 +2334,36 @@ Updates
 
 <button
 class="nav-btn"
+data-page="aboutPage"
+onclick="showPage('aboutPage')"
+>
+<span class="icon">ℹ️</span>
+About
+</button>
+
+
+<button
+class="nav-btn"
+data-page="commentsPage"
+onclick="showPage('commentsPage')"
+>
+<span class="icon">💬</span>
+Comments
+</button>
+
+
+<button
+class="nav-btn"
+data-page="chatPage"
+onclick="showPage('chatPage')"
+>
+<span class="icon">👥</span>
+Chat
+</button>
+
+
+<button
+class="nav-btn"
 data-page="tiktokPage"
 onclick="showPage('tiktokPage')"
 >
@@ -1865,7 +2397,6 @@ Account
 <script>
 
 /* =========================================================
-   DANYGAMA GAMES
    SUPABASE CONFIGURATION
 ========================================================= */
 
@@ -1880,14 +2411,6 @@ supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
-
-
-/* =========================================================
-   TIKTOK
-========================================================= */
-
-const TIKTOK_PROFILE_URL =
-"https://www.tiktok.com/@danygama292";
 
 
 /* =========================================================
@@ -1913,16 +2436,12 @@ localStorage.getItem("danygama_theme");
 const button =
 document.getElementById("themeToggle");
 
-
 if(savedTheme === "light"){
 
 document.body.classList.add("light-theme");
 
 if(button){
-
-button.innerHTML =
-"🌙 DARK";
-
+button.innerHTML = "🌙 DARK";
 }
 
 }else{
@@ -1930,10 +2449,7 @@ button.innerHTML =
 document.body.classList.remove("light-theme");
 
 if(button){
-
-button.innerHTML =
-"☀️ WHITE";
-
+button.innerHTML = "☀️ WHITE";
 }
 
 }
@@ -1944,16 +2460,11 @@ button.innerHTML =
 function toggleTheme(){
 
 const isLight =
-document.body.classList.contains(
-"light-theme"
-);
-
+document.body.classList.contains("light-theme");
 
 if(isLight){
 
-document.body.classList.remove(
-"light-theme"
-);
+document.body.classList.remove("light-theme");
 
 localStorage.setItem(
 "danygama_theme",
@@ -1962,9 +2473,7 @@ localStorage.setItem(
 
 }else{
 
-document.body.classList.add(
-"light-theme"
-);
+document.body.classList.add("light-theme");
 
 localStorage.setItem(
 "danygama_theme",
@@ -1973,13 +2482,9 @@ localStorage.setItem(
 
 }
 
-
 applyTheme();
 
 }
-
-
-/* Apply saved theme immediately */
 
 applyTheme();
 
@@ -2006,10 +2511,9 @@ page.classList.add("active");
 }
 
 
-const navButtons =
-document.querySelectorAll(".nav-btn");
-
-navButtons.forEach(btn=>{
+document
+.querySelectorAll(".nav-btn")
+.forEach(btn=>{
 
 btn.classList.remove("active");
 
@@ -2034,6 +2538,14 @@ if(pageId === "accountPage"){
 updateAccountUI();
 }
 
+if(pageId === "commentsPage"){
+loadComments();
+}
+
+if(pageId === "chatPage"){
+loadChat();
+}
+
 }
 
 
@@ -2053,131 +2565,6 @@ toast.classList.add("show");
 setTimeout(()=>{
 toast.classList.remove("show");
 },3000);
-
-}
-
-
-/* =========================================================
-   DOWNLOAD LINKS
-========================================================= */
-
-function getDownloadLinks(game){
-
-const links = [];
-
-
-const link1 =
-
-(
-game.download_url_1 &&
-String(game.download_url_1).trim()
-)
-
-?
-
-String(game.download_url_1).trim()
-
-:
-
-(
-game.url &&
-String(game.url).trim()
-?
-
-String(game.url).trim()
-
-:
-
-""
-);
-
-
-if(link1){
-
-links.push({
-
-url:link1,
-
-label:"⬇️ DOWNLOAD PART 1",
-
-className:""
-
-});
-
-}
-
-
-if(
-game.download_url_2 &&
-String(game.download_url_2).trim()
-){
-
-links.push({
-
-url:String(
-game.download_url_2
-).trim(),
-
-label:"⬇️ DOWNLOAD PART 2",
-
-className:"part2"
-
-});
-
-}
-
-
-if(
-game.download_url_3 &&
-String(game.download_url_3).trim()
-){
-
-links.push({
-
-url:String(
-game.download_url_3
-).trim(),
-
-label:"⬇️ DOWNLOAD PART 3",
-
-className:"part3"
-
-});
-
-}
-
-
-return links;
-
-}
-
-
-/* =========================================================
-   GOOGLE ANALYTICS DOWNLOAD TRACKING
-========================================================= */
-
-function trackDownload(
-gameName,
-part
-){
-
-if(
-typeof gtag === "function"
-){
-
-gtag(
-"event",
-"download_game",
-{
-
-game_name:gameName,
-
-download_part:part
-
-}
-);
-
-}
 
 }
 
@@ -2206,6 +2593,96 @@ return String(value)
 
 
 /* =========================================================
+   DOWNLOAD LINKS
+========================================================= */
+
+function getDownloadLinks(game){
+
+const links = [];
+
+const link1 =
+(
+game.download_url_1 &&
+String(game.download_url_1).trim()
+)
+?
+String(game.download_url_1).trim()
+:
+(
+game.url &&
+String(game.url).trim()
+?
+String(game.url).trim()
+:
+""
+);
+
+if(link1){
+
+links.push({
+url:link1,
+label:"⬇️ DOWNLOAD PART 1",
+className:""
+});
+
+}
+
+
+if(
+game.download_url_2 &&
+String(game.download_url_2).trim()
+){
+
+links.push({
+url:String(game.download_url_2).trim(),
+label:"⬇️ DOWNLOAD PART 2",
+className:"part2"
+});
+
+}
+
+
+if(
+game.download_url_3 &&
+String(game.download_url_3).trim()
+){
+
+links.push({
+url:String(game.download_url_3).trim(),
+label:"⬇️ DOWNLOAD PART 3",
+className:"part3"
+});
+
+}
+
+return links;
+
+}
+
+
+/* =========================================================
+   DOWNLOAD TRACKING
+========================================================= */
+
+function trackDownload(gameName,part){
+
+if(typeof gtag === "function"){
+
+gtag(
+"event",
+"download_game",
+{
+game_name:gameName,
+download_part:part
+}
+);
+
+}
+
+}
+
+
+/* =========================================================
    GAME DESCRIPTION
 ========================================================= */
 
@@ -2216,12 +2693,9 @@ game.description &&
 String(game.description).trim()
 ){
 
-return String(
-game.description
-).trim();
+return String(game.description).trim();
 
 }
-
 
 return `
 ${game.name || "This game"} ni game inayopatikana
@@ -2256,7 +2730,8 @@ try{
 const {
 data,
 error
-} = await supabaseClient
+} =
+await supabaseClient
 .from("games")
 .select("*")
 .order("id",{ascending:false});
@@ -2283,7 +2758,6 @@ return;
 
 
 allGames = data || [];
-
 
 renderCategories();
 
@@ -2314,7 +2788,7 @@ grid.innerHTML = home.innerHTML;
 
 
 /* =========================================================
-   RENDER CATEGORIES
+   CATEGORIES
 ========================================================= */
 
 function renderCategories(){
@@ -2331,7 +2805,6 @@ allGames
 )
 ];
 
-
 categories.innerHTML =
 `
 <button
@@ -2341,7 +2814,6 @@ onclick="filterCategory('all',this)"
 All
 </button>
 `;
-
 
 unique.forEach(category=>{
 
@@ -2372,17 +2844,12 @@ categories.appendChild(button);
 
 
 /* =========================================================
-   FILTER CATEGORY
+   FILTER
 ========================================================= */
 
-function filterCategory(
-category,
-button
-){
+function filterCategory(category,button){
 
-currentCategory =
-category;
-
+currentCategory = category;
 
 document
 .querySelectorAll(".category-btn")
@@ -2390,25 +2857,21 @@ document
 btn.classList.remove("active");
 });
 
-
 if(button){
 button.classList.add("active");
 }
 
+const searchInput =
+document.getElementById("gameSearch");
 
 const searchValue =
-document.getElementById("gameSearch")
+searchInput
 ?
-document.getElementById("gameSearch").value
-.toLowerCase()
-.trim()
+searchInput.value.toLowerCase().trim()
 :
 "";
 
-
-let games =
-allGames;
-
+let games = allGames;
 
 if(category !== "all"){
 
@@ -2422,7 +2885,6 @@ String(game.category || "")
 
 }
 
-
 if(searchValue){
 
 games =
@@ -2435,14 +2897,13 @@ String(game.name || "")
 
 }
 
-
 renderGames(games);
 
 }
 
 
 /* =========================================================
-   SEARCH GAMES
+   SEARCH
 ========================================================= */
 
 function searchGames(value){
@@ -2451,7 +2912,6 @@ const query =
 String(value || "")
 .toLowerCase()
 .trim();
-
 
 const gameSearch =
 document.getElementById("gameSearch");
@@ -2481,7 +2941,7 @@ homeSearch.value = value;
 
 
 let games =
-allGames.filter(game => {
+allGames.filter(game=>{
 
 const name =
 String(game.name || "")
@@ -2516,7 +2976,6 @@ String(game.category || "")
 
 }
 
-
 renderGames(games);
 
 }
@@ -2532,13 +2991,9 @@ const image =
 game.image &&
 String(game.image).trim()
 ?
-
 String(game.image).trim()
-
 :
-
 "https://via.placeholder.com/500x700/10243a/ffffff?text=Danygama+Games";
-
 
 const name =
 escapeHTML(game.name || "Unnamed Game");
@@ -2552,14 +3007,13 @@ escapeHTML(game.category || "Games");
 const size =
 escapeHTML(game.size || "Unknown");
 
-
 return `
 
 <div class="game-card">
 
 <img
 class="game-image"
-src="${image}"
+src="${escapeHTML(image)}"
 alt="${name}"
 loading="lazy"
 onerror="this.src='https://via.placeholder.com/500x700/10243a/ffffff?text=Danygama+Games'"
@@ -2595,7 +3049,7 @@ ${category}
 
 <button
 class="btn btn-blue"
-onclick="openGameDetails('${game.id}')"
+onclick="openGameDetails('${escapeHTML(game.id)}')"
 >
 ℹ️ VIEW DETAILS
 </button>
@@ -2623,14 +3077,9 @@ document.getElementById("gamesGrid");
 const count =
 document.getElementById("gameCount");
 
-
 if(count){
-
-count.textContent =
-`${games.length} Games`;
-
+count.textContent = `${games.length} Games`;
 }
-
 
 if(!games.length){
 
@@ -2647,11 +3096,8 @@ return;
 
 }
 
-
 grid.innerHTML =
-games
-.map(gameCard)
-.join("");
+games.map(gameCard).join("");
 
 }
 
@@ -2668,14 +3114,9 @@ document.getElementById("homeGames");
 const count =
 document.getElementById("gameCountHome");
 
-
 if(count){
-
-count.textContent =
-`${games.length} Games`;
-
+count.textContent = `${games.length} Games`;
 }
-
 
 if(!games.length){
 
@@ -2690,13 +3131,9 @@ return;
 
 }
 
-
-const latest =
-games.slice(0,8);
-
-
 container.innerHTML =
-latest
+games
+.slice(0,8)
 .map(gameCard)
 .join("");
 
@@ -2712,7 +3149,6 @@ function renderUpdates(games){
 const grid =
 document.getElementById("updatesGrid");
 
-
 if(!games.length){
 
 grid.innerHTML =
@@ -2726,7 +3162,6 @@ return;
 
 }
 
-
 grid.innerHTML =
 games
 .slice(0,12)
@@ -2737,7 +3172,7 @@ games
 
 
 /* =========================================================
-   OPEN GAME DETAILS
+   GAME DETAILS
 ========================================================= */
 
 function openGameDetails(id){
@@ -2749,44 +3184,28 @@ String(item.id)
 === String(id)
 );
 
-
 if(!game){
 
-showToast(
-"Game not found."
-);
+showToast("Game not found.");
 
 return;
 
 }
 
-
 const image =
 game.image &&
 String(game.image).trim()
 ?
-
 String(game.image).trim()
-
 :
-
 "https://via.placeholder.com/800x500/10243a/ffffff?text=Danygama+Games";
 
+document.getElementById("modalImage").src = image;
 
-document.getElementById(
-"modalImage"
-).src = image;
-
-
-document.getElementById(
-"modalName"
-).textContent =
+document.getElementById("modalName").textContent =
 game.name || "Game";
 
-
-document.getElementById(
-"modalMeta"
-).innerHTML = `
+document.getElementById("modalMeta").innerHTML = `
 
 <span class="badge">
 🎮 ${escapeHTML(game.platform || "Unknown")}
@@ -2802,22 +3221,14 @@ document.getElementById(
 
 `;
 
-
-document.getElementById(
-"modalDescription"
-).textContent =
+document.getElementById("modalDescription").textContent =
 getGameDescription(game);
 
-
 const downloadContainer =
-document.getElementById(
-"modalDownloads"
-);
-
+document.getElementById("modalDownloads");
 
 const links =
 getDownloadLinks(game);
-
 
 if(!links.length){
 
@@ -2830,12 +3241,9 @@ downloadContainer.innerHTML =
 
 }else{
 
-
 downloadContainer.innerHTML =
 links.map(
-(link,index)=>{
-
-return `
+(link,index)=>`
 
 <a
 class="download-btn ${link.className}"
@@ -2847,28 +3255,19 @@ onclick="trackDownload('${escapeHTML(game.name || "Game")}','Part ${index+1}')"
 ${link.label}
 </a>
 
-`;
-
-}
+`
 ).join("");
 
 }
-
 
 document
 .getElementById("gameModal")
 .classList.add("show");
 
-
-document.body.style.overflow =
-"hidden";
+document.body.style.overflow = "hidden";
 
 }
 
-
-/* =========================================================
-   CLOSE GAME MODAL
-========================================================= */
 
 function closeGameModal(){
 
@@ -2876,8 +3275,7 @@ document
 .getElementById("gameModal")
 .classList.remove("show");
 
-document.body.style.overflow =
-"";
+document.body.style.overflow = "";
 
 }
 
@@ -2888,12 +3286,8 @@ document
 "click",
 function(event){
 
-if(
-event.target === this
-){
-
+if(event.target === this){
 closeGameModal();
-
 }
 
 }
@@ -2912,9 +3306,7 @@ const {
 data,
 error
 } =
-await supabaseClient.auth
-.getSession();
-
+await supabaseClient.auth.getSession();
 
 if(error){
 
@@ -2924,14 +3316,12 @@ return;
 
 }
 
-
 currentUser =
 data.session
 ?
 data.session.user
 :
 null;
-
 
 updateAccountUI();
 
@@ -2941,6 +3331,39 @@ catch(error){
 console.error(error);
 
 }
+
+}
+
+
+/* =========================================================
+   USERNAME
+========================================================= */
+
+function getUserName(){
+
+if(!currentUser){
+return "Guest";
+}
+
+const metadata =
+currentUser.user_metadata || {};
+
+if(
+metadata.username &&
+String(metadata.username).trim()
+){
+
+return String(metadata.username).trim();
+
+}
+
+if(currentUser.email){
+
+return currentUser.email.split("@")[0];
+
+}
+
+return "User";
 
 }
 
@@ -2964,13 +3387,22 @@ const marketForm =
 document.getElementById("marketForm");
 
 const marketLoginMessage =
-document.getElementById(
-"marketLoginMessage"
-);
-
+document.getElementById("marketLoginMessage");
 
 const headerUser =
 document.getElementById("headerUser");
+
+const commentForm =
+document.getElementById("commentForm");
+
+const commentLoginBox =
+document.getElementById("commentLoginBox");
+
+const chatForm =
+document.getElementById("chatForm");
+
+const chatLoginBox =
+document.getElementById("chatLoginBox");
 
 
 if(currentUser){
@@ -2985,15 +3417,19 @@ marketForm.classList.remove("hidden");
 
 marketLoginMessage.classList.add("hidden");
 
+commentForm.classList.remove("hidden");
 
-document.getElementById(
-"accountEmail"
-).textContent =
+commentLoginBox.classList.add("hidden");
+
+chatForm.classList.remove("hidden");
+
+chatLoginBox.classList.add("hidden");
+
+document.getElementById("accountEmail").textContent =
 currentUser.email || "-";
 
-
 headerUser.textContent =
-currentUser.email || "Account";
+getUserName();
 
 }else{
 
@@ -3007,6 +3443,14 @@ marketForm.classList.add("hidden");
 
 marketLoginMessage.classList.remove("hidden");
 
+commentForm.classList.add("hidden");
+
+commentLoginBox.classList.remove("hidden");
+
+chatForm.classList.add("hidden");
+
+chatLoginBox.classList.remove("hidden");
+
 headerUser.textContent =
 "Guest";
 
@@ -3016,7 +3460,7 @@ headerUser.textContent =
 
 
 /* =========================================================
-   SHOW REGISTER
+   REGISTER / LOGIN BOX
 ========================================================= */
 
 function showRegister(){
@@ -3031,10 +3475,6 @@ document
 
 }
 
-
-/* =========================================================
-   SHOW LOGIN
-========================================================= */
 
 function showLogin(){
 
@@ -3061,23 +3501,13 @@ async function(event){
 
 event.preventDefault();
 
-
 const email =
-document.getElementById(
-"loginEmail"
-).value.trim();
-
+document.getElementById("loginEmail").value.trim();
 
 const password =
-document.getElementById(
-"loginPassword"
-).value;
+document.getElementById("loginPassword").value;
 
-
-showToast(
-"Logging in..."
-);
-
+showToast("Logging in...");
 
 const {
 data,
@@ -3087,33 +3517,27 @@ await supabaseClient.auth
 .signInWithPassword({
 
 email:email,
-
 password:password
 
 });
 
-
 if(error){
 
-showToast(
-"❌ " + error.message
-);
+showToast("❌ " + error.message);
 
 return;
 
 }
 
+currentUser = data.user;
 
-currentUser =
-data.user;
-
-
-showToast(
-"✅ Login successful!"
-);
-
+showToast("✅ Login successful!");
 
 updateAccountUI();
+
+loadComments();
+
+loadChat();
 
 }
 );
@@ -3131,18 +3555,11 @@ async function(event){
 
 event.preventDefault();
 
-
 const email =
-document.getElementById(
-"registerEmail"
-).value.trim();
-
+document.getElementById("registerEmail").value.trim();
 
 const password =
-document.getElementById(
-"registerPassword"
-).value;
-
+document.getElementById("registerPassword").value;
 
 if(password.length < 6){
 
@@ -3154,11 +3571,7 @@ return;
 
 }
 
-
-showToast(
-"Creating account..."
-);
-
+showToast("Creating account...");
 
 const {
 data,
@@ -3168,35 +3581,23 @@ await supabaseClient.auth
 .signUp({
 
 email:email,
-
 password:password
 
 });
 
-
 if(error){
 
-showToast(
-"❌ " + error.message
-);
+showToast("❌ " + error.message);
 
 return;
 
 }
 
-
 if(data.user){
-
-currentUser =
-data.user;
-
+currentUser = data.user;
 }
 
-
-showToast(
-"✅ Account created!"
-);
-
+showToast("✅ Account created!");
 
 updateAccountUI();
 
@@ -3213,30 +3614,25 @@ async function logout(){
 const {
 error
 } =
-await supabaseClient.auth
-.signOut();
-
+await supabaseClient.auth.signOut();
 
 if(error){
 
-showToast(
-"❌ " + error.message
-);
+showToast("❌ " + error.message);
 
 return;
 
 }
 
-
-currentUser =
-null;
-
+currentUser = null;
 
 updateAccountUI();
 
-showToast(
-"✅ Logged out."
-);
+showToast("✅ Logged out.");
+
+loadComments();
+
+loadChat();
 
 }
 
@@ -3269,10 +3665,7 @@ updateAccountUI();
 async function loadMarketplace(){
 
 const grid =
-document.getElementById(
-"marketGrid"
-);
-
+document.getElementById("marketGrid");
 
 grid.innerHTML =
 `
@@ -3280,7 +3673,6 @@ grid.innerHTML =
 Loading Marketplace...
 </div>
 `;
-
 
 try{
 
@@ -3297,7 +3689,6 @@ await supabaseClient
 ascending:false
 }
 );
-
 
 if(error){
 
@@ -3316,7 +3707,6 @@ return;
 
 }
 
-
 if(!data || !data.length){
 
 grid.innerHTML =
@@ -3330,11 +3720,8 @@ return;
 
 }
 
-
 grid.innerHTML =
-data
-.map(marketplaceCard)
-.join("");
+data.map(marketplaceCard).join("");
 
 }
 catch(error){
@@ -3363,13 +3750,9 @@ const image =
 item.image &&
 String(item.image).trim()
 ?
-
 String(item.image).trim()
-
 :
-
 "https://via.placeholder.com/600x400/10243a/ffffff?text=Danygama+Marketplace";
-
 
 const name =
 escapeHTML(
@@ -3378,19 +3761,16 @@ item.team_name ||
 "Marketplace Item"
 );
 
-
 const price =
 escapeHTML(
 item.price || "Contact seller"
 );
-
 
 const description =
 escapeHTML(
 item.description ||
 "No description"
 );
-
 
 const whatsapp =
 normalizeWhatsapp(
@@ -3399,13 +3779,12 @@ item.seller_whatsapp ||
 ""
 );
 
-
 return `
 
 <div class="market-card">
 
 <img
-src="${image}"
+src="${escapeHTML(image)}"
 alt="${name}"
 loading="lazy"
 onerror="this.src='https://via.placeholder.com/600x400/10243a/ffffff?text=Danygama+Marketplace'"
@@ -3430,23 +3809,19 @@ ${description}
 ${
 whatsapp
 ?
-
 `
 <a
 class="btn btn-green"
 style="width:100%"
-href="https://wa.me/${whatsapp}"
+href="https://wa.me/${escapeHTML(whatsapp)}"
 target="_blank"
 rel="noopener noreferrer"
 >
 💬 CONTACT SELLER
 </a>
 `
-
 :
-
 ""
-
 }
 
 </div>
@@ -3459,29 +3834,20 @@ rel="noopener noreferrer"
 
 
 /* =========================================================
-   NORMALIZE WHATSAPP
+   WHATSAPP
 ========================================================= */
 
 function normalizeWhatsapp(number){
 
 let value =
-String(number || "")
-.trim();
-
+String(number || "").trim();
 
 value =
-value.replace(
-/[^0-9]/g,
-""
-);
-
+value.replace(/[^0-9]/g,"");
 
 if(!value){
-
 return "";
-
 }
-
 
 if(
 value.startsWith("0") &&
@@ -3494,7 +3860,6 @@ value.substring(1);
 
 }
 
-
 if(
 value.startsWith("7") &&
 value.length >= 9
@@ -3505,7 +3870,6 @@ value =
 value;
 
 }
-
 
 return value;
 
@@ -3524,91 +3888,56 @@ async function(event){
 
 event.preventDefault();
 
-
 if(!currentUser){
 
-showToast(
-"Please login first."
-);
+showToast("Please login first.");
 
 return;
 
 }
 
-
 const name =
-document.getElementById(
-"marketName"
-).value.trim();
-
+document.getElementById("marketName").value.trim();
 
 const price =
-document.getElementById(
-"marketPrice"
-).value.trim();
-
+document.getElementById("marketPrice").value.trim();
 
 const description =
-document.getElementById(
-"marketDescription"
-).value.trim();
-
+document.getElementById("marketDescription").value.trim();
 
 const whatsapp =
 normalizeWhatsapp(
-document.getElementById(
-"marketWhatsapp"
-).value
+document.getElementById("marketWhatsapp").value
 );
 
-
 const imageFile =
-document.getElementById(
-"marketImage"
-).files[0];
-
+document.getElementById("marketImage").files[0];
 
 if(!imageFile){
 
-showToast(
-"Please select an image."
-);
+showToast("Please select an image.");
 
 return;
 
 }
 
+if(imageFile.size > 8 * 1024 * 1024){
 
-if(
-imageFile.size >
-8 * 1024 * 1024
-){
-
-showToast(
-"Image must be below 8MB."
-);
+showToast("Image must be below 8MB.");
 
 return;
 
 }
 
-
-showToast(
-"Uploading..."
-);
-
+showToast("Uploading...");
 
 try{
 
 const extension =
-imageFile.name
-.split(".")
-.pop();
-
+imageFile.name.split(".").pop();
 
 const fileName =
 `marketplace/${currentUser.id}-${Date.now()}.${extension}`;
-
 
 const {
 error:uploadError
@@ -3624,19 +3953,15 @@ upsert:false
 }
 );
 
-
 if(uploadError){
 
 console.error(uploadError);
 
-showToast(
-"❌ Image upload failed."
-);
+showToast("❌ Image upload failed.");
 
 return;
 
 }
-
 
 const {
 data:publicData
@@ -3646,10 +3971,8 @@ supabaseClient
 .from("game-images")
 .getPublicUrl(fileName);
 
-
 const imageUrl =
 publicData.publicUrl;
-
 
 const {
 error:insertError
@@ -3659,19 +3982,13 @@ await supabaseClient
 .insert({
 
 name:name,
-
 price:price,
-
 description:description,
-
 whatsapp:whatsapp,
-
 image:imageUrl,
-
 seller_id:currentUser.id
 
 });
-
 
 if(insertError){
 
@@ -3685,16 +4002,11 @@ return;
 
 }
 
-
-showToast(
-"✅ Posted successfully!"
-);
-
+showToast("✅ Posted successfully!");
 
 document
 .getElementById("marketForm")
 .reset();
-
 
 loadMarketplace();
 
@@ -3703,9 +4015,7 @@ catch(error){
 
 console.error(error);
 
-showToast(
-"❌ Something went wrong."
-);
+showToast("❌ Something went wrong.");
 
 }
 
@@ -3714,7 +4024,545 @@ showToast(
 
 
 /* =========================================================
-   ESCAPE KEY CLOSE MODAL
+   COMMENTS
+========================================================= */
+
+async function loadComments(){
+
+const list =
+document.getElementById("commentsList");
+
+const count =
+document.getElementById("commentCount");
+
+if(!list){
+return;
+}
+
+list.innerHTML =
+`
+<div class="loading">
+Loading comments...
+</div>
+`;
+
+try{
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("comments")
+.select("*")
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+if(error){
+
+console.error(error);
+
+list.innerHTML =
+`
+<div class="empty">
+❌ Comments table is not ready yet.
+<br><br>
+${escapeHTML(error.message)}
+</div>
+`;
+
+if(count){
+count.textContent = "0 Comments";
+}
+
+return;
+
+}
+
+if(!data || !data.length){
+
+list.innerHTML =
+`
+<div class="empty">
+💬 No comments yet. Be the first to comment!
+</div>
+`;
+
+if(count){
+count.textContent = "0 Comments";
+}
+
+return;
+
+}
+
+if(count){
+count.textContent =
+`${data.length} Comments`;
+}
+
+list.innerHTML =
+data
+.map(commentCard)
+.join("");
+
+}
+catch(error){
+
+console.error(error);
+
+list.innerHTML =
+`
+<div class="empty">
+❌ Error loading comments.
+</div>
+`;
+
+}
+
+}
+
+
+/* =========================================================
+   COMMENT CARD
+========================================================= */
+
+function commentCard(comment){
+
+const username =
+escapeHTML(
+comment.username ||
+comment.email ||
+"User"
+);
+
+const text =
+escapeHTML(
+comment.comment ||
+comment.content ||
+""
+);
+
+const date =
+comment.created_at
+?
+new Date(comment.created_at)
+.toLocaleString()
+:
+"";
+
+return `
+
+<div class="comment-item">
+
+<div class="comment-head">
+
+<div class="comment-user">
+👤 ${username}
+</div>
+
+<div class="comment-date">
+${escapeHTML(date)}
+</div>
+
+</div>
+
+<div class="comment-text">
+${text}
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================================
+   POST COMMENT
+========================================================= */
+
+document
+.getElementById("commentForm")
+.addEventListener(
+"submit",
+async function(event){
+
+event.preventDefault();
+
+if(!currentUser){
+
+showToast(
+"Please login first."
+);
+
+return;
+
+}
+
+const input =
+document.getElementById("commentText");
+
+const text =
+input.value.trim();
+
+if(!text){
+
+showToast(
+"Write a comment first."
+);
+
+return;
+
+}
+
+if(text.length > 1000){
+
+showToast(
+"Comment is too long."
+);
+
+return;
+
+}
+
+showToast("Posting comment...");
+
+const {
+error
+} =
+await supabaseClient
+.from("comments")
+.insert({
+
+user_id:currentUser.id,
+
+username:getUserName(),
+
+email:currentUser.email || "",
+
+comment:text
+
+});
+
+if(error){
+
+console.error(error);
+
+showToast(
+"❌ " + error.message
+);
+
+return;
+
+}
+
+input.value = "";
+
+showToast(
+"✅ Comment posted!"
+);
+
+loadComments();
+
+}
+);
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+async function loadChat(){
+
+const container =
+document.getElementById("chatMessages");
+
+if(!container){
+return;
+}
+
+container.innerHTML =
+`
+<div class="loading">
+Loading chat...
+</div>
+`;
+
+try{
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("community_messages")
+.select("*")
+.order(
+"created_at",
+{
+ascending:true
+}
+)
+.limit(100);
+
+if(error){
+
+console.error(error);
+
+container.innerHTML =
+`
+<div class="empty">
+❌ Chat table is not ready yet.
+<br><br>
+${escapeHTML(error.message)}
+</div>
+`;
+
+return;
+
+}
+
+if(!data || !data.length){
+
+container.innerHTML =
+`
+<div class="empty">
+👥 No messages yet. Start the conversation!
+</div>
+`;
+
+return;
+
+}
+
+container.innerHTML =
+data
+.map(chatMessageCard)
+.join("");
+
+scrollChatToBottom();
+
+}
+catch(error){
+
+console.error(error);
+
+container.innerHTML =
+`
+<div class="empty">
+❌ Error loading chat.
+</div>
+`;
+
+}
+
+}
+
+
+/* =========================================================
+   CHAT MESSAGE CARD
+========================================================= */
+
+function chatMessageCard(message){
+
+const username =
+escapeHTML(
+message.username ||
+message.email ||
+"User"
+);
+
+const text =
+escapeHTML(
+message.message ||
+""
+);
+
+const date =
+message.created_at
+?
+new Date(message.created_at)
+.toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
+})
+:
+"";
+
+const own =
+currentUser &&
+String(message.user_id)
+=== String(currentUser.id);
+
+return `
+
+<div class="chat-message ${own ? "own" : ""}">
+
+<div class="chat-user">
+👤 ${username}
+</div>
+
+<div class="chat-message-text">
+${text}
+</div>
+
+<div class="chat-time">
+${escapeHTML(date)}
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================================
+   SEND CHAT MESSAGE
+========================================================= */
+
+document
+.getElementById("chatForm")
+.addEventListener(
+"submit",
+async function(event){
+
+event.preventDefault();
+
+if(!currentUser){
+
+showToast(
+"Please login first."
+);
+
+return;
+
+}
+
+const input =
+document.getElementById("chatInput");
+
+const text =
+input.value.trim();
+
+if(!text){
+return;
+}
+
+if(text.length > 500){
+
+showToast(
+"Message is too long."
+);
+
+return;
+
+}
+
+const {
+error
+} =
+await supabaseClient
+.from("community_messages")
+.insert({
+
+user_id:currentUser.id,
+
+username:getUserName(),
+
+email:currentUser.email || "",
+
+message:text
+
+});
+
+if(error){
+
+console.error(error);
+
+showToast(
+"❌ " + error.message
+);
+
+return;
+
+}
+
+input.value = "";
+
+loadChat();
+
+}
+);
+
+
+/* =========================================================
+   CHAT SCROLL
+========================================================= */
+
+function scrollChatToBottom(){
+
+const container =
+document.getElementById("chatMessages");
+
+if(container){
+
+container.scrollTop =
+container.scrollHeight;
+
+}
+
+}
+
+
+/* =========================================================
+   REALTIME CHAT
+========================================================= */
+
+try{
+
+supabaseClient
+.channel("danygama-community-chat")
+.on(
+"postgres_changes",
+{
+event:"INSERT",
+schema:"public",
+table:"community_messages"
+},
+(payload)=>{
+
+const container =
+document.getElementById("chatMessages");
+
+if(!container){
+return;
+}
+
+loadChat();
+
+}
+)
+.subscribe();
+
+}
+catch(error){
+
+console.error(
+"Realtime chat error:",
+error
+);
+
+}
+
+
+/* =========================================================
+   ESCAPE KEY
 ========================================================= */
 
 document.addEventListener(
@@ -3744,6 +4592,10 @@ await checkUser();
 await loadGames();
 
 loadMarketplace();
+
+loadComments();
+
+loadChat();
 
 }
 
