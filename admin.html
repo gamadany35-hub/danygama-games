@@ -9,6 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -32,6 +33,10 @@
 
     h1 {
       text-align: center;
+    }
+
+    h2 {
+      margin-top: 10px;
     }
 
     input,
@@ -61,12 +66,28 @@
       cursor: pointer;
     }
 
+    button:hover {
+      opacity: 0.9;
+    }
+
     .logout {
       background: #444;
     }
 
     .delete {
       background: #d62828;
+    }
+
+    .approve {
+      background: #16a34a;
+    }
+
+    .refresh {
+      background: #2563eb;
+    }
+
+    .reject {
+      background: #b91c1c;
     }
 
     .game {
@@ -113,6 +134,67 @@
       margin-top: 10px;
       font-weight: bold;
     }
+
+    /* COIN ORDER */
+
+    .coin-order {
+      background: #20283a;
+      padding: 16px;
+      margin-top: 12px;
+      border-radius: 12px;
+      border: 1px solid #303a4e;
+    }
+
+    .coin-order.pending {
+      border-left: 5px solid #f59e0b;
+    }
+
+    .coin-order.approved {
+      border-left: 5px solid #16a34a;
+    }
+
+    .coin-order.rejected {
+      border-left: 5px solid #d62828;
+    }
+
+    .coin-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .coin-row {
+      margin: 7px 0;
+      word-break: break-word;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: bold;
+      background: #555;
+    }
+
+    .status.pending {
+      background: #f59e0b;
+      color: #111;
+    }
+
+    .status.approved {
+      background: #16a34a;
+    }
+
+    .status.rejected {
+      background: #d62828;
+    }
+
+    .small {
+      font-size: 12px;
+      color: #aeb7c7;
+    }
+
   </style>
 </head>
 
@@ -121,6 +203,7 @@
 <div class="box">
 
   <h1>🎮 DANYGAMA GAMES</h1>
+
 
   <!-- LOGIN -->
 
@@ -158,6 +241,37 @@
     <button class="logout" onclick="logout()">
       LOGOUT
     </button>
+
+
+    <!-- ========================= -->
+    <!-- COIN ORDERS -->
+    <!-- ========================= -->
+
+    <hr>
+
+    <h2>🪙 Coin Orders</h2>
+
+    <p class="small">
+      Hapa utaona malipo ya coins ambayo wateja wametuma.
+      Baada ya kuthibitisha malipo, bonyeza APPROVE.
+    </p>
+
+    <button
+      class="refresh"
+      onclick="loadCoinOrders()">
+      🔄 REFRESH ORDERS
+    </button>
+
+    <p id="coinMessage" class="message"></p>
+
+    <div id="coinOrders">
+      ⏳ Inapakia coin orders...
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- ADD GAME -->
+    <!-- ========================= -->
 
     <hr>
 
@@ -242,6 +356,9 @@
 
     <p id="message" class="message"></p>
 
+
+    <!-- GAMES -->
+
     <hr>
 
     <h2>🎮 Games Zilizopo</h2>
@@ -257,6 +374,10 @@
 
 <script>
 
+/* ========================================= */
+/* SUPABASE */
+/* ========================================= */
+
 const SUPABASE_URL =
   "https://octyeeoameulsdlaaqbc.supabase.co";
 
@@ -270,7 +391,9 @@ const supabaseClient =
   );
 
 
+/* ========================================= */
 /* LOGIN */
+/* ========================================= */
 
 async function login() {
 
@@ -284,34 +407,47 @@ async function login() {
     document.getElementById("loginMessage");
 
   if (!email || !password) {
+
     message.textContent =
       "⚠️ Weka email na password.";
+
     return;
   }
 
   message.textContent =
     "⏳ Inaingia...";
 
+
   const { error } =
     await supabaseClient.auth.signInWithPassword({
+
       email,
       password
+
     });
 
+
   if (error) {
+
     message.textContent =
       "❌ " + error.message;
+
     return;
   }
+
 
   message.textContent =
     "✅ Login successful!";
 
+
   showPanel();
+
 }
 
 
+/* ========================================= */
 /* SHOW PANEL */
+/* ========================================= */
 
 function showPanel() {
 
@@ -321,25 +457,279 @@ function showPanel() {
   document.getElementById("panel").style.display =
     "block";
 
+
   loadGames();
+
+  loadCoinOrders();
+
 }
 
 
+/* ========================================= */
 /* LOGOUT */
+/* ========================================= */
 
 async function logout() {
 
   await supabaseClient.auth.signOut();
+
 
   document.getElementById("panel").style.display =
     "none";
 
   document.getElementById("login").style.display =
     "block";
+
 }
 
 
+/* ========================================= */
+/* COIN ORDERS */
+/* ========================================= */
+
+async function loadCoinOrders() {
+
+  const container =
+    document.getElementById("coinOrders");
+
+  const message =
+    document.getElementById("coinMessage");
+
+
+  if (!container) {
+    return;
+  }
+
+
+  container.innerHTML =
+    "⏳ Inasoma coin orders...";
+
+  message.textContent = "";
+
+
+  const { data, error } =
+    await supabaseClient
+      .from("coin_orders")
+      .select("*")
+      .order("created_at", {
+        ascending: false
+      });
+
+
+  if (error) {
+
+    container.innerHTML =
+      "❌ " + escapeHTML(error.message);
+
+    return;
+  }
+
+
+  if (!data || data.length === 0) {
+
+    container.innerHTML =
+      "📭 Hakuna coin orders bado.";
+
+    return;
+  }
+
+
+  container.innerHTML = "";
+
+
+  data.forEach(function(order) {
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "coin-order " +
+      (order.status || "pending");
+
+
+    let statusClass =
+      order.status || "pending";
+
+
+    let statusText =
+      order.status === "approved"
+        ? "✅ APPROVED"
+        : order.status === "rejected"
+        ? "❌ REJECTED"
+        : "⏳ PENDING";
+
+
+    let approveButton = "";
+
+
+    if (order.status === "pending") {
+
+      approveButton = `
+
+        <button
+          class="approve"
+          onclick="approveCoinOrder('${escapeAttribute(order.id)}')">
+
+          ✅ APPROVE ${escapeHTML(
+            String(order.package_coins || "")
+          )} COINS
+
+        </button>
+
+      `;
+
+    }
+
+
+    div.innerHTML = `
+
+      <div class="coin-title">
+        🪙 COIN ORDER
+      </div>
+
+
+      <div class="coin-row">
+        👤 <strong>User ID:</strong><br>
+        ${escapeHTML(order.user_id || "")}
+      </div>
+
+
+      <div class="coin-row">
+        🪙 <strong>Coins:</strong>
+        ${escapeHTML(
+          String(order.package_coins || "")
+        )}
+      </div>
+
+
+      <div class="coin-row">
+        💰 <strong>Amount:</strong>
+        TSh ${escapeHTML(
+          String(order.amount_tzs || "")
+        )}
+      </div>
+
+
+      <div class="coin-row">
+        📱 <strong>Payment Number:</strong>
+        ${escapeHTML(
+          order.payment_number || "0786538998"
+        )}
+      </div>
+
+
+      <div class="coin-row">
+        🧾 <strong>Payment Reference:</strong><br>
+        ${escapeHTML(
+          order.payment_reference || "Hakuna reference"
+        )}
+      </div>
+
+
+      <div class="coin-row">
+        📅 <strong>Date:</strong>
+        ${order.created_at
+          ? escapeHTML(
+              new Date(order.created_at)
+                .toLocaleString()
+            )
+          : ""
+        }
+      </div>
+
+
+      <div class="coin-row">
+        <strong>Status:</strong>
+        <span class="status ${escapeHTML(statusClass)}">
+          ${statusText}
+        </span>
+      </div>
+
+
+      ${approveButton}
+
+    `;
+
+
+    container.appendChild(div);
+
+  });
+
+}
+
+
+/* ========================================= */
+/* APPROVE COIN ORDER */
+/* ========================================= */
+
+async function approveCoinOrder(orderId) {
+
+  if (!orderId) {
+    return;
+  }
+
+
+  const confirmApproval =
+    confirm(
+      "Una uhakika unataka ku-APPROVE order hii?\n\n" +
+      "Coins zitaongezwa kwenye account ya mteja."
+    );
+
+
+  if (!confirmApproval) {
+    return;
+  }
+
+
+  const message =
+    document.getElementById("coinMessage");
+
+
+  message.textContent =
+    "⏳ Ina-approve payment...";
+
+
+  const { data, error } =
+    await supabaseClient.rpc(
+      "approve_coin_order",
+      {
+        p_order_id: orderId
+      }
+    );
+
+
+  if (error) {
+
+    message.textContent =
+      "❌ " + error.message;
+
+    return;
+  }
+
+
+  if (!data || data.success !== true) {
+
+    message.textContent =
+      "❌ Approval haikukamilika.";
+
+    return;
+  }
+
+
+  message.textContent =
+    "✅ Payment approved! " +
+    data.coins_added +
+    " coins zimeongezwa.";
+
+
+  loadCoinOrders();
+
+}
+
+
+/* ========================================= */
 /* IMAGE PREVIEW */
+/* ========================================= */
 
 function previewImage(event) {
 
@@ -349,20 +739,28 @@ function previewImage(event) {
   const preview =
     document.getElementById("preview");
 
+
   if (!file) {
-    preview.style.display = "none";
+
+    preview.style.display =
+      "none";
+
     return;
   }
+
 
   preview.src =
     URL.createObjectURL(file);
 
   preview.style.display =
     "block";
+
 }
 
 
+/* ========================================= */
 /* UPLOAD IMAGE */
+/* ========================================= */
 
 async function uploadImage(file) {
 
@@ -370,13 +768,20 @@ async function uploadImage(file) {
     return null;
   }
 
+
   const extension =
     file.name.split(".").pop();
 
+
   const fileName =
-    Date.now() + "-" +
-    Math.random().toString(36).substring(2) +
-    "." + extension;
+    Date.now() +
+    "-" +
+    Math.random()
+      .toString(36)
+      .substring(2) +
+    "." +
+    extension;
+
 
   const filePath =
     "games/" + fileName;
@@ -386,10 +791,14 @@ async function uploadImage(file) {
     await supabaseClient
       .storage
       .from("game-images")
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false
-      });
+      .upload(
+        filePath,
+        file,
+        {
+          cacheControl: "3600",
+          upsert: false
+        }
+      );
 
 
   if (uploadError) {
@@ -401,28 +810,48 @@ async function uploadImage(file) {
     supabaseClient
       .storage
       .from("game-images")
-      .getPublicUrl(filePath);
+      .getPublicUrl(
+        filePath
+      );
 
 
   return data.publicUrl;
+
 }
 
 
+/* ========================================= */
 /* ADD GAME */
+/* ========================================= */
 
 async function addGame() {
 
   const name =
-    document.getElementById("name").value.trim();
+    document
+      .getElementById("name")
+      .value
+      .trim();
+
 
   const platform =
-    document.getElementById("platform").value.trim();
+    document
+      .getElementById("platform")
+      .value
+      .trim();
+
 
   const size =
-    document.getElementById("size").value.trim();
+    document
+      .getElementById("size")
+      .value
+      .trim();
+
 
   const category =
-    document.getElementById("category").value.trim();
+    document
+      .getElementById("category")
+      .value
+      .trim();
 
 
   const download1 =
@@ -431,11 +860,13 @@ async function addGame() {
       .value
       .trim();
 
+
   const download2 =
     document
       .getElementById("download_url_2")
       .value
       .trim();
+
 
   const download3 =
     document
@@ -451,7 +882,8 @@ async function addGame() {
 
 
   const message =
-    document.getElementById("message");
+    document
+      .getElementById("message");
 
 
   /* LINK 1 NI LAZIMA */
@@ -479,7 +911,9 @@ async function addGame() {
 
 
     const imageUrl =
-      await uploadImage(imageFile);
+      await uploadImage(
+        imageFile
+      );
 
 
     message.textContent =
@@ -502,10 +936,13 @@ async function addGame() {
           image: imageUrl,
 
           /* OLD LINK */
+
           url: download1,
 
           /* NEW LINKS */
-          download_url_1: download1,
+
+          download_url_1:
+            download1,
 
           download_url_2:
             download2 || null,
@@ -527,21 +964,29 @@ async function addGame() {
 
     /* CLEAR FORM */
 
-    document.getElementById("name").value = "";
+    document.getElementById("name").value =
+      "";
 
-    document.getElementById("platform").value = "";
+    document.getElementById("platform").value =
+      "";
 
-    document.getElementById("size").value = "";
+    document.getElementById("size").value =
+      "";
 
-    document.getElementById("category").value = "";
+    document.getElementById("category").value =
+      "";
 
-    document.getElementById("download_url_1").value = "";
+    document.getElementById("download_url_1").value =
+      "";
 
-    document.getElementById("download_url_2").value = "";
+    document.getElementById("download_url_2").value =
+      "";
 
-    document.getElementById("download_url_3").value = "";
+    document.getElementById("download_url_3").value =
+      "";
 
-    document.getElementById("imageFile").value = "";
+    document.getElementById("imageFile").value =
+      "";
 
 
     document.getElementById("preview").style.display =
@@ -557,15 +1002,19 @@ async function addGame() {
       "❌ " + error.message;
 
   }
+
 }
 
 
+/* ========================================= */
 /* LOAD GAMES */
+/* ========================================= */
 
 async function loadGames() {
 
   const container =
     document.getElementById("games");
+
 
   container.innerHTML =
     "⏳ Inapakia games...";
@@ -583,7 +1032,8 @@ async function loadGames() {
   if (error) {
 
     container.innerHTML =
-      "❌ " + error.message;
+      "❌ " +
+      escapeHTML(error.message);
 
     return;
   }
@@ -598,7 +1048,8 @@ async function loadGames() {
   }
 
 
-  container.innerHTML = "";
+  container.innerHTML =
+    "";
 
 
   data.forEach(function(game) {
@@ -606,22 +1057,28 @@ async function loadGames() {
     const div =
       document.createElement("div");
 
+
     div.className =
       "game";
 
 
-    let imageHTML = "";
+    let imageHTML =
+      "";
 
 
     if (game.image) {
 
-      imageHTML =
-        `<img src="${escapeHTML(game.image)}" alt="Game image">`;
+      imageHTML = `
+        <img
+          src="${escapeHTML(game.image)}"
+          alt="Game image">
+      `;
 
     }
 
 
-    let linksHTML = "";
+    let linksHTML =
+      "";
 
 
     if (game.download_url_1) {
@@ -661,35 +1118,54 @@ async function loadGames() {
 
       ${imageHTML}
 
+
       <strong>
         🎮 ${escapeHTML(game.name)}
       </strong>
 
+
       <br><br>
+
 
       📱 Platform:
-      ${escapeHTML(game.platform || "")}
+      ${escapeHTML(
+        game.platform || ""
+      )}
+
 
       <br>
+
 
       📦 Size:
-      ${escapeHTML(game.size || "")}
+      ${escapeHTML(
+        game.size || ""
+      )}
+
 
       <br>
 
+
       🗂️ Category:
-      ${escapeHTML(game.category || "")}
+      ${escapeHTML(
+        game.category || ""
+      )}
+
 
       <br><br>
+
 
       ${linksHTML}
 
+
       <br>
+
 
       <button
         class="delete"
         onclick="deleteGame(${game.id})">
+
         🗑️ DELETE
+
       </button>
 
     `;
@@ -702,14 +1178,20 @@ async function loadGames() {
 }
 
 
+/* ========================================= */
 /* DELETE GAME */
+/* ========================================= */
 
 async function deleteGame(id) {
 
-  if (!confirm(
-    "Una uhakika unataka kufuta game hii?"
-  )) {
+  if (
+    !confirm(
+      "Una uhakika unataka kufuta game hii?"
+    )
+  ) {
+
     return;
+
   }
 
 
@@ -723,7 +1205,8 @@ async function deleteGame(id) {
   if (error) {
 
     alert(
-      "❌ " + error.message
+      "❌ " +
+      error.message
     );
 
     return;
@@ -736,29 +1219,56 @@ async function deleteGame(id) {
 
 
   loadGames();
+
 }
 
 
+/* ========================================= */
 /* ESCAPE HTML */
+/* ========================================= */
 
 function escapeHTML(value) {
 
   const div =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   div.textContent =
     value ?? "";
 
+
   return div.innerHTML;
+
 }
 
 
+/* ========================================= */
+/* ESCAPE ATTRIBUTE */
+/* ========================================= */
+
+function escapeAttribute(value) {
+
+  return String(
+    value ?? ""
+  )
+  .replace(/\\/g, "\\\\")
+  .replace(/'/g, "\\'");
+
+}
+
+
+/* ========================================= */
 /* CHECK SESSION */
+/* ========================================= */
 
 async function checkSession() {
 
   const { data } =
-    await supabaseClient.auth.getSession();
+    await supabaseClient
+      .auth
+      .getSession();
 
 
   if (data.session) {
