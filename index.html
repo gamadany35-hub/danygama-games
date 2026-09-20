@@ -139,7 +139,9 @@ body.light-theme .account-card,
 body.light-theme .help-card,
 body.light-theme .about-card,
 body.light-theme .comments-card,
-body.light-theme .chat-card{
+body.light-theme .chat-card,
+body.light-theme .coin-card,
+body.light-theme .coin-buy-card{
 background:#ffffff;
 border-color:#d9e2ec;
 box-shadow:0 4px 18px rgba(20,40,70,.06);
@@ -285,6 +287,17 @@ text-overflow:ellipsis;
 white-space:nowrap;
 }
 
+.header-coins{
+background:#1b2d3f;
+border:1px solid #395875;
+border-radius:12px;
+padding:8px 10px;
+color:#ffd21c;
+font-size:12px;
+font-weight:900;
+white-space:nowrap;
+}
+
 .theme-toggle{
 border:1px solid #36516b;
 background:#13253a;
@@ -299,6 +312,12 @@ body.light-theme .theme-toggle{
 background:#f0f4f8;
 border-color:#ccd8e5;
 color:#172033;
+}
+
+body.light-theme .header-coins{
+background:#fff8d6;
+border-color:#f0d85b;
+color:#8a6b00;
 }
 
 
@@ -417,6 +436,11 @@ color:white;
 background:#000;
 color:white;
 border:1px solid #444;
+}
+
+.btn-purple{
+background:#8d52d9;
+color:white;
 }
 
 
@@ -637,6 +661,43 @@ background:#19a463;
 background:#8d52d9;
 }
 
+.unlock-box{
+margin-top:20px;
+padding:18px;
+border-radius:16px;
+background:linear-gradient(145deg,#112d47,#0b1b2c);
+border:1px solid #2c5c80;
+text-align:center;
+}
+
+.unlock-box h3{
+margin-bottom:8px;
+}
+
+.unlock-box p{
+color:#a9bdd0;
+line-height:1.6;
+margin-bottom:14px;
+}
+
+.unlock-cost{
+color:#ffd21c;
+font-weight:900;
+font-size:20px;
+margin-bottom:12px;
+}
+
+.unlocked-box{
+margin-top:20px;
+padding:13px;
+border-radius:12px;
+background:#123a2b;
+border:1px solid #1d8055;
+color:#7ff0b5;
+font-weight:900;
+text-align:center;
+}
+
 
 /* =========================================================
    EMPTY
@@ -836,7 +897,7 @@ background:#0d1b2b;
 border:1px solid #23415b;
 border-radius:20px;
 padding:22px;
-max-width:600px;
+max-width:650px;
 margin:auto;
 }
 
@@ -846,6 +907,67 @@ justify-content:space-between;
 gap:15px;
 padding:14px 0;
 border-bottom:1px solid #1c344a;
+}
+
+.coin-card{
+background:linear-gradient(135deg,#122d48,#0d1b2b);
+border:1px solid #2f638d;
+border-radius:18px;
+padding:20px;
+margin-bottom:16px;
+text-align:center;
+}
+
+.coin-title{
+font-size:13px;
+color:#9db5ca;
+margin-bottom:6px;
+}
+
+.coin-balance{
+font-size:40px;
+font-weight:900;
+color:#ffd21c;
+margin-bottom:4px;
+}
+
+.coin-label{
+font-size:12px;
+color:#a5bacd;
+}
+
+.coin-buy-card{
+background:#0d1b2b;
+border:1px solid #23415b;
+border-radius:18px;
+padding:18px;
+margin-bottom:16px;
+}
+
+.coin-buy-card h3{
+margin-bottom:10px;
+}
+
+.coin-package{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+padding:13px;
+border:1px solid #294862;
+background:#091624;
+border-radius:13px;
+margin-top:10px;
+}
+
+.coin-package strong{
+color:#ffd21c;
+}
+
+.coin-package small{
+color:#8fa6ba;
+display:block;
+margin-top:3px;
 }
 
 
@@ -1239,6 +1361,11 @@ font-size:17px;
 display:none;
 }
 
+.header-coins{
+padding:7px 8px;
+font-size:10px;
+}
+
 .theme-toggle{
 padding:8px 9px;
 font-size:11px;
@@ -1289,6 +1416,11 @@ height:400px;
 max-width:94%;
 }
 
+.coin-package{
+flex-direction:column;
+align-items:stretch;
+}
+
 }
 
 @media(min-width:800px){
@@ -1326,6 +1458,13 @@ border-radius:18px 18px 0 0;
 
 <div class="header-user" id="headerUser">
 Guest
+</div>
+
+<div
+id="headerCoins"
+class="header-coins hidden"
+>
+🪙 0
 </div>
 
 <button
@@ -1704,6 +1843,8 @@ na gamers wengine.
 
 <li>🎵 Kufuatilia Danygama kwenye TikTok.</li>
 
+<li>🪙 Kutumia Coins kufungua download links.</li>
+
 </ul>
 
 </div>
@@ -1715,8 +1856,8 @@ na gamers wengine.
 
 <p class="about-text">
 Community ni sehemu muhimu ya Danygama Games. Login kwenye
-account yako ili uweze kushiriki kwenye comments na
-Community Chat.
+account yako ili uweze kushiriki kwenye comments,
+Community Chat na kutumia Coins.
 </p>
 
 
@@ -1965,7 +2106,36 @@ Need help using Danygama Games? Check the information below.
 <p>
 Open Games, choose the game you want, then press
 <strong>VIEW DETAILS</strong>. You will see the available
-download links there.
+download links there. Some games require Coins before links are opened.
+</p>
+
+</div>
+
+
+<div class="help-card">
+
+<h3>
+🪙 How do Coins work?
+</h3>
+
+<p>
+Kila account mpya inapewa 50 Coins. Kufungua download links za
+game moja kunahitaji 100 Coins.
+</p>
+
+</div>
+
+
+<div class="help-card">
+
+<h3>
+💰 How can I buy Coins?
+</h3>
+
+<p>
+50 Coins ni TSh 200 na 100 Coins ni TSh 500.
+Malipo yanafanyika kupitia namba 0786538998.
+Baada ya malipo, order yako inahitaji kuthibitishwa.
 </p>
 
 </div>
@@ -2196,6 +2366,26 @@ class="account-card hidden"
 </h2>
 
 
+<div class="coin-card">
+
+<div class="coin-title">
+YOUR DANYGAMA COINS
+</div>
+
+<div
+id="accountCoins"
+class="coin-balance"
+>
+0
+</div>
+
+<div class="coin-label">
+🪙 Coins Available
+</div>
+
+</div>
+
+
 <div class="account-row">
 
 <span>
@@ -2218,6 +2408,72 @@ Status
 <strong style="color:#19a463;">
 Logged In
 </strong>
+
+</div>
+
+
+<div class="coin-buy-card">
+
+<h3>
+💰 BUY COINS
+</h3>
+
+<p style="color:#9db0c3;line-height:1.6;">
+Lipa kupitia namba:
+<strong style="color:#ffd21c;">
+0786538998
+</strong>
+</p>
+
+
+<div class="coin-package">
+
+<div>
+
+<strong>🪙 50 COINS</strong>
+
+<small>
+TSh 200
+</small>
+
+</div>
+
+<button
+class="btn btn-primary"
+onclick="createCoinOrder(50,200)"
+>
+BUY 50
+</button>
+
+</div>
+
+
+<div class="coin-package">
+
+<div>
+
+<strong>🪙 100 COINS</strong>
+
+<small>
+TSh 500
+</small>
+
+</div>
+
+<button
+class="btn btn-primary"
+onclick="createCoinOrder(100,500)"
+>
+BUY 100
+</button>
+
+</div>
+
+
+<p style="color:#8198ad;font-size:11px;margin-top:12px;line-height:1.5;">
+Baada ya kufanya malipo, order itaingia kwenye mfumo kwa
+uthibitisho kabla Coins kuongezwa.
+</p>
 
 </div>
 
@@ -2522,6 +2778,19 @@ let currentCategory = "all";
 
 let currentUser = null;
 
+let currentCoins = 0;
+
+let unlockedGameIds = new Set();
+
+
+/* =========================================================
+   COIN SETTINGS
+========================================================= */
+
+const GAME_UNLOCK_COST = 100;
+
+const COIN_PAYMENT_NUMBER = "0786538998";
+
 
 /* =========================================================
    THEME
@@ -2636,6 +2905,7 @@ loadMarketplace();
 
 if(pageId === "accountPage"){
 updateAccountUI();
+loadCoinBalance();
 }
 
 
@@ -2692,6 +2962,387 @@ return String(value)
 .replace(/>/g,"&gt;")
 .replace(/"/g,"&quot;")
 .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   COIN BALANCE
+========================================================= */
+
+async function loadCoinBalance(){
+
+if(!currentUser){
+
+currentCoins = 0;
+
+updateCoinDisplay();
+
+return;
+
+}
+
+
+try{
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("coin_wallets")
+.select("balance")
+.eq(
+"user_id",
+currentUser.id
+)
+.maybeSingle();
+
+
+if(error){
+
+console.error(
+"Coin balance error:",
+error
+);
+
+return;
+
+}
+
+
+if(data){
+
+currentCoins =
+Number(data.balance || 0);
+
+}else{
+
+currentCoins = 0;
+
+}
+
+
+updateCoinDisplay();
+
+}
+catch(error){
+
+console.error(
+"Coin balance exception:",
+error
+);
+
+}
+
+}
+
+
+/* =========================================================
+   COIN DISPLAY
+========================================================= */
+
+function updateCoinDisplay(){
+
+const accountCoins =
+document.getElementById(
+"accountCoins"
+);
+
+const headerCoins =
+document.getElementById(
+"headerCoins"
+);
+
+
+if(accountCoins){
+
+accountCoins.textContent =
+currentCoins;
+}
+
+
+if(headerCoins){
+
+if(currentUser){
+
+headerCoins.classList.remove(
+"hidden"
+);
+
+headerCoins.textContent =
+"🪙 " + currentCoins;
+
+}else{
+
+headerCoins.classList.add(
+"hidden"
+);
+
+}
+
+}
+
+}
+
+
+/* =========================================================
+   LOAD UNLOCKED GAMES
+========================================================= */
+
+async function loadUnlockedGames(){
+
+unlockedGameIds =
+new Set();
+
+
+if(!currentUser){
+
+return;
+
+}
+
+
+try{
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("game_unlocks")
+.select("game_id")
+.eq(
+"user_id",
+currentUser.id
+);
+
+
+if(error){
+
+console.error(
+"Unlocked games error:",
+error
+);
+
+return;
+
+}
+
+
+if(data){
+
+data.forEach(item=>{
+
+if(item.game_id !== null &&
+item.game_id !== undefined){
+
+unlockedGameIds.add(
+String(item.game_id)
+);
+
+}
+
+});
+
+}
+
+}
+catch(error){
+
+console.error(
+"Unlocked games exception:",
+error
+);
+
+}
+
+}
+
+
+/* =========================================================
+   CHECK IF GAME IS UNLOCKED
+========================================================= */
+
+async function isGameUnlocked(gameId){
+
+if(!currentUser){
+
+return false;
+
+}
+
+
+if(
+unlockedGameIds.has(
+String(gameId)
+)
+){
+
+return true;
+
+}
+
+
+try{
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("game_unlocks")
+.select("id")
+.eq(
+"user_id",
+currentUser.id
+)
+.eq(
+"game_id",
+String(gameId)
+)
+.maybeSingle();
+
+
+if(error){
+
+console.error(
+"Unlock check error:",
+error
+);
+
+return false;
+
+}
+
+
+if(data){
+
+unlockedGameIds.add(
+String(gameId)
+);
+
+return true;
+
+}
+
+
+return false;
+
+}
+catch(error){
+
+console.error(
+"Unlock check exception:",
+error
+);
+
+return false;
+
+}
+
+}
+
+
+/* =========================================================
+   COIN PURCHASE ORDER
+========================================================= */
+
+async function createCoinOrder(
+coins,
+amount
+){
+
+if(!currentUser){
+
+showToast(
+"🔐 Login first to buy Coins."
+);
+
+showPage("accountPage");
+
+return;
+
+}
+
+
+const confirmMessage =
+`Buy ${coins} Coins for TSh ${amount}?\n\n` +
+`Payment number: ${COIN_PAYMENT_NUMBER}\n\n` +
+`Baada ya kulipa, order yako itaingia kwa approval.`;
+
+if(
+!confirm(confirmMessage)
+){
+
+return;
+
+}
+
+
+showToast(
+"Creating payment order..."
+);
+
+
+try{
+
+const {
+error
+} =
+await supabaseClient
+.from("coin_orders")
+.insert({
+
+user_id:
+currentUser.id,
+
+package_coins:
+coins,
+
+amount_tzs:
+amount,
+
+payment_number:
+COIN_PAYMENT_NUMBER,
+
+status:
+"pending"
+
+});
+
+
+if(error){
+
+console.error(
+"Coin order error:",
+error
+);
+
+showToast(
+"❌ " +
+error.message
+);
+
+return;
+
+}
+
+
+showToast(
+"✅ Order imetumwa. Fanya malipo kisha subiri approval."
+);
+
+}
+catch(error){
+
+console.error(error);
+
+showToast(
+"❌ Failed to create order."
+);
+
+}
 
 }
 
@@ -3386,7 +4037,7 @@ games
    GAME DETAILS
 ========================================================= */
 
-function openGameDetails(id){
+async function openGameDetails(id){
 
 const game =
 allGames.find(
@@ -3480,7 +4131,117 @@ downloadContainer.innerHTML =
 }
 else{
 
+if(!currentUser){
+
 downloadContainer.innerHTML =
+`
+<div class="unlock-box">
+
+<h3>
+🔐 LOGIN REQUIRED
+</h3>
+
+<p>
+Login kwenye account yako kwanza ili kutumia Coins
+na kufungua download links.
+</p>
+
+<button
+class="btn btn-primary"
+onclick="closeGameModal();showPage('accountPage')"
+>
+🔐 LOGIN / REGISTER
+</button>
+
+</div>
+`;
+
+}
+else{
+
+const unlocked =
+await isGameUnlocked(
+game.id
+);
+
+
+if(unlocked){
+
+renderUnlockedDownloads(
+game,
+links,
+downloadContainer
+);
+
+}
+else{
+
+downloadContainer.innerHTML =
+`
+<div class="unlock-box">
+
+<h3>
+🔒 DOWNLOAD LINKS LOCKED
+</h3>
+
+<div class="unlock-cost">
+🪙 ${GAME_UNLOCK_COST} COINS
+</div>
+
+<p>
+Tumia 100 Coins kufungua download links zote
+za game hii. Ukishalifungua, hutatozwa tena.
+</p>
+
+<p>
+Your balance:
+<strong style="color:#ffd21c;">
+🪙 ${currentCoins} Coins
+</strong>
+</p>
+
+<button
+class="btn btn-primary"
+style="width:100%"
+onclick="unlockGame('${escapeHTML(game.id)}')"
+>
+🔓 UNLOCK FOR 100 COINS
+</button>
+
+</div>
+`;
+
+}
+
+}
+
+}
+
+
+document
+.getElementById("gameModal")
+.classList.add("show");
+
+
+document.body.style.overflow =
+"hidden";
+
+}
+
+
+function renderUnlockedDownloads(
+game,
+links,
+container
+){
+
+container.innerHTML =
+`
+<div class="unlocked-box">
+✅ GAME UNLOCKED — DOWNLOAD LINKS ARE READY
+</div>
+` +
+
 links
 .map(
 (link,index)=>`
@@ -3502,13 +4263,133 @@ ${link.label}
 }
 
 
-document
-.getElementById("gameModal")
-.classList.add("show");
+/* =========================================================
+   UNLOCK GAME
+========================================================= */
+
+async function unlockGame(gameId){
+
+if(!currentUser){
+
+showToast(
+"🔐 Login first."
+);
+
+return;
+
+}
 
 
-document.body.style.overflow =
-"hidden";
+if(currentCoins < GAME_UNLOCK_COST){
+
+showToast(
+"❌ You need 100 Coins to unlock this game."
+);
+
+return;
+
+}
+
+
+showToast(
+"🔓 Unlocking game..."
+);
+
+
+try{
+
+const {
+data,
+error
+} =
+await supabaseClient
+.rpc(
+"unlock_game_with_coins",
+{
+p_game_id:String(gameId)
+}
+);
+
+
+if(error){
+
+console.error(
+"Unlock RPC error:",
+error
+);
+
+showToast(
+"❌ " +
+error.message
+);
+
+return;
+
+}
+
+
+let result = data;
+
+if(
+Array.isArray(data)
+){
+
+result = data[0];
+
+}
+
+
+if(
+result &&
+(
+result.success === false ||
+result.success === "false"
+)
+){
+
+showToast(
+"❌ " +
+(
+result.message ||
+"Unable to unlock game."
+)
+);
+
+return;
+
+}
+
+
+unlockedGameIds.add(
+String(gameId)
+);
+
+
+await loadCoinBalance();
+
+
+showToast(
+"✅ Game unlocked successfully!"
+);
+
+
+await openGameDetails(
+gameId
+);
+
+}
+catch(error){
+
+console.error(
+"Unlock exception:",
+error
+);
+
+showToast(
+"❌ Failed to unlock game."
+);
+
+}
 
 }
 
@@ -3577,6 +4458,14 @@ null;
 
 
 updateAccountUI();
+
+if(currentUser){
+
+await loadCoinBalance();
+
+await loadUnlockedGames();
+
+}
 
 }
 catch(error){
@@ -3754,6 +4643,9 @@ currentUser.email ||
 headerUser.textContent =
 getUserName();
 
+
+updateCoinDisplay();
+
 }
 else{
 
@@ -3804,6 +4696,11 @@ chatLoginBox.classList.remove(
 
 headerUser.textContent =
 "Guest";
+
+
+currentCoins = 0;
+
+updateCoinDisplay();
 
 }
 
@@ -3903,6 +4800,11 @@ currentUser =
 data.user;
 
 
+await loadCoinBalance();
+
+await loadUnlockedGames();
+
+
 showToast(
 "✅ Login successful!"
 );
@@ -3991,11 +4893,15 @@ if(data.user){
 currentUser =
 data.user;
 
+await loadCoinBalance();
+
+await loadUnlockedGames();
+
 }
 
 
 showToast(
-"✅ Account created!"
+"✅ Account created! You have received your free Coins."
 );
 
 
@@ -4033,6 +4939,12 @@ return;
 currentUser =
 null;
 
+currentCoins =
+0;
+
+unlockedGameIds =
+new Set();
+
 
 updateAccountUI();
 
@@ -4064,6 +4976,15 @@ session.user
 :
 null;
 
+
+if(!currentUser){
+
+currentCoins = 0;
+
+unlockedGameIds =
+new Set();
+
+}
 
 updateAccountUI();
 
@@ -4868,8 +5789,6 @@ loadComments();
 
 /* =========================================================
    COMMUNITY CHAT
-   IMPORTANT:
-   community_messages TABLE DOES NOT USE EMAIL COLUMN
 ========================================================= */
 
 async function loadChat(){
@@ -5000,12 +5919,6 @@ ${escapeHTML(error.message || "")}
 
 function chatMessageCard(message){
 
-/*
-   IMPORTANT:
-   We do NOT use message.email here because
-   community_messages has no email column.
-*/
-
 const username =
 escapeHTML(
 message.username ||
@@ -5075,8 +5988,6 @@ ${escapeHTML(date)}
 
 /* =========================================================
    SEND CHAT MESSAGE
-   FIXED:
-   EMAIL HAS BEEN REMOVED FROM INSERT
 ========================================================= */
 
 document
@@ -5135,14 +6046,6 @@ showToast(
 );
 
 
-/*
-   ONLY columns that belong to community_messages
-   are sent here:
-   user_id
-   username
-   message
-*/
-
 const {
 data,
 error
@@ -5191,10 +6094,6 @@ showToast(
 "✅ Message sent!"
 );
 
-
-/*
-   Reload messages after successful insert.
-*/
 
 loadChat();
 
@@ -5314,6 +6213,14 @@ loadMarketplace();
 loadComments();
 
 loadChat();
+
+if(currentUser){
+
+await loadCoinBalance();
+
+await loadUnlockedGames();
+
+}
 
 }
 
