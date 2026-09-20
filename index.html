@@ -238,6 +238,28 @@ body.light-theme .chat-user{
 color:#172033;
 }
 
+body.light-theme .unlock-box{
+background:linear-gradient(145deg,#eef7ff,#ffffff);
+border-color:#b8d4ec;
+}
+
+body.light-theme .unlocked-box{
+background:#e8fff3;
+border-color:#9be0bd;
+color:#08783e;
+}
+
+body.light-theme .coin-package{
+background:#f8fafc;
+border-color:#ccd8e5;
+}
+
+body.light-theme .payment-note{
+background:#fff9df!important;
+border-color:#efd568!important;
+color:#675300!important;
+}
+
 
 /* =========================================================
    HEADER
@@ -968,6 +990,17 @@ color:#ffd21c;
 color:#8fa6ba;
 display:block;
 margin-top:3px;
+}
+
+.payment-note{
+margin-top:14px;
+padding:12px;
+border-radius:12px;
+background:#332b0a;
+border:1px solid #756214;
+color:#e8d77b;
+font-size:12px;
+line-height:1.6;
 }
 
 
@@ -2119,7 +2152,8 @@ download links there. Some games require Coins before links are opened.
 </h3>
 
 <p>
-Kila account mpya inapewa 50 Coins. Kufungua download links za
+Kila siku unaweza kupata 50 FREE Coins mara moja baada ya
+kuingia kwenye account yako. Kufungua download links za
 game moja kunahitaji 100 Coins.
 </p>
 
@@ -2135,7 +2169,8 @@ game moja kunahitaji 100 Coins.
 <p>
 50 Coins ni TSh 200 na 100 Coins ni TSh 500.
 Malipo yanafanyika kupitia namba 0786538998.
-Baada ya malipo, order yako inahitaji kuthibitishwa.
+Weka payment reference baada ya kulipa. Order yako
+inahitaji kuthibitishwa kabla Coins kuongezwa.
 </p>
 
 </div>
@@ -2426,6 +2461,30 @@ Lipa kupitia namba:
 </p>
 
 
+<div class="payment-note">
+<strong>📱 NAMBA YA MALIPO: 0786538998</strong>
+<br>
+Baada ya kulipa, weka <strong>Payment Reference / Transaction ID</strong>
+hapo chini ili order yako iweze kutambuliwa.
+</div>
+
+
+<div class="form-group" style="margin-top:14px;">
+
+<label>
+Payment Reference / Transaction ID
+</label>
+
+<input
+id="paymentReference"
+type="text"
+maxlength="100"
+placeholder="Mfano: MPESA123456789"
+>
+
+</div>
+
+
 <div class="coin-package">
 
 <div>
@@ -2471,8 +2530,9 @@ BUY 100
 
 
 <p style="color:#8198ad;font-size:11px;margin-top:12px;line-height:1.5;">
-Baada ya kufanya malipo, order itaingia kwenye mfumo kwa
-uthibitisho kabla Coins kuongezwa.
+Baada ya kufanya malipo na kutuma reference, order itaingia
+kwenye mfumo ikiwa <strong>Pending</strong>. Admin akithibitisha,
+Coins zitaongezwa kwenye account yako.
 </p>
 
 </div>
@@ -2789,6 +2849,8 @@ let unlockedGameIds = new Set();
 
 const GAME_UNLOCK_COST = 100;
 
+const DAILY_FREE_COINS = 50;
+
 const COIN_PAYMENT_NUMBER = "0786538998";
 
 
@@ -2904,8 +2966,13 @@ loadMarketplace();
 
 
 if(pageId === "accountPage"){
+
 updateAccountUI();
+
+if(currentUser){
 loadCoinBalance();
+}
+
 }
 
 
@@ -2929,6 +2996,10 @@ function showToast(message){
 
 const toast =
 document.getElementById("toast");
+
+if(!toast){
+return;
+}
 
 toast.textContent = message;
 
@@ -3087,6 +3158,96 @@ headerCoins.classList.add(
 
 
 /* =========================================================
+   DAILY FREE COINS
+========================================================= */
+
+async function claimDailyFreeCoins(){
+
+if(!currentUser){
+
+return;
+
+}
+
+
+try{
+
+const {
+data,
+error
+} =
+await supabaseClient
+.rpc(
+"claim_daily_free_coins"
+);
+
+
+if(error){
+
+console.error(
+"Daily coins error:",
+error
+);
+
+return;
+
+}
+
+
+let result = data;
+
+if(Array.isArray(data)){
+
+result = data[0];
+
+}
+
+
+if(
+result &&
+(
+result.claimed === true ||
+result.claimed === "true"
+)
+){
+
+currentCoins =
+Number(
+result.balance ||
+currentCoins + DAILY_FREE_COINS
+);
+
+
+updateCoinDisplay();
+
+
+showToast(
+"🎁 Umepewa 50 FREE COINS za leo!"
+);
+
+}else if(result && result.balance !== undefined){
+
+currentCoins =
+Number(result.balance || 0);
+
+updateCoinDisplay();
+
+}
+
+}
+catch(error){
+
+console.error(
+"Daily coins exception:",
+error
+);
+
+}
+
+}
+
+
+/* =========================================================
    LOAD UNLOCKED GAMES
 ========================================================= */
 
@@ -3134,8 +3295,10 @@ if(data){
 
 data.forEach(item=>{
 
-if(item.game_id !== null &&
-item.game_id !== undefined){
+if(
+item.game_id !== null &&
+item.game_id !== undefined
+){
 
 unlockedGameIds.add(
 String(item.game_id)
@@ -3266,10 +3429,59 @@ return;
 }
 
 
+const referenceInput =
+document.getElementById(
+"paymentReference"
+);
+
+
+const paymentReference =
+referenceInput
+?
+referenceInput.value.trim()
+:
+"";
+
+
+if(!paymentReference){
+
+showToast(
+"⚠️ Weka Payment Reference / Transaction ID kwanza."
+);
+
+if(referenceInput){
+
+referenceInput.focus();
+
+}
+
+return;
+
+}
+
+
+if(paymentReference.length < 3){
+
+showToast(
+"⚠️ Payment Reference si sahihi."
+);
+
+if(referenceInput){
+
+referenceInput.focus();
+
+}
+
+return;
+
+}
+
+
 const confirmMessage =
-`Buy ${coins} Coins for TSh ${amount}?\n\n` +
+`BUY ${coins} COINS FOR TSh ${amount}?\n\n` +
 `Payment number: ${COIN_PAYMENT_NUMBER}\n\n` +
-`Baada ya kulipa, order yako itaingia kwa approval.`;
+`Reference: ${paymentReference}\n\n` +
+`Umeshafanya malipo?`;
 
 if(
 !confirm(confirmMessage)
@@ -3281,13 +3493,14 @@ return;
 
 
 showToast(
-"Creating payment order..."
+"⏳ Creating payment order..."
 );
 
 
 try{
 
 const {
+data,
 error
 } =
 await supabaseClient
@@ -3306,10 +3519,15 @@ amount,
 payment_number:
 COIN_PAYMENT_NUMBER,
 
+payment_reference:
+paymentReference,
+
 status:
 "pending"
 
-});
+})
+.select()
+.single();
 
 
 if(error){
@@ -3329,17 +3547,37 @@ return;
 }
 
 
+if(referenceInput){
+
+referenceInput.value = "";
+
+}
+
+
 showToast(
-"✅ Order imetumwa. Fanya malipo kisha subiri approval."
+"✅ Order imetumwa! Subiri approval ya admin."
 );
+
+
+if(data){
+
+console.log(
+"Coin order created:",
+data.id
+);
+
+}
 
 }
 catch(error){
 
-console.error(error);
+console.error(
+"Coin order exception:",
+error
+);
 
 showToast(
-"❌ Failed to create order."
+"❌ Failed to create payment order."
 );
 
 }
@@ -4159,6 +4397,8 @@ onclick="closeGameModal();showPage('accountPage')"
 }
 else{
 
+await loadCoinBalance();
+
 const unlocked =
 await isGameUnlocked(
 game.id
@@ -4200,6 +4440,18 @@ Your balance:
 </strong>
 </p>
 
+${
+currentCoins < GAME_UNLOCK_COST
+?
+`
+<p style="color:#ff8d8d;">
+⚠️ Huna Coins za kutosha. Unahitaji 100 Coins.
+</p>
+`
+:
+""
+}
+
 <button
 class="btn btn-primary"
 style="width:100%"
@@ -4207,6 +4459,22 @@ onclick="unlockGame('${escapeHTML(game.id)}')"
 >
 🔓 UNLOCK FOR 100 COINS
 </button>
+
+${
+currentCoins < GAME_UNLOCK_COST
+?
+`
+<button
+class="btn btn-dark"
+style="width:100%;margin-top:8px;"
+onclick="closeGameModal();showPage('accountPage')"
+>
+💰 BUY COINS
+</button>
+`
+:
+""
+}
 
 </div>
 `;
@@ -4280,11 +4548,41 @@ return;
 }
 
 
+const alreadyUnlocked =
+await isGameUnlocked(gameId);
+
+
+if(alreadyUnlocked){
+
+await openGameDetails(gameId);
+
+return;
+
+}
+
+
+await loadCoinBalance();
+
+
 if(currentCoins < GAME_UNLOCK_COST){
 
 showToast(
-"❌ You need 100 Coins to unlock this game."
+"❌ Unahitaji 100 Coins kufungua game hii."
 );
+
+return;
+
+}
+
+
+const confirmed =
+confirm(
+"🔓 Fungua game hii kwa 100 Coins?\n\n" +
+"Coins zitatolewa kwenye balance yako."
+);
+
+
+if(!confirmed){
 
 return;
 
@@ -4323,6 +4621,8 @@ showToast(
 error.message
 );
 
+await loadCoinBalance();
+
 return;
 
 }
@@ -4355,6 +4655,8 @@ result.message ||
 )
 );
 
+await loadCoinBalance();
+
 return;
 
 }
@@ -4365,7 +4667,22 @@ String(gameId)
 );
 
 
+if(
+result &&
+result.balance !== undefined
+){
+
+currentCoins =
+Number(result.balance);
+
+updateCoinDisplay();
+
+}
+else{
+
 await loadCoinBalance();
+
+}
 
 
 showToast(
@@ -4464,6 +4781,8 @@ if(currentUser){
 await loadCoinBalance();
 
 await loadUnlockedGames();
+
+await claimDailyFreeCoins();
 
 }
 
@@ -4800,17 +5119,22 @@ currentUser =
 data.user;
 
 
+updateAccountUI();
+
+
 await loadCoinBalance();
 
 await loadUnlockedGames();
+
+await claimDailyFreeCoins();
+
+await loadCoinBalance();
 
 
 showToast(
 "✅ Login successful!"
 );
 
-
-updateAccountUI();
 
 loadComments();
 
@@ -4888,21 +5212,36 @@ return;
 }
 
 
-if(data.user){
+if(
+data.user &&
+data.session
+){
 
 currentUser =
 data.user;
+
+updateAccountUI();
 
 await loadCoinBalance();
 
 await loadUnlockedGames();
 
-}
+await claimDailyFreeCoins();
 
+await loadCoinBalance();
 
 showToast(
-"✅ Account created! You have received your free Coins."
+"✅ Account created! 50 FREE COINS za leo zimeongezwa."
 );
+
+}
+else{
+
+showToast(
+"✅ Account created! Check your email if confirmation is required, then login."
+);
+
+}
 
 
 updateAccountUI();
@@ -4987,6 +5326,31 @@ new Set();
 }
 
 updateAccountUI();
+
+if(
+currentUser &&
+(
+event === "SIGNED_IN" ||
+event === "INITIAL_SESSION"
+)
+){
+
+setTimeout(
+async function(){
+
+await loadCoinBalance();
+
+await loadUnlockedGames();
+
+await claimDailyFreeCoins();
+
+await loadCoinBalance();
+
+},
+0
+);
+
+}
 
 }
 );
