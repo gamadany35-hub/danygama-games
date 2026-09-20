@@ -141,7 +141,8 @@ body.light-theme .about-card,
 body.light-theme .comments-card,
 body.light-theme .chat-card,
 body.light-theme .coin-card,
-body.light-theme .coin-buy-card{
+body.light-theme .coin-buy-card,
+body.light-theme .social-card{
 background:#ffffff;
 border-color:#d9e2ec;
 box-shadow:0 4px 18px rgba(20,40,70,.06);
@@ -260,6 +261,38 @@ border-color:#efd568!important;
 color:#675300!important;
 }
 
+body.light-theme .menu-overlay{
+background:rgba(15,23,42,.35);
+}
+
+body.light-theme .side-menu{
+background:#ffffff;
+border-right-color:#dce4ee;
+}
+
+body.light-theme .side-menu-header{
+border-bottom-color:#e1e7ee;
+}
+
+body.light-theme .side-menu-item{
+color:#52667a;
+}
+
+body.light-theme .side-menu-item:hover,
+body.light-theme .side-menu-item.active{
+background:#edf4ff;
+color:#1677d2;
+}
+
+body.light-theme .side-menu-footer{
+border-top-color:#e1e7ee;
+}
+
+body.light-theme .social-platform{
+background:#f8fafc;
+border-color:#dce5ee;
+}
+
 
 /* =========================================================
    HEADER
@@ -268,7 +301,7 @@ color:#675300!important;
 header{
 position:sticky;
 top:0;
-z-index:1000;
+z-index:3000;
 background:rgba(5,13,25,.96);
 backdrop-filter:blur(12px);
 border-bottom:1px solid #17304d;
@@ -330,6 +363,20 @@ font-size:12px;
 font-weight:900;
 }
 
+.menu-toggle{
+border:1px solid #36516b;
+background:#13253a;
+color:white;
+border-radius:12px;
+width:42px;
+height:40px;
+font-size:21px;
+font-weight:900;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
 body.light-theme .theme-toggle{
 background:#f0f4f8;
 border-color:#ccd8e5;
@@ -340,6 +387,155 @@ body.light-theme .header-coins{
 background:#fff8d6;
 border-color:#f0d85b;
 color:#8a6b00;
+}
+
+body.light-theme .menu-toggle{
+background:#f0f4f8;
+border-color:#ccd8e5;
+color:#172033;
+}
+
+
+/* =========================================================
+   SIDE MENU
+========================================================= */
+
+.menu-overlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.62);
+z-index:6000;
+}
+
+.menu-overlay.show{
+display:block;
+}
+
+.side-menu{
+position:fixed;
+top:0;
+left:0;
+bottom:0;
+width:290px;
+max-width:85vw;
+background:#091624;
+border-right:1px solid #203d57;
+z-index:7000;
+transform:translateX(-105%);
+transition:transform .25s ease;
+display:flex;
+flex-direction:column;
+box-shadow:10px 0 35px rgba(0,0,0,.35);
+}
+
+.side-menu.open{
+transform:translateX(0);
+}
+
+.side-menu-header{
+padding:22px 18px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+border-bottom:1px solid #203d57;
+}
+
+.menu-brand{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.menu-brand-icon{
+width:42px;
+height:42px;
+border-radius:12px;
+background:#1677d2;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+}
+
+.menu-brand-text strong{
+display:block;
+font-size:16px;
+}
+
+.menu-brand-text small{
+display:block;
+color:#8fa6ba;
+font-size:11px;
+margin-top:3px;
+}
+
+.menu-close{
+width:38px;
+height:38px;
+border:0;
+border-radius:50%;
+background:#162b40;
+color:white;
+font-size:23px;
+}
+
+.side-menu-content{
+flex:1;
+overflow-y:auto;
+padding:12px;
+}
+
+.side-menu-section-title{
+font-size:10px;
+font-weight:900;
+color:#718ba2;
+padding:12px 12px 7px;
+text-transform:uppercase;
+letter-spacing:.8px;
+}
+
+.side-menu-item{
+width:100%;
+border:0;
+background:transparent;
+color:#b8c8d8;
+padding:13px 12px;
+border-radius:12px;
+display:flex;
+align-items:center;
+gap:12px;
+font-size:14px;
+font-weight:700;
+text-align:left;
+margin-bottom:3px;
+}
+
+.side-menu-item:hover,
+.side-menu-item.active{
+background:#102d47;
+color:#ffd21c;
+}
+
+.side-menu-item .menu-icon{
+width:24px;
+text-align:center;
+font-size:18px;
+}
+
+.side-menu-footer{
+border-top:1px solid #203d57;
+padding:12px;
+}
+
+.side-menu-footer button{
+width:100%;
+}
+
+body.light-theme .menu-close{
+background:#edf2f7;
+color:#172033;
 }
 
 
@@ -458,6 +654,11 @@ color:white;
 background:#000;
 color:white;
 border:1px solid #444;
+}
+
+.btn-youtube{
+background:#ff0000;
+color:white;
 }
 
 .btn-purple{
@@ -736,8 +937,73 @@ color:#839ab0;
 
 
 /* =========================================================
-   TIKTOK
+   SOCIAL
 ========================================================= */
+
+.social-grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:16px;
+max-width:900px;
+margin:20px auto;
+}
+
+.social-card{
+background:#0d1b2b;
+border:1px solid #263f57;
+border-radius:22px;
+padding:25px 20px;
+text-align:center;
+}
+
+.social-icon{
+font-size:55px;
+margin-bottom:12px;
+}
+
+.social-card h2{
+font-size:22px;
+margin-bottom:8px;
+}
+
+.social-card p{
+color:#9fb1c3;
+line-height:1.7;
+margin-bottom:18px;
+}
+
+.social-username{
+font-size:18px;
+font-weight:900;
+margin:10px 0 18px;
+}
+
+.social-profile{
+background:#091624;
+border:1px solid #294862;
+border-radius:18px;
+padding:20px;
+margin-bottom:18px;
+}
+
+.social-profile .circle{
+width:75px;
+height:75px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:32px;
+margin:0 auto 12px;
+}
+
+.tiktok-circle{
+background:linear-gradient(135deg,#25f4ee,#fe2c55);
+}
+
+.youtube-circle{
+background:#ff0000;
+}
 
 .tiktok-card{
 background:linear-gradient(145deg,#0b1624,#101f31);
@@ -1234,7 +1500,7 @@ font-weight:900;
 
 
 /* =========================================================
-   BOTTOM NAV
+   BOTTOM NAV - 5 ITEMS ONLY
 ========================================================= */
 
 .bottom-nav{
@@ -1245,10 +1511,10 @@ bottom:0;
 height:72px;
 background:rgba(5,13,24,.98);
 border-top:1px solid #203b55;
-z-index:2000;
+z-index:5000;
 display:grid;
-grid-template-columns:repeat(10,1fr);
-padding:5px 3px;
+grid-template-columns:repeat(5,1fr);
+padding:5px 4px;
 }
 
 .nav-btn{
@@ -1265,7 +1531,7 @@ min-width:0;
 }
 
 .nav-btn .icon{
-font-size:19px;
+font-size:20px;
 }
 
 .nav-btn.active{
@@ -1282,7 +1548,7 @@ display:none;
 position:fixed;
 inset:0;
 background:rgba(0,0,0,.78);
-z-index:5000;
+z-index:8000;
 padding:20px;
 overflow-y:auto;
 }
@@ -1366,7 +1632,7 @@ border:1px solid #2b4d68;
 color:white;
 padding:12px 17px;
 border-radius:12px;
-z-index:8000;
+z-index:9000;
 opacity:0;
 pointer-events:none;
 transition:.3s;
@@ -1384,7 +1650,7 @@ transform:translateX(-50%) translateY(0);
    RESPONSIVE
 ========================================================= */
 
-@media(max-width:600px){
+@media(max-width:700px){
 
 .logo{
 font-size:17px;
@@ -1402,6 +1668,12 @@ font-size:10px;
 .theme-toggle{
 padding:8px 9px;
 font-size:11px;
+}
+
+.menu-toggle{
+width:38px;
+height:38px;
+font-size:19px;
 }
 
 .hero h1{
@@ -1430,11 +1702,11 @@ height:70px;
 }
 
 .nav-btn{
-font-size:7px;
+font-size:8px;
 }
 
 .nav-btn .icon{
-font-size:17px;
+font-size:18px;
 }
 
 .details-content h1{
@@ -1454,6 +1726,14 @@ flex-direction:column;
 align-items:stretch;
 }
 
+.social-grid{
+grid-template-columns:1fr;
+}
+
+.side-menu{
+width:280px;
+}
+
 }
 
 @media(min-width:800px){
@@ -1461,7 +1741,7 @@ align-items:stretch;
 .bottom-nav{
 left:50%;
 right:auto;
-width:850px;
+width:650px;
 transform:translateX(-50%);
 border-radius:18px 18px 0 0;
 }
@@ -1473,6 +1753,232 @@ border-radius:18px 18px 0 0;
 </head>
 
 <body>
+
+
+<!-- =========================================================
+     SIDE MENU OVERLAY
+========================================================= -->
+
+<div
+id="menuOverlay"
+class="menu-overlay"
+onclick="closeMenu()"
+></div>
+
+
+<!-- =========================================================
+     SIDE MENU
+========================================================= -->
+
+<aside
+id="sideMenu"
+class="side-menu"
+>
+
+<div class="side-menu-header">
+
+<div class="menu-brand">
+
+<div class="menu-brand-icon">
+🎮
+</div>
+
+<div class="menu-brand-text">
+
+<strong>
+Danygama Games
+</strong>
+
+<small>
+gamadany35
+</small>
+
+</div>
+
+</div>
+
+<button
+class="menu-close"
+onclick="closeMenu()"
+>
+×
+</button>
+
+</div>
+
+
+<div class="side-menu-content">
+
+<div class="side-menu-section-title">
+Main Menu
+</div>
+
+
+<button
+class="side-menu-item"
+data-menu-page="updatesPage"
+onclick="menuNavigate('updatesPage')"
+>
+
+<span class="menu-icon">
+🆕
+</span>
+
+<span>
+Updates
+</span>
+
+</button>
+
+
+<button
+class="side-menu-item"
+data-menu-page="aboutPage"
+onclick="menuNavigate('aboutPage')"
+>
+
+<span class="menu-icon">
+ℹ️
+</span>
+
+<span>
+About Danygama
+</span>
+
+</button>
+
+
+<div class="side-menu-section-title">
+Community
+</div>
+
+
+<button
+class="side-menu-item"
+data-menu-page="commentsPage"
+onclick="menuNavigate('commentsPage')"
+>
+
+<span class="menu-icon">
+💬
+</span>
+
+<span>
+Comments
+</span>
+
+</button>
+
+
+<button
+class="side-menu-item"
+data-menu-page="chatPage"
+onclick="menuNavigate('chatPage')"
+>
+
+<span class="menu-icon">
+👥
+</span>
+
+<span>
+Community Chat
+</span>
+
+</button>
+
+
+<button
+class="side-menu-item"
+data-menu-page="helpPage"
+onclick="menuNavigate('helpPage')"
+>
+
+<span class="menu-icon">
+❓
+</span>
+
+<span>
+Help Center
+</span>
+
+</button>
+
+
+<div class="side-menu-section-title">
+Social
+</div>
+
+
+<button
+class="side-menu-item"
+data-menu-page="tiktokPage"
+onclick="menuNavigate('tiktokPage')"
+>
+
+<span class="menu-icon">
+🌐
+</span>
+
+<span>
+TikTok & YouTube
+</span>
+
+</button>
+
+
+<div class="side-menu-section-title">
+Account
+</div>
+
+
+<button
+class="side-menu-item"
+data-menu-page="accountPage"
+onclick="menuNavigate('accountPage')"
+>
+
+<span class="menu-icon">
+👤
+</span>
+
+<span>
+My Account
+</span>
+
+</button>
+
+
+<button
+class="side-menu-item"
+data-menu-page="marketPage"
+onclick="menuNavigate('marketPage')"
+>
+
+<span class="menu-icon">
+🛒
+</span>
+
+<span>
+Marketplace
+</span>
+
+</button>
+
+</div>
+
+
+<div class="side-menu-footer">
+
+<button
+class="btn btn-dark"
+onclick="toggleTheme();closeMenu()"
+>
+🌙 / ☀️ Change Theme
+</button>
+
+</div>
+
+</aside>
 
 
 <!-- =========================================================
@@ -1489,9 +1995,13 @@ border-radius:18px 18px 0 0;
 
 <div class="header-right">
 
-<div class="header-user" id="headerUser">
+<div
+class="header-user"
+id="headerUser"
+>
 Guest
 </div>
+
 
 <div
 id="headerCoins"
@@ -1500,12 +2010,22 @@ class="header-coins hidden"
 🪙 0
 </div>
 
+
 <button
 id="themeToggle"
 class="theme-toggle"
 onclick="toggleTheme()"
 >
 ☀️ WHITE
+</button>
+
+
+<button
+class="menu-toggle"
+onclick="openMenu()"
+aria-label="Open menu"
+>
+☰
 </button>
 
 </div>
@@ -1541,12 +2061,14 @@ onclick="showPage('gamesPage')"
 🎮 BROWSE GAMES
 </button>
 
+
 <button
-class="btn btn-tiktok"
+class="btn btn-dark"
 onclick="showPage('tiktokPage')"
 >
-🎵 MY TIKTOK
+🌐 SOCIAL
 </button>
+
 
 <button
 class="btn btn-blue"
@@ -1574,14 +2096,21 @@ oninput="searchGames(this.value)"
 
 <div class="section-title">
 
-<h2>🔥 Recommended Games</h2>
+<h2>
+🔥 Recommended Games
+</h2>
 
-<span id="gameCountHome">0 Games</span>
+<span id="gameCountHome">
+0 Games
+</span>
 
 </div>
 
 
-<div id="homeGames" class="game-grid">
+<div
+id="homeGames"
+class="game-grid"
+>
 
 <div class="loading">
 Loading games...
@@ -1600,9 +2129,13 @@ Loading games...
 
 <div class="section-title">
 
-<h2>🎮 All Games</h2>
+<h2>
+🎮 All Games
+</h2>
 
-<span id="gameCount">0 Games</span>
+<span id="gameCount">
+0 Games
+</span>
 
 </div>
 
@@ -1619,7 +2152,10 @@ oninput="searchGames(this.value)"
 </div>
 
 
-<div class="categories" id="categories">
+<div
+class="categories"
+id="categories"
+>
 
 <button
 class="category-btn active"
@@ -1631,7 +2167,10 @@ All
 </div>
 
 
-<div id="gamesGrid" class="game-grid">
+<div
+id="gamesGrid"
+class="game-grid"
+>
 
 <div class="loading">
 Loading games...
@@ -1663,14 +2202,20 @@ Sell or advertise your gaming team and connect with other gamers.
 
 <div class="form-card">
 
-<h3>➕ Sell / Advertise Your Team</h3>
+<h3>
+➕ Sell / Advertise Your Team
+</h3>
 
 
-<div id="marketLoginMessage" class="hidden">
+<div
+id="marketLoginMessage"
+class="hidden"
+>
 
 <p style="color:#9db0c3;margin-bottom:12px;">
 You need to login before posting on Marketplace.
 </p>
+
 
 <button
 class="btn btn-primary"
@@ -1689,7 +2234,9 @@ class="hidden"
 
 <div class="form-group">
 
-<label>Team / Item Name</label>
+<label>
+Team / Item Name
+</label>
 
 <input
 id="marketName"
@@ -1702,7 +2249,9 @@ placeholder="Example: Danygama FC"
 
 <div class="form-group">
 
-<label>Price</label>
+<label>
+Price
+</label>
 
 <input
 id="marketPrice"
@@ -1715,7 +2264,9 @@ placeholder="Example: 15000 TSH"
 
 <div class="form-group">
 
-<label>Description</label>
+<label>
+Description
+</label>
 
 <textarea
 id="marketDescription"
@@ -1728,7 +2279,9 @@ placeholder="Write details about your team..."
 
 <div class="form-group">
 
-<label>WhatsApp Number</label>
+<label>
+WhatsApp Number
+</label>
 
 <input
 id="marketWhatsapp"
@@ -1741,7 +2294,9 @@ placeholder="Example: 2557XXXXXXXX"
 
 <div class="form-group">
 
-<label>Team Image</label>
+<label>
+Team Image
+</label>
 
 <input
 id="marketImage"
@@ -1767,7 +2322,9 @@ type="submit"
 
 <div class="section-title">
 
-<h2>🔥 Marketplace</h2>
+<h2>
+🔥 Marketplace
+</h2>
 
 </div>
 
@@ -1840,7 +2397,9 @@ Learn more about Danygama Games and our gaming community.
 
 <div class="about-card">
 
-<h2>🎮 What is Danygama Games?</h2>
+<h2>
+🎮 What is Danygama Games?
+</h2>
 
 <p class="about-text">
 Danygama Games ni website ya gaming inayolenga kuwapa gamers
@@ -1849,7 +2408,9 @@ kuungana na community ya gamers.
 </p>
 
 
-<h3>🎯 Our Goal</h3>
+<h3>
+🎯 Our Goal
+</h3>
 
 <p class="about-text">
 Lengo letu ni kujenga gaming community ambayo gamers wanaweza
@@ -1858,25 +2419,43 @@ na gamers wengine.
 </p>
 
 
-<h3>🔥 What You Can Do Here</h3>
+<h3>
+🔥 What You Can Do Here
+</h3>
 
 <ul class="about-list">
 
-<li>🎮 Kugundua na kuangalia games.</li>
+<li>
+🎮 Kugundua na kuangalia games.
+</li>
 
-<li>⬇️ Kupata download links za games.</li>
+<li>
+⬇️ Kupata download links za games.
+</li>
 
-<li>🆕 Kuangalia game updates.</li>
+<li>
+🆕 Kuangalia game updates.
+</li>
 
-<li>🛒 Kutumia Team Marketplace.</li>
+<li>
+🛒 Kutumia Team Marketplace.
+</li>
 
-<li>💬 Kutoa comments na maoni.</li>
+<li>
+💬 Kutoa comments na maoni.
+</li>
 
-<li>👥 Kuchat na members wengine wa community.</li>
+<li>
+👥 Kuchat na members wengine wa community.
+</li>
 
-<li>🎵 Kufuatilia Danygama kwenye TikTok.</li>
+<li>
+🌐 Kufuatilia Danygama kwenye TikTok na YouTube.
+</li>
 
-<li>🪙 Kutumia Coins kufungua download links.</li>
+<li>
+🪙 Kutumia Coins kufungua download links.
+</li>
 
 </ul>
 
@@ -1885,7 +2464,9 @@ na gamers wengine.
 
 <div class="about-card">
 
-<h2>🤝 Danygama Gaming Community</h2>
+<h2>
+🤝 Danygama Gaming Community
+</h2>
 
 <p class="about-text">
 Community ni sehemu muhimu ya Danygama Games. Login kwenye
@@ -1992,7 +2573,9 @@ type="submit"
 
 <div class="section-title">
 
-<h2>💭 Community Comments</h2>
+<h2>
+💭 Community Comments
+</h2>
 
 <span id="commentCount">
 0 Comments
@@ -2235,12 +2818,12 @@ with other registered gamers.
 <div class="help-card">
 
 <h3>
-🎵 TikTok
+🌐 TikTok & YouTube
 </h3>
 
 <p>
-Visit the TikTok section to open the official Danygama TikTok
-account and follow the gaming content.
+Visit the Social section to find both the official Danygama
+TikTok account and YouTube channel in one place.
 </p>
 
 </div>
@@ -2462,14 +3045,26 @@ Lipa kupitia namba:
 
 
 <div class="payment-note">
-<strong>📱 NAMBA YA MALIPO: 0786538998</strong>
+
+<strong>
+📱 NAMBA YA MALIPO: 0786538998
+</strong>
+
 <br>
-Baada ya kulipa, weka <strong>Payment Reference / Transaction ID</strong>
+
+Baada ya kulipa, weka
+<strong>
+Payment Reference / Transaction ID
+</strong>
 hapo chini ili order yako iweze kutambuliwa.
+
 </div>
 
 
-<div class="form-group" style="margin-top:14px;">
+<div
+class="form-group"
+style="margin-top:14px;"
+>
 
 <label>
 Payment Reference / Transaction ID
@@ -2489,7 +3084,9 @@ placeholder="Mfano: MPESA123456789"
 
 <div>
 
-<strong>🪙 50 COINS</strong>
+<strong>
+🪙 50 COINS
+</strong>
 
 <small>
 TSh 200
@@ -2511,7 +3108,9 @@ BUY 50
 
 <div>
 
-<strong>🪙 100 COINS</strong>
+<strong>
+🪙 100 COINS
+</strong>
 
 <small>
 TSh 500
@@ -2552,7 +3151,7 @@ onclick="logout()"
 
 
 <!-- =========================================================
-     TIKTOK
+     SOCIAL - TIKTOK + YOUTUBE
 ========================================================= -->
 
 <section id="tiktokPage" class="page">
@@ -2560,43 +3159,46 @@ onclick="logout()"
 <div class="hero">
 
 <h1>
-🎵 <span>DANYGAMA TIKTOK</span>
+🌐 <span>DANYGAMA SOCIAL</span>
 </h1>
 
 <p>
-Follow Danygama on TikTok and watch gaming videos, updates,
-gameplay and other gaming content.
+Follow Danygama kwenye TikTok na YouTube. Hapa utapata
+gaming videos, eFootball content, updates na content mpya.
 </p>
 
 </div>
 
 
-<div class="tiktok-card">
+<div class="social-grid">
 
-<div class="tiktok-icon">
+
+<!-- TIKTOK -->
+
+<div class="social-card">
+
+<div class="social-icon">
 🎵
 </div>
 
+<h2>
+TikTok
+</h2>
 
-<h1>
-Danygama TikTok
-</h1>
-
-
-<div class="tiktok-username">
+<div class="social-username">
 @danygama292
 </div>
 
 
-<div class="tiktok-profile">
+<div class="social-profile">
 
-<div class="circle">
+<div class="circle tiktok-circle">
 🎮
 </div>
 
-<h2>
+<h3>
 DANYGAMA
-</h2>
+</h3>
 
 <p style="margin-top:7px;">
 Gaming • eFootball • Games • Updates
@@ -2607,8 +3209,7 @@ Gaming • eFootball • Games • Updates
 
 <p>
 Hii ndiyo account rasmi ya TikTok ya Danygama.
-Bonyeza kitufe hapa chini kuifungua na kuona videos
-na content mpya.
+Fuata account kuona videos na gaming content mpya.
 </p>
 
 
@@ -2619,8 +3220,103 @@ href="https://www.tiktok.com/@danygama292"
 target="_blank"
 rel="noopener noreferrer"
 >
-🎵 OPEN @DANYGAMA292 ON TIKTOK
+🎵 OPEN TIKTOK
 </a>
+
+</div>
+
+
+<!-- YOUTUBE -->
+
+<div class="social-card">
+
+<div class="social-icon">
+▶️
+</div>
+
+<h2>
+YouTube Channel
+</h2>
+
+<div class="social-username">
+DanyGama80
+</div>
+
+
+<div class="social-profile">
+
+<div class="circle youtube-circle">
+▶️
+</div>
+
+<h3>
+DANYGAMA
+</h3>
+
+<p style="margin-top:7px;">
+Gaming • eFootball • Games • Tutorials
+</p>
+
+</div>
+
+
+<p>
+Tembelea YouTube channel ya Danygama kwa gaming videos,
+gameplay, updates na content nyingine za gaming.
+</p>
+
+
+<a
+class="btn btn-youtube"
+style="width:100%;"
+href="https://www.youtube.com/@DanyGama80"
+target="_blank"
+rel="noopener noreferrer"
+>
+▶️ OPEN YOUTUBE CHANNEL
+</a>
+
+</div>
+
+</div>
+
+
+<div
+class="social-card"
+style="max-width:900px;margin:16px auto;"
+>
+
+<h2>
+🌐 Follow Danygama
+</h2>
+
+<p>
+TikTok na YouTube ziko pamoja hapa. Chagua platform
+unayotaka kufuatilia.
+</p>
+
+<div class="hero-buttons" style="justify-content:center;">
+
+<a
+class="btn btn-tiktok"
+href="https://www.tiktok.com/@danygama292"
+target="_blank"
+rel="noopener noreferrer"
+>
+🎵 TikTok
+</a>
+
+
+<a
+class="btn btn-youtube"
+href="https://www.youtube.com/@DanyGama80"
+target="_blank"
+rel="noopener noreferrer"
+>
+▶️ YouTube
+</a>
+
+</div>
 
 </div>
 
@@ -2701,7 +3397,7 @@ Message
 
 
 <!-- =========================================================
-     BOTTOM NAV
+     BOTTOM NAV - 5 ITEMS
 ========================================================= -->
 
 <nav class="bottom-nav">
@@ -2712,7 +3408,9 @@ class="nav-btn active"
 data-page="homePage"
 onclick="showPage('homePage')"
 >
-<span class="icon">🏠</span>
+<span class="icon">
+🏠
+</span>
 Home
 </button>
 
@@ -2722,7 +3420,9 @@ class="nav-btn"
 data-page="gamesPage"
 onclick="showPage('gamesPage')"
 >
-<span class="icon">🎮</span>
+<span class="icon">
+🎮
+</span>
 Games
 </button>
 
@@ -2732,68 +3432,10 @@ class="nav-btn"
 data-page="marketPage"
 onclick="showPage('marketPage')"
 >
-<span class="icon">🛒</span>
+<span class="icon">
+🛒
+</span>
 Market
-</button>
-
-
-<button
-class="nav-btn"
-data-page="updatesPage"
-onclick="showPage('updatesPage')"
->
-<span class="icon">🆕</span>
-Updates
-</button>
-
-
-<button
-class="nav-btn"
-data-page="aboutPage"
-onclick="showPage('aboutPage')"
->
-<span class="icon">ℹ️</span>
-About
-</button>
-
-
-<button
-class="nav-btn"
-data-page="commentsPage"
-onclick="showPage('commentsPage')"
->
-<span class="icon">💬</span>
-Comments
-</button>
-
-
-<button
-class="nav-btn"
-data-page="chatPage"
-onclick="showPage('chatPage')"
->
-<span class="icon">👥</span>
-Chat
-</button>
-
-
-<button
-class="nav-btn"
-data-page="tiktokPage"
-onclick="showPage('tiktokPage')"
->
-<span class="icon">🎵</span>
-TikTok
-</button>
-
-
-<button
-class="nav-btn"
-data-page="helpPage"
-onclick="showPage('helpPage')"
->
-<span class="icon">❓</span>
-Help
 </button>
 
 
@@ -2802,8 +3444,22 @@ class="nav-btn"
 data-page="accountPage"
 onclick="showPage('accountPage')"
 >
-<span class="icon">👤</span>
+<span class="icon">
+👤
+</span>
 Account
+</button>
+
+
+<button
+class="nav-btn"
+data-page="tiktokPage"
+onclick="showPage('tiktokPage')"
+>
+<span class="icon">
+🌐
+</span>
+Social
 </button>
 
 </nav>
@@ -2852,6 +3508,63 @@ const GAME_UNLOCK_COST = 100;
 const DAILY_FREE_COINS = 50;
 
 const COIN_PAYMENT_NUMBER = "0786538998";
+
+
+/* =========================================================
+   SIDE MENU
+========================================================= */
+
+function openMenu(){
+
+const menu =
+document.getElementById("sideMenu");
+
+const overlay =
+document.getElementById("menuOverlay");
+
+if(menu){
+menu.classList.add("open");
+}
+
+if(overlay){
+overlay.classList.add("show");
+}
+
+document.body.style.overflow = "hidden";
+
+}
+
+
+function closeMenu(){
+
+const menu =
+document.getElementById("sideMenu");
+
+const overlay =
+document.getElementById("menuOverlay");
+
+if(menu){
+menu.classList.remove("open");
+}
+
+if(overlay){
+overlay.classList.remove("show");
+}
+
+if(!document.getElementById("gameModal").classList.contains("show")){
+document.body.style.overflow = "";
+}
+
+}
+
+
+function menuNavigate(pageId){
+
+closeMenu();
+
+showPage(pageId);
+
+}
 
 
 /* =========================================================
@@ -2925,6 +3638,9 @@ applyTheme();
 
 function showPage(pageId){
 
+closeMenu();
+
+
 const pages =
 document.querySelectorAll(".page");
 
@@ -2949,6 +3665,19 @@ btn.classList.remove("active");
 
 if(btn.dataset.page === pageId){
 btn.classList.add("active");
+}
+
+});
+
+
+document
+.querySelectorAll(".side-menu-item")
+.forEach(item=>{
+
+item.classList.remove("active");
+
+if(item.dataset.menuPage === pageId){
+item.classList.add("active");
 }
 
 });
@@ -6553,6 +7282,8 @@ event.key === "Escape"
 ){
 
 closeGameModal();
+
+closeMenu();
 
 }
 
