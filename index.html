@@ -1325,93 +1325,6 @@ color:#b8c8d8;
 }
 
 
-/* =========================================================
-   DELETE MARKETPLACE LISTING
-========================================================= */
-
-async function deleteMarketplaceItem(id){
-
-if(!currentUser){
-
-showToast("Please login first.");
-
-return;
-
-}
-
-if(
-String(currentUser.email || "").toLowerCase()
-!==
-"gamadany35@gmail.com"
-){
-
-showToast("❌ Admin only.");
-
-return;
-
-}
-
-if(!id){
-
-showToast("❌ Listing ID is missing.");
-
-return;
-
-}
-
-const confirmed =
-confirm(
-"Delete this Marketplace listing? This cannot be undone."
-);
-
-if(!confirmed){
-
-return;
-
-}
-
-try{
-
-const {
-error
-} =
-await supabaseClient
-.from("team_marketplace")
-.delete()
-.eq("id",id);
-
-if(error){
-
-console.error(error);
-
-showToast(
-"❌ Delete failed: " +
-error.message
-);
-
-return;
-
-}
-
-showToast(
-"✅ Marketplace listing deleted."
-);
-
-await loadMarketplace();
-
-}
-catch(error){
-
-console.error(error);
-
-showToast(
-"❌ Something went wrong while deleting."
-);
-
-}
-
-}
-
 
 /* =========================================================
    COMMENTS
@@ -6176,6 +6089,94 @@ await loadCoinBalance();
 /* =========================================================
    MARKETPLACE
 ========================================================= */
+
+/* =========================================================
+   DELETE MARKETPLACE LISTING
+========================================================= */
+
+async function deleteMarketplaceItem(id){
+
+if(!currentUser){
+
+showToast("Please login first.");
+
+return;
+
+}
+
+if(
+String(currentUser.email || "").toLowerCase()
+!==
+"gamadany35@gmail.com"
+){
+
+showToast("❌ Admin only.");
+
+return;
+
+}
+
+if(!id){
+
+showToast("❌ Listing ID is missing.");
+
+return;
+
+}
+
+const confirmed =
+confirm(
+"Delete this Marketplace listing? This cannot be undone."
+);
+
+if(!confirmed){
+
+return;
+
+}
+
+try{
+
+const {
+error
+} =
+await supabaseClient
+.from("team_marketplace")
+.delete()
+.eq("id",id);
+
+if(error){
+
+console.error(error);
+
+showToast(
+"❌ Delete failed: " +
+error.message
+);
+
+return;
+
+}
+
+showToast(
+"✅ Marketplace listing deleted."
+);
+
+await loadMarketplace();
+
+}
+catch(error){
+
+console.error(error);
+
+showToast(
+"❌ Something went wrong while deleting."
+);
+
+}
+
+}
+
 
 async function loadMarketplace(){
 
