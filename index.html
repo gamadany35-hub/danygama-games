@@ -1326,6 +1326,94 @@ color:#b8c8d8;
 
 
 /* =========================================================
+   DELETE MARKETPLACE LISTING
+========================================================= */
+
+async function deleteMarketplaceItem(id){
+
+if(!currentUser){
+
+showToast("Please login first.");
+
+return;
+
+}
+
+if(
+String(currentUser.email || "").toLowerCase()
+!==
+"gamadany35@gmail.com"
+){
+
+showToast("❌ Admin only.");
+
+return;
+
+}
+
+if(!id){
+
+showToast("❌ Listing ID is missing.");
+
+return;
+
+}
+
+const confirmed =
+confirm(
+"Delete this Marketplace listing? This cannot be undone."
+);
+
+if(!confirmed){
+
+return;
+
+}
+
+try{
+
+const {
+error
+} =
+await supabaseClient
+.from("team_marketplace")
+.delete()
+.eq("id",id);
+
+if(error){
+
+console.error(error);
+
+showToast(
+"❌ Delete failed: " +
+error.message
+);
+
+return;
+
+}
+
+showToast(
+"✅ Marketplace listing deleted."
+);
+
+await loadMarketplace();
+
+}
+catch(error){
+
+console.error(error);
+
+showToast(
+"❌ Something went wrong while deleting."
+);
+
+}
+
+}
+
+
+/* =========================================================
    COMMENTS
 ========================================================= */
 
@@ -6204,8 +6292,8 @@ String(item.image).trim()
 
 const name =
 escapeHTML(
-item.name ||
 item.team_name ||
+item.name ||
 "Marketplace Item"
 );
 
@@ -6226,6 +6314,7 @@ item.description ||
 
 const whatsapp =
 normalizeWhatsapp(
+item.contact ||
 item.whatsapp ||
 item.seller_whatsapp ||
 ""
@@ -6269,13 +6358,30 @@ whatsapp
 `
 <a
 class="btn btn-green"
-style="width:100%"
+style="width:100%;margin-bottom:8px"
 href="https://wa.me/${escapeHTML(whatsapp)}"
 target="_blank"
 rel="noopener noreferrer"
 >
 💬 CONTACT SELLER
 </a>
+`
+:
+""
+}
+
+${
+currentUser &&
+String(currentUser.email || "").toLowerCase() === "gamadany35@gmail.com"
+?
+`
+<button
+class="btn btn-red"
+style="width:100%"
+onclick="deleteMarketplaceItem('${escapeHTML(item.id || "")}')"
+>
+🗑️ DELETE LISTING
+</button>
 `
 :
 ""
@@ -6498,17 +6604,19 @@ await supabaseClient
 .from("team_marketplace")
 .insert({
 
-name:name,
+team_name:name,
 
 price:price,
 
 description:description,
 
-whatsapp:whatsapp,
+contact:whatsapp,
 
 image:imageUrl,
 
-seller_id:currentUser.id
+user_id:currentUser.id,
+
+seller_email:currentUser.email
 
 });
 
