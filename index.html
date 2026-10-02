@@ -5,9 +5,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Danygama Games — Games, Coins & Marketplace</title>
+<title>Danygama Games</title>
 
-<meta name="description" content="Danygama Games — Download games, earn or buy Coins, discover updates, sell gaming teams and join the community.">
+<meta name="description" content="Danygama Games - Download games, discover updates, marketplace, comments and gaming community.">
 
 <!-- GOOGLE ANALYTICS -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6QDDJEXQVD"></script>
@@ -1749,30 +1749,26 @@ border-radius:18px 18px 0 0;
 
 }
 
+</style>
 
-/* =========================================================
-   DANYGAMA 2026 UPGRADE LAYER
-========================================================= */
-.site-announcement{max-width:1200px;margin:12px auto 0;padding:10px 14px;border:1px solid #274d70;border-radius:14px;background:linear-gradient(90deg,#0d2944,#10213a);color:#dceeff;font-size:13px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,.16)}
-.site-announcement strong{color:#ffd21c}
-.quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 20px}
-.quick-stat{padding:14px;border:1px solid #21415e;border-radius:16px;background:#0b1a2a;text-align:center}
-.quick-stat b{display:block;font-size:20px;color:#ffd21c}
-.quick-stat span{display:block;margin-top:4px;color:#8fa8bf;font-size:11px}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:rgba(255,210,28,.12);border:1px solid rgba(255,210,28,.35);color:#ffd21c;font-size:11px;font-weight:900;margin-bottom:12px}
-.game-card .game-image{transition:transform .3s ease}
-.game-card:hover .game-image{transform:scale(1.03)}
-.market-card{transition:.25s}
-.market-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.25)}
-.sticky-cta{position:fixed;right:14px;bottom:92px;z-index:2500;display:flex;gap:8px;flex-direction:column}
-.sticky-cta a,.sticky-cta button{border:0;border-radius:999px;padding:11px 14px;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.28);font-size:12px}
-.sticky-wa{background:#19a463;color:#fff}
-.sticky-games{background:#ffd21c;color:#101820}
-body.light-theme .site-announcement{background:#fff;border-color:#d8e3ee;color:#42566c}
-body.light-theme .quick-stat{background:#fff;border-color:#d9e2ec}
-body.light-theme .quick-stat span{color:#718096}
-@media(max-width:650px){.quick-stats{grid-template-columns:repeat(3,1fr);gap:7px}.quick-stat{padding:11px 5px}.quick-stat b{font-size:16px}.quick-stat span{font-size:9px}.hero h1{font-size:28px}.site-announcement{margin-left:10px;margin-right:10px}.sticky-cta{bottom:88px;right:10px}.sticky-cta a,.sticky-cta button{padding:10px 12px;font-size:11px}}
 
+<style id="danygama-upgrade">
+:root{--dg-bg:#070b12;--dg-card:#121b2a;--dg-line:rgba(255,255,255,.09);--dg-text:#f5f7fb;--dg-muted:#9aa8bd;--dg-primary:#7c5cff;--dg-green:#16c784;--dg-shadow:0 18px 50px rgba(0,0,0,.32)}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(circle at 10% 0%,rgba(124,92,255,.16),transparent 30%),radial-gradient(circle at 90% 10%,rgba(22,199,132,.09),transparent 25%),linear-gradient(180deg,var(--dg-bg),#05070c)!important;color:var(--dg-text)!important}
+button,a,input,select,textarea{transition:.2s ease}
+button{box-shadow:0 7px 20px rgba(0,0,0,.18)}
+button:active{transform:translateY(1px) scale(.99)}
+input,select,textarea{outline:none;border:1px solid var(--dg-line)!important;background:rgba(255,255,255,.055)!important;color:var(--dg-text)!important}
+input:focus,select:focus,textarea:focus{border-color:rgba(124,92,255,.75)!important;box-shadow:0 0 0 3px rgba(124,92,255,.13)}
+.market-card,.game,.coin-order{border:1px solid var(--dg-line);box-shadow:var(--dg-shadow);backdrop-filter:blur(12px);overflow:hidden}
+.market-card:hover,.game:hover{transform:translateY(-3px);border-color:rgba(124,92,255,.35)}
+.dg-topbar{position:sticky;top:0;z-index:999;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;margin:-20px -20px 20px;background:rgba(7,11,18,.84);backdrop-filter:blur(18px);border-bottom:1px solid var(--dg-line)}
+.dg-brand{font-weight:900}.dg-brand span{color:#9a86ff}.dg-live{font-size:12px;color:#8ee8c2}
+.dg-search-wrap{position:relative;margin:10px 0 15px}.dg-search-wrap input{padding-left:42px!important}.dg-search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.7}
+.dg-toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);z-index:10000;max-width:92vw;padding:13px 17px;border-radius:12px;background:#172235;color:#fff;border:1px solid var(--dg-line);box-shadow:var(--dg-shadow);opacity:0;pointer-events:none}.dg-toast.show{opacity:1;transform:translate(-50%,0)}
+.dg-scroll-top{position:fixed;right:16px;bottom:75px;width:44px;height:44px;border-radius:50%;display:none;z-index:9999;padding:0!important}.dg-scroll-top.show{display:block}
+@media(max-width:700px){body{padding:10px!important}.box{padding:15px!important;border-radius:18px}h1{font-size:25px}h2{font-size:20px}button{min-height:45px}}
 </style>
 
 </head>
@@ -2059,19 +2055,6 @@ aria-label="Open menu"
 
 </header>
 
-<div class="site-announcement">🔥 <strong>DANYGAMA GAMES</strong> — Games, Coins & Team Marketplace sehemu moja. Login ili uanze.</div>
-
-<div class="quick-stats" id="quickStats">
-  <div class="quick-stat"><b id="statGames">0</b><span>GAMES</span></div>
-  <div class="quick-stat"><b id="statMarket">0</b><span>MARKETPLACE</span></div>
-  <div class="quick-stat"><b>24/7</b><span>COMMUNITY</span></div>
-</div>
-
-<div class="sticky-cta">
-  <button class="sticky-games" onclick="showPage('gamesPage')">🎮 GAMES</button>
-  <a class="sticky-wa" href="https://wa.me/255786538998" target="_blank" rel="noopener noreferrer">💬 WHATSAPP</a>
-</div>
-
 
 <!-- =========================================================
      HOME
@@ -2080,8 +2063,6 @@ aria-label="Open menu"
 <section id="homePage" class="page active">
 
 <div class="hero">
-
-<div class="hero-badge">⚡ FAST • SIMPLE • GAMING COMMUNITY</div>
 
 <h1>
 WELCOME TO <span>DANYGAMA GAMES</span>
@@ -6202,7 +6183,6 @@ showToast(
 );
 
 await loadMarketplace();
-updateDanygamaStats();
 
 }
 catch(error){
@@ -6689,7 +6669,6 @@ document
 
 
 loadMarketplace();
-updateDanygamaStats();
 
 }
 catch(error){
@@ -7442,22 +7421,6 @@ closeMenu();
 
 
 /* =========================================================
-   UPGRADE STATS
-========================================================= */
-async function updateDanygamaStats(){
-  try{
-    const gamesResult=await supabaseClient.from("games").select("id",{count:"exact",head:true});
-    const marketResult=await supabaseClient.from("team_marketplace").select("id",{count:"exact",head:true});
-    const gamesEl=document.getElementById("statGames");
-    const marketEl=document.getElementById("statMarket");
-    if(gamesEl) gamesEl.textContent=String(gamesResult.count || 0);
-    if(marketEl) marketEl.textContent=String(marketResult.count || 0);
-  }catch(e){
-    console.warn("Stats unavailable",e);
-  }
-}
-
-/* =========================================================
    INITIALIZE
 ========================================================= */
 
@@ -7470,8 +7433,6 @@ await checkUser();
 await loadGames();
 
 loadMarketplace();
-
-updateDanygamaStats();
 
 loadComments();
 
@@ -7494,6 +7455,45 @@ await loadUnlockedGames();
 
 initialize();
 
+</script>
+
+
+<script id="danygama-upgrade-script">
+(function(){
+"use strict";
+function ready(fn){if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",fn);else fn()}
+ready(function(){
+if(!document.querySelector(".dg-topbar")){
+ const b=document.createElement("div");b.className="dg-topbar";
+ b.innerHTML='<div class="dg-brand">🎮 DANYGAMA <span>GAMES</span></div><div class="dg-live">● ONLINE</div>';
+ document.body.prepend(b);
+}
+window.dgToast=function(msg){
+ if(typeof window.showToast==="function"){try{window.showToast(msg);return}catch(e){}}
+ let t=document.querySelector(".dg-toast");
+ if(!t){t=document.createElement("div");t.className="dg-toast";document.body.appendChild(t)}
+ t.textContent=msg;t.classList.add("show");clearTimeout(window.__dgToast);
+ window.__dgToast=setTimeout(()=>t.classList.remove("show"),2600);
+};
+const games=document.getElementById("games");
+if(games&&!document.getElementById("dgGameSearch")){
+ const w=document.createElement("div");w.className="dg-search-wrap";
+ w.innerHTML='<span class="dg-search-icon">🔎</span><input id="dgGameSearch" type="search" placeholder="Tafuta game kwa jina, platform au category...">';
+ games.parentNode.insertBefore(w,games);
+ w.querySelector("input").addEventListener("input",function(){
+  const q=this.value.toLowerCase().trim();
+  games.querySelectorAll(".game").forEach(c=>c.style.display=c.textContent.toLowerCase().includes(q)?"":"none");
+ });
+}
+const top=document.createElement("button");top.type="button";top.className="dg-scroll-top";top.textContent="↑";top.setAttribute("aria-label","Rudi juu");document.body.appendChild(top);
+window.addEventListener("scroll",()=>top.classList.toggle("show",scrollY>450));
+top.onclick=()=>scrollTo({top:0,behavior:"smooth"});
+document.addEventListener("error",e=>{
+ const x=e.target;if(x&&x.tagName==="IMG"&&!x.dataset.dgFallback){x.dataset.dgFallback="1";x.src="https://via.placeholder.com/800x500/10243a/ffffff?text=Danygama+Games"}
+},true);
+try{if(window.supabaseClient?.auth)window.supabaseClient.auth.onAuthStateChange(e=>{if(e==="SIGNED_IN")dgToast("✅ Umeingia kwenye account.");if(e==="SIGNED_OUT")dgToast("👋 Umetoka kwenye account.")})}catch(e){}
+});
+})();
 </script>
 
 </body>
