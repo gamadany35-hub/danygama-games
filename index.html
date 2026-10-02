@@ -5,9 +5,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Danygama Games</title>
+<title>Danygama Games — Games, Coins & Marketplace</title>
 
-<meta name="description" content="Danygama Games - Download games, discover updates, marketplace, comments and gaming community.">
+<meta name="description" content="Danygama Games — Download games, earn or buy Coins, discover updates, sell gaming teams and join the community.">
 
 <!-- GOOGLE ANALYTICS -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6QDDJEXQVD"></script>
@@ -1749,6 +1749,30 @@ border-radius:18px 18px 0 0;
 
 }
 
+
+/* =========================================================
+   DANYGAMA 2026 UPGRADE LAYER
+========================================================= */
+.site-announcement{max-width:1200px;margin:12px auto 0;padding:10px 14px;border:1px solid #274d70;border-radius:14px;background:linear-gradient(90deg,#0d2944,#10213a);color:#dceeff;font-size:13px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,.16)}
+.site-announcement strong{color:#ffd21c}
+.quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 20px}
+.quick-stat{padding:14px;border:1px solid #21415e;border-radius:16px;background:#0b1a2a;text-align:center}
+.quick-stat b{display:block;font-size:20px;color:#ffd21c}
+.quick-stat span{display:block;margin-top:4px;color:#8fa8bf;font-size:11px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:rgba(255,210,28,.12);border:1px solid rgba(255,210,28,.35);color:#ffd21c;font-size:11px;font-weight:900;margin-bottom:12px}
+.game-card .game-image{transition:transform .3s ease}
+.game-card:hover .game-image{transform:scale(1.03)}
+.market-card{transition:.25s}
+.market-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.25)}
+.sticky-cta{position:fixed;right:14px;bottom:92px;z-index:2500;display:flex;gap:8px;flex-direction:column}
+.sticky-cta a,.sticky-cta button{border:0;border-radius:999px;padding:11px 14px;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.28);font-size:12px}
+.sticky-wa{background:#19a463;color:#fff}
+.sticky-games{background:#ffd21c;color:#101820}
+body.light-theme .site-announcement{background:#fff;border-color:#d8e3ee;color:#42566c}
+body.light-theme .quick-stat{background:#fff;border-color:#d9e2ec}
+body.light-theme .quick-stat span{color:#718096}
+@media(max-width:650px){.quick-stats{grid-template-columns:repeat(3,1fr);gap:7px}.quick-stat{padding:11px 5px}.quick-stat b{font-size:16px}.quick-stat span{font-size:9px}.hero h1{font-size:28px}.site-announcement{margin-left:10px;margin-right:10px}.sticky-cta{bottom:88px;right:10px}.sticky-cta a,.sticky-cta button{padding:10px 12px;font-size:11px}}
+
 </style>
 
 </head>
@@ -2035,6 +2059,19 @@ aria-label="Open menu"
 
 </header>
 
+<div class="site-announcement">🔥 <strong>DANYGAMA GAMES</strong> — Games, Coins & Team Marketplace sehemu moja. Login ili uanze.</div>
+
+<div class="quick-stats" id="quickStats">
+  <div class="quick-stat"><b id="statGames">0</b><span>GAMES</span></div>
+  <div class="quick-stat"><b id="statMarket">0</b><span>MARKETPLACE</span></div>
+  <div class="quick-stat"><b>24/7</b><span>COMMUNITY</span></div>
+</div>
+
+<div class="sticky-cta">
+  <button class="sticky-games" onclick="showPage('gamesPage')">🎮 GAMES</button>
+  <a class="sticky-wa" href="https://wa.me/255786538998" target="_blank" rel="noopener noreferrer">💬 WHATSAPP</a>
+</div>
+
 
 <!-- =========================================================
      HOME
@@ -2043,6 +2080,8 @@ aria-label="Open menu"
 <section id="homePage" class="page active">
 
 <div class="hero">
+
+<div class="hero-badge">⚡ FAST • SIMPLE • GAMING COMMUNITY</div>
 
 <h1>
 WELCOME TO <span>DANYGAMA GAMES</span>
@@ -6163,6 +6202,7 @@ showToast(
 );
 
 await loadMarketplace();
+updateDanygamaStats();
 
 }
 catch(error){
@@ -6649,6 +6689,7 @@ document
 
 
 loadMarketplace();
+updateDanygamaStats();
 
 }
 catch(error){
@@ -7401,6 +7442,22 @@ closeMenu();
 
 
 /* =========================================================
+   UPGRADE STATS
+========================================================= */
+async function updateDanygamaStats(){
+  try{
+    const gamesResult=await supabaseClient.from("games").select("id",{count:"exact",head:true});
+    const marketResult=await supabaseClient.from("team_marketplace").select("id",{count:"exact",head:true});
+    const gamesEl=document.getElementById("statGames");
+    const marketEl=document.getElementById("statMarket");
+    if(gamesEl) gamesEl.textContent=String(gamesResult.count || 0);
+    if(marketEl) marketEl.textContent=String(marketResult.count || 0);
+  }catch(e){
+    console.warn("Stats unavailable",e);
+  }
+}
+
+/* =========================================================
    INITIALIZE
 ========================================================= */
 
@@ -7413,6 +7470,8 @@ await checkUser();
 await loadGames();
 
 loadMarketplace();
+
+updateDanygamaStats();
 
 loadComments();
 
