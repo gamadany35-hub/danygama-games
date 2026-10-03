@@ -1,533 +1,912 @@
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Danygama Games - Admin Panel</title>
+<title>Danygama Games - Admin Panel</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
+<style>
 
-    * {
-      box-sizing: border-box;
-    }
+*{
+  box-sizing:border-box;
+}
 
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      background: #080b12;
-      color: white;
-    }
+body{
+  margin:0;
+  padding:15px;
+  font-family:Arial, sans-serif;
+  background:#070a10;
+  color:#fff;
+}
 
-    .box {
-      width: 100%;
-      max-width: 700px;
-      margin: auto;
-      background: #141a27;
-      padding: 25px;
-      border-radius: 16px;
-    }
+.box{
+  width:100%;
+  max-width:850px;
+  margin:auto;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+/* ================================
+   LOGIN
+================================ */
 
-    h2 {
-      margin-top: 10px;
-    }
+.login-box{
+  max-width:500px;
+  margin:40px auto;
+  background:#121826;
+  padding:25px;
+  border-radius:20px;
+  border:1px solid #273249;
+  box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
 
-    input,
-    button {
-      width: 100%;
-      padding: 13px;
-      margin: 7px 0;
-      border-radius: 9px;
-      border: 1px solid #303a4e;
-      font-size: 15px;
-    }
+.logo{
+  text-align:center;
+  font-size:28px;
+  font-weight:bold;
+  margin-bottom:5px;
+}
 
-    input {
-      background: #20283a;
-      color: white;
-    }
+.subtitle{
+  text-align:center;
+  color:#9ca8bc;
+  margin-bottom:25px;
+}
 
-    input::placeholder {
-      color: #9ca6b8;
-    }
+/* ================================
+   GENERAL
+================================ */
 
-    input[type="file"] {
-      padding: 10px;
-    }
+input,
+button{
+  width:100%;
+  padding:13px;
+  margin:6px 0;
+  border-radius:10px;
+  border:1px solid #303b52;
+  font-size:15px;
+}
 
-    button {
-      background: #7658ff;
-      color: white;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
+input{
+  background:#1c2536;
+  color:white;
+  outline:none;
+}
 
-    button:hover {
-      opacity: 0.9;
-    }
+input:focus{
+  border-color:#7658ff;
+}
 
-    .logout {
-      background: #444;
-    }
+input::placeholder{
+  color:#8995a9;
+}
 
-    .delete {
-      background: #d62828;
-    }
+input[type="file"]{
+  padding:10px;
+}
 
-    .approve {
-      background: #16a34a;
-    }
+button{
+  background:#7658ff;
+  color:white;
+  border:0;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.2s;
+}
 
-    .refresh {
-      background: #2563eb;
-    }
+button:hover{
+  opacity:.9;
+  transform:translateY(-1px);
+}
 
-    .reject {
-      background: #b91c1c;
-    }
+button:active{
+  transform:scale(.98);
+}
 
-    .game {
-      background: #20283a;
-      padding: 15px;
-      margin-top: 12px;
-      border-radius: 12px;
-    }
+hr{
+  border:0;
+  border-top:1px solid #293449;
+  margin:28px 0;
+}
 
-    .game img {
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
+.section{
+  background:#111827;
+  border:1px solid #273249;
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:20px;
+}
 
-    .message {
-      margin-top: 10px;
-      font-weight: bold;
-    }
+.section-title{
+  font-size:21px;
+  font-weight:bold;
+  margin-bottom:5px;
+}
 
-    #panel {
-      display: none;
-    }
+.section-description{
+  color:#9ca8bc;
+  font-size:13px;
+  margin-bottom:18px;
+}
 
-    #preview {
-      display: none;
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-top: 10px;
-    }
+.message{
+  font-weight:bold;
+  margin-top:10px;
+  word-break:break-word;
+}
 
-    hr {
-      border: 0;
-      border-top: 1px solid #303a4e;
-      margin: 25px 0;
-    }
+.small{
+  font-size:12px;
+  color:#9ca8bc;
+}
 
-    .link-title {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
+/* ================================
+   TOP HEADER
+================================ */
 
-    /* ========================= */
-    /* COIN ORDER */
-    /* ========================= */
+.admin-header{
+  background:linear-gradient(135deg,#171f34,#111827);
+  border:1px solid #303b52;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:20px;
+}
 
-    .coin-order {
-      background: #20283a;
-      padding: 16px;
-      margin-top: 12px;
-      border-radius: 12px;
-      border: 1px solid #303a4e;
-    }
+.admin-header-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
 
-    .coin-order.pending {
-      border-left: 5px solid #f59e0b;
-    }
+.admin-title{
+  font-size:23px;
+  font-weight:bold;
+}
 
-    .coin-order.approved {
-      border-left: 5px solid #16a34a;
-    }
+.admin-email{
+  color:#9ca8bc;
+  font-size:12px;
+  margin-top:5px;
+  word-break:break-word;
+}
 
-    .coin-order.rejected {
-      border-left: 5px solid #d62828;
-    }
+.logout{
+  width:auto;
+  min-width:100px;
+  background:#3b4353;
+  margin:0;
+}
 
-    .coin-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+/* ================================
+   DASHBOARD
+================================ */
 
-    .coin-row {
-      margin: 7px 0;
-      word-break: break-word;
-    }
+.dashboard{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:18px;
+}
 
-    .status {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 7px;
-      font-size: 12px;
-      font-weight: bold;
-      background: #555;
-    }
+.stat{
+  background:#1b2435;
+  border:1px solid #303b52;
+  border-radius:14px;
+  padding:15px 8px;
+  text-align:center;
+}
 
-    .status.pending {
-      background: #f59e0b;
-      color: #111;
-    }
+.stat-icon{
+  font-size:25px;
+}
 
-    .status.approved {
-      background: #16a34a;
-    }
+.stat-number{
+  font-size:26px;
+  font-weight:bold;
+  margin-top:5px;
+}
 
-    .status.rejected {
-      background: #d62828;
-    }
+.stat-label{
+  font-size:11px;
+  color:#aab4c5;
+  margin-top:3px;
+}
 
-    /* ========================= */
-    /* USERS */
-    /* ========================= */
+/* ================================
+   QUICK ACTIONS
+================================ */
 
-    .user-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 15px;
-    }
+.quick-actions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
 
-    .stat-card {
-      background: #20283a;
-      border: 1px solid #303a4e;
-      border-radius: 12px;
-      padding: 18px 10px;
-      text-align: center;
-    }
+.quick-actions button{
+  margin:0;
+}
 
-    .stat-number {
-      font-size: 30px;
-      font-weight: bold;
-      margin-top: 5px;
-    }
+/* ================================
+   USERS
+================================ */
 
-    .stat-title {
-      font-size: 13px;
-      color: #aeb7c7;
-    }
+.user-card{
+  background:#1b2435;
+  border:1px solid #303b52;
+  border-left:5px solid #7658ff;
+  padding:15px;
+  margin-top:12px;
+  border-radius:12px;
+}
 
-    .user-card {
-      background: #20283a;
-      border: 1px solid #303a4e;
-      border-left: 5px solid #7658ff;
-      padding: 15px;
-      margin-top: 12px;
-      border-radius: 12px;
-    }
+.user-email{
+  font-size:16px;
+  font-weight:bold;
+  word-break:break-word;
+}
 
-    .user-email {
-      font-size: 16px;
-      font-weight: bold;
-      word-break: break-word;
-    }
+.user-row{
+  margin-top:8px;
+  font-size:13px;
+  color:#d7dce5;
+  word-break:break-word;
+}
 
-    .user-row {
-      margin-top: 8px;
-      font-size: 14px;
-      color: #d7dce5;
-      word-break: break-word;
-    }
+.login-badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:7px;
+  font-size:11px;
+  font-weight:bold;
+  margin-top:10px;
+}
 
-    .login-badge {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 7px;
-      font-size: 12px;
-      font-weight: bold;
-      margin-top: 8px;
-    }
+.login-badge.yes{
+  background:#16a34a;
+}
 
-    .login-badge.yes {
-      background: #16a34a;
-    }
+.login-badge.no{
+  background:#f59e0b;
+  color:#111;
+}
 
-    .login-badge.no {
-      background: #f59e0b;
-      color: #111;
-    }
+/* ================================
+   COINS
+================================ */
 
-    .small {
-      font-size: 12px;
-      color: #aeb7c7;
-    }
+.coin-order{
+  background:#1b2435;
+  padding:16px;
+  margin-top:12px;
+  border-radius:13px;
+  border:1px solid #303b52;
+}
 
-  </style>
+.coin-order.pending{
+  border-left:5px solid #f59e0b;
+}
+
+.coin-order.approved{
+  border-left:5px solid #16a34a;
+}
+
+.coin-order.rejected{
+  border-left:5px solid #d62828;
+}
+
+.coin-title{
+  font-size:17px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.coin-row{
+  margin:7px 0;
+  word-break:break-word;
+}
+
+.status{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:7px;
+  font-size:11px;
+  font-weight:bold;
+  background:#555;
+}
+
+.status.pending{
+  background:#f59e0b;
+  color:#111;
+}
+
+.status.approved{
+  background:#16a34a;
+}
+
+.status.rejected{
+  background:#d62828;
+}
+
+.approve{
+  background:#16a34a;
+}
+
+.reject{
+  background:#b91c1c;
+}
+
+/* ================================
+   GAMES
+================================ */
+
+.game{
+  background:#1b2435;
+  padding:15px;
+  margin-top:12px;
+  border-radius:14px;
+  border:1px solid #303b52;
+}
+
+.game img{
+  width:100%;
+  max-height:240px;
+  object-fit:cover;
+  border-radius:11px;
+  margin-bottom:12px;
+}
+
+.game-name{
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.game-info{
+  color:#cbd3df;
+  font-size:13px;
+  line-height:1.7;
+}
+
+.game-links{
+  background:#121927;
+  border-radius:10px;
+  padding:10px;
+  margin-top:12px;
+  font-size:13px;
+  color:#b8c2d2;
+}
+
+.delete{
+  background:#d62828;
+}
+
+/* ================================
+   FORM
+================================ */
+
+.form-label{
+  display:block;
+  margin-top:12px;
+  margin-bottom:5px;
+  font-size:13px;
+  font-weight:bold;
+  color:#d9deea;
+}
+
+#preview{
+  display:none;
+  width:100%;
+  max-height:230px;
+  object-fit:cover;
+  border-radius:12px;
+  margin-top:10px;
+  border:1px solid #303b52;
+}
+
+/* ================================
+   EMPTY / LOADING
+================================ */
+
+.empty{
+  text-align:center;
+  color:#9ca8bc;
+  padding:20px;
+  background:#1b2435;
+  border-radius:12px;
+  margin-top:10px;
+}
+
+.loading{
+  text-align:center;
+  padding:20px;
+  color:#aeb7c7;
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media(max-width:650px){
+
+  body{
+    padding:10px;
+  }
+
+  .section{
+    padding:15px;
+  }
+
+  .dashboard{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .admin-header-top{
+    align-items:flex-start;
+  }
+
+  .admin-title{
+    font-size:19px;
+  }
+
+  .logout{
+    min-width:80px;
+    width:auto;
+    padding:10px;
+  }
+
+}
+
+@media(max-width:380px){
+
+  .dashboard{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .quick-actions{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
 <div class="box">
 
-  <h1>🎮 DANYGAMA GAMES</h1>
+<!-- ==================================================
+     LOGIN
+================================================== -->
+
+<div id="login" class="login-box">
+
+  <div class="logo">
+    🎮 DANYGAMA GAMES
+  </div>
+
+  <div class="subtitle">
+    🔐 Administrator Login
+  </div>
+
+  <input
+    id="email"
+    type="email"
+    placeholder="Admin Email"
+  >
+
+  <input
+    id="password"
+    type="password"
+    placeholder="Password"
+  >
+
+  <button onclick="login()">
+    🔐 LOGIN
+  </button>
+
+  <p
+    id="loginMessage"
+    class="message">
+  </p>
+
+</div>
 
 
-  <!-- ========================= -->
-  <!-- LOGIN -->
-  <!-- ========================= -->
+<!-- ==================================================
+     ADMIN PANEL
+================================================== -->
 
-  <div id="login">
+<div id="panel" style="display:none;">
 
-    <h2>🔐 Admin Login</h2>
 
-    <input
-      id="email"
-      type="email"
-      placeholder="Admin Email"
-    >
+<!-- ==================================================
+     HEADER
+================================================== -->
 
-    <input
-      id="password"
-      type="password"
-      placeholder="Password"
-    >
+<div class="admin-header">
 
-    <button onclick="login()">
-      LOGIN
+  <div class="admin-header-top">
+
+    <div>
+
+      <div class="admin-title">
+        👑 DANYGAMA ADMIN
+      </div>
+
+      <div
+        id="adminEmail"
+        class="admin-email">
+        Administrator
+      </div>
+
+    </div>
+
+    <button
+      class="logout"
+      onclick="logout()">
+      LOGOUT
     </button>
-
-    <p id="loginMessage" class="message"></p>
 
   </div>
 
 
-  <!-- ========================= -->
-  <!-- ADMIN PANEL -->
-  <!-- ========================= -->
+  <!-- DASHBOARD -->
 
-  <div id="panel">
+  <div class="dashboard">
 
-    <h2>👑 Admin Panel</h2>
+    <div class="stat">
 
-    <button class="logout" onclick="logout()">
-      LOGOUT
-    </button>
-
-
-    <!-- ========================= -->
-    <!-- USERS -->
-    <!-- ========================= -->
-
-    <hr>
-
-    <h2>👥 Registered Users</h2>
-
-    <p class="small">
-      Hapa utaona watu ambao wamewahi kusajili account
-      kwenye Danygama Games pamoja na taarifa zao za login.
-    </p>
-
-
-    <div class="user-stats">
-
-      <div class="stat-card">
-
-        <div class="stat-title">
-          👥 Registered
-        </div>
-
-        <div
-          id="totalUsers"
-          class="stat-number">
-          0
-        </div>
-
+      <div class="stat-icon">
+        👥
       </div>
 
+      <div
+        id="totalUsers"
+        class="stat-number">
+        0
+      </div>
 
-      <div class="stat-card">
-
-        <div class="stat-title">
-          🔐 Waliowahi Login
-        </div>
-
-        <div
-          id="loggedUsers"
-          class="stat-number">
-          0
-        </div>
-
+      <div class="stat-label">
+        REGISTERED
       </div>
 
     </div>
 
 
-    <button
-      class="refresh"
-      onclick="loadUsers()">
+    <div class="stat">
 
-      🔄 REFRESH USERS
+      <div class="stat-icon">
+        🔐
+      </div>
 
+      <div
+        id="loggedUsers"
+        class="stat-number">
+        0
+      </div>
+
+      <div class="stat-label">
+        LOGGED IN
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+        🪙
+      </div>
+
+      <div
+        id="pendingOrders"
+        class="stat-number">
+        0
+      </div>
+
+      <div class="stat-label">
+        PENDING
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+        🎮
+      </div>
+
+      <div
+        id="totalGames"
+        class="stat-number">
+        0
+      </div>
+
+      <div class="stat-label">
+        GAMES
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ==================================================
+     QUICK ACTIONS
+================================================== -->
+
+<div class="section">
+
+  <div class="section-title">
+    ⚡ Quick Actions
+  </div>
+
+  <div class="section-description">
+    Fikia sehemu muhimu za Admin Panel haraka.
+  </div>
+
+  <div class="quick-actions">
+
+    <button onclick="goTo('usersSection')">
+      👥 USERS
     </button>
 
+    <button onclick="goTo('ordersSection')">
+      🪙 COIN ORDERS
+    </button>
 
-    <p
-      id="usersMessage"
-      class="message">
-    </p>
+    <button onclick="goTo('addGameSection')">
+      ➕ ADD GAME
+    </button>
+
+    <button onclick="goTo('gamesSection')">
+      🎮 GAMES
+    </button>
+
+  </div>
+
+</div>
 
 
-    <div id="users">
+<!-- ==================================================
+     USERS
+================================================== -->
 
+<div
+  id="usersSection"
+  class="section">
+
+  <div class="section-title">
+    👥 Registered Users
+  </div>
+
+  <div class="section-description">
+    Hapa utaona watu ambao wamewahi kusajili
+    account pamoja na taarifa zao za login.
+  </div>
+
+
+  <button
+    class="refresh"
+    onclick="loadUsers()">
+    🔄 REFRESH USERS
+  </button>
+
+
+  <p
+    id="usersMessage"
+    class="message">
+  </p>
+
+
+  <div id="users">
+    <div class="loading">
       ⏳ Inapakia users...
-
     </div>
+  </div>
+
+</div>
 
 
-    <!-- ========================= -->
-    <!-- COIN ORDERS -->
-    <!-- ========================= -->
+<!-- ==================================================
+     COIN ORDERS
+================================================== -->
 
-    <hr>
+<div
+  id="ordersSection"
+  class="section">
 
-    <h2>🪙 Coin Orders</h2>
+  <div class="section-title">
+    🪙 Coin Orders
+  </div>
 
-    <p class="small">
-      Hapa utaona malipo ya coins ambayo wateja wametuma.
-      Baada ya kuthibitisha malipo, bonyeza APPROVE.
-    </p>
+  <div class="section-description">
+    Hapa utaona orders za coins na unaweza
+    ku-approve malipo yaliyothibitishwa.
+  </div>
 
-    <button
-      class="refresh"
-      onclick="loadCoinOrders()">
 
-      🔄 REFRESH ORDERS
+  <button
+    class="refresh"
+    onclick="loadCoinOrders()">
+    🔄 REFRESH ORDERS
+  </button>
 
-    </button>
 
-    <p
-      id="coinMessage"
-      class="message">
-    </p>
+  <p
+    id="coinMessage"
+    class="message">
+  </p>
 
-    <div id="coinOrders">
+
+  <div id="coinOrders">
+
+    <div class="loading">
       ⏳ Inapakia coin orders...
     </div>
 
+  </div>
 
-    <!-- ========================= -->
-    <!-- ADD GAME -->
-    <!-- ========================= -->
-
-    <hr>
-
-    <h2>➕ Add New Game</h2>
-
-    <input
-      id="name"
-      type="text"
-      placeholder="Game name"
-    >
-
-    <input
-      id="platform"
-      type="text"
-      placeholder="Platform mfano Android"
-    >
-
-    <input
-      id="size"
-      type="text"
-      placeholder="Size mfano 2 GB"
-    >
-
-    <input
-      id="category"
-      type="text"
-      placeholder="Category mfano Football"
-    >
+</div>
 
 
-    <label>
-      🖼️ Chagua picha ya game:
-    </label>
+<!-- ==================================================
+     ADD GAME
+================================================== -->
 
-    <input
-      id="imageFile"
-      type="file"
-      accept="image/*"
-      onchange="previewImage(event)"
-    >
+<div
+  id="addGameSection"
+  class="section">
 
-    <img id="preview">
+  <div class="section-title">
+    ➕ Add New Game
+  </div>
 
-
-    <!-- ========================= -->
-    <!-- DOWNLOAD LINKS -->
-    <!-- ========================= -->
-
-    <label class="link-title">
-      🔗 Download Link 1
-    </label>
-
-    <input
-      id="download_url_1"
-      type="url"
-      placeholder="Weka Download Link 1"
-    >
+  <div class="section-description">
+    Jaza taarifa za game kisha bonyeza SAVE GAME.
+  </div>
 
 
-    <label class="link-title">
-      🔗 Download Link 2
-    </label>
+  <label class="form-label">
+    🎮 Game Name
+  </label>
 
-    <input
-      id="download_url_2"
-      type="url"
-      placeholder="Weka Download Link 2"
-    >
-
-
-    <label class="link-title">
-      🔗 Download Link 3
-    </label>
-
-    <input
-      id="download_url_3"
-      type="url"
-      placeholder="Weka Download Link 3"
-    >
+  <input
+    id="name"
+    type="text"
+    placeholder="Mfano: Dream League Soccer 2026"
+  >
 
 
-    <button onclick="addGame()">
-      💾 SAVE GAME
-    </button>
+  <label class="form-label">
+    📱 Platform
+  </label>
 
-    <p
-      id="message"
-      class="message">
-    </p>
+  <input
+    id="platform"
+    type="text"
+    placeholder="Mfano: Android / PSP / PS3"
+  >
 
 
-    <!-- ========================= -->
-    <!-- GAMES -->
-    <!-- ========================= -->
+  <label class="form-label">
+    📦 Size
+  </label>
 
-    <hr>
+  <input
+    id="size"
+    type="text"
+    placeholder="Mfano: 2.5 GB"
+  >
 
-    <h2>🎮 Games Zilizopo</h2>
 
-    <div id="games">
+  <label class="form-label">
+    🗂️ Category
+  </label>
+
+  <input
+    id="category"
+    type="text"
+    placeholder="Mfano: Football"
+  >
+
+
+  <label class="form-label">
+    🖼️ Game Image
+  </label>
+
+  <input
+    id="imageFile"
+    type="file"
+    accept="image/*"
+    onchange="previewImage(event)"
+  >
+
+
+  <img id="preview">
+
+
+  <label class="form-label">
+    🔗 Download Link 1
+  </label>
+
+  <input
+    id="download_url_1"
+    type="url"
+    placeholder="Weka Download Link 1"
+  >
+
+
+  <label class="form-label">
+    🔗 Download Link 2
+  </label>
+
+  <input
+    id="download_url_2"
+    type="url"
+    placeholder="Weka Download Link 2 - optional"
+  >
+
+
+  <label class="form-label">
+    🔗 Download Link 3
+  </label>
+
+  <input
+    id="download_url_3"
+    type="url"
+    placeholder="Weka Download Link 3 - optional"
+  >
+
+
+  <button onclick="addGame()">
+    💾 SAVE GAME
+  </button>
+
+
+  <p
+    id="message"
+    class="message">
+  </p>
+
+</div>
+
+
+<!-- ==================================================
+     GAMES
+================================================== -->
+
+<div
+  id="gamesSection"
+  class="section">
+
+  <div class="section-title">
+    🎮 Games Zilizopo
+  </div>
+
+  <div class="section-description">
+    Hapa unaweza kuona na kufuta games
+    zilizopo kwenye website.
+  </div>
+
+
+  <button
+    class="refresh"
+    onclick="loadGames()">
+    🔄 REFRESH GAMES
+  </button>
+
+
+  <div id="games">
+
+    <div class="loading">
       ⏳ Inapakia games...
     </div>
 
@@ -536,82 +915,145 @@
 </div>
 
 
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
+<div
+  class="small"
+  style="text-align:center;padding:20px;">
+
+  🎮 Danygama Games Admin Panel<br>
+  🔐 Administrator Area
+
+</div>
+
+
+</div>
+
+</div>
+
+
 <script>
 
-/* ========================================= */
-/* SUPABASE */
-/* ========================================= */
+/* ==================================================
+   SUPABASE
+================================================== */
 
 const SUPABASE_URL =
-  "https://octyeeoameulsdlaaqbc.supabase.co";
+"https://octyeeoameulsdlaaqbc.supabase.co";
 
 const SUPABASE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHllZW9hbWV1bHNkbGFhcWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNDE3MzQsImV4cCI6MjEwMzYxNzczNH0.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
-
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoib2N0eWVlb2FtZXVsc2RsYWFxYmMiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODA0MTczNCwiZXhwIjoyMTAzNjE3NzM0fQ.fctDZE-PaC0SPOmygd_6sDEGqaLguNlWXx757MHTPAI";
 
 const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 
-/* ========================================= */
-/* LOGIN */
-/* ========================================= */
+/* ==================================================
+   HELPERS
+================================================== */
 
-async function login() {
+function escapeHTML(value){
 
-  const email =
-    document
-      .getElementById("email")
-      .value
-      .trim();
+  const div =
+  document.createElement("div");
 
-  const password =
-    document
-      .getElementById("password")
-      .value;
+  div.textContent =
+  value ?? "";
 
-  const message =
-    document
-      .getElementById("loginMessage");
+  return div.innerHTML;
+}
 
 
-  if (!email || !password) {
+function escapeAttribute(value){
 
-    message.textContent =
-      "⚠️ Weka email na password.";
+  return String(value ?? "")
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'");
 
-    return;
-  }
-
-
-  message.textContent =
-    "⏳ Inaingia...";
+}
 
 
-  const { error } =
-    await supabaseClient.auth.signInWithPassword({
+function goTo(id){
 
-      email: email,
+  const element =
+  document.getElementById(id);
 
-      password: password
+  if(element){
 
+    element.scrollIntoView({
+      behavior:"smooth",
+      block:"start"
     });
 
+  }
 
-  if (error) {
+}
+
+
+/* ==================================================
+   LOGIN
+================================================== */
+
+async function login(){
+
+  const email =
+  document
+  .getElementById("email")
+  .value
+  .trim();
+
+  const password =
+  document
+  .getElementById("password")
+  .value;
+
+  const message =
+  document
+  .getElementById("loginMessage");
+
+
+  if(!email || !password){
 
     message.textContent =
-      "❌ " + error.message;
+    "⚠️ Weka email na password.";
 
     return;
   }
 
 
   message.textContent =
-    "✅ Login successful!";
+  "⏳ Inaingia...";
+
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient.auth.signInWithPassword({
+
+    email:email,
+
+    password:password
+
+  });
+
+
+  if(error){
+
+    message.textContent =
+    "❌ " + error.message;
+
+    return;
+  }
+
+
+  message.textContent =
+  "✅ Login successful!";
 
 
   showPanel();
@@ -619,22 +1061,39 @@ async function login() {
 }
 
 
-/* ========================================= */
-/* SHOW PANEL */
-/* ========================================= */
+/* ==================================================
+   SHOW PANEL
+================================================== */
 
-function showPanel() {
-
-  document
-    .getElementById("login")
-    .style.display =
-      "none";
-
+async function showPanel(){
 
   document
-    .getElementById("panel")
-    .style.display =
-      "block";
+  .getElementById("login")
+  .style.display =
+  "none";
+
+
+  document
+  .getElementById("panel")
+  .style.display =
+  "block";
+
+
+  const {
+    data
+  } =
+  await supabaseClient.auth.getUser();
+
+
+  if(data && data.user){
+
+    document
+    .getElementById("adminEmail")
+    .textContent =
+    data.user.email ||
+    "Administrator";
+
+  }
 
 
   loadUsers();
@@ -646,234 +1105,209 @@ function showPanel() {
 }
 
 
-/* ========================================= */
-/* LOGOUT */
-/* ========================================= */
+/* ==================================================
+   LOGOUT
+================================================== */
 
-async function logout() {
+async function logout(){
 
   await supabaseClient
-    .auth
-    .signOut();
+  .auth
+  .signOut();
 
 
   document
-    .getElementById("panel")
-    .style.display =
-      "none";
+  .getElementById("panel")
+  .style.display =
+  "none";
 
 
   document
-    .getElementById("login")
-    .style.display =
-      "block";
+  .getElementById("login")
+  .style.display =
+  "block";
+
+
+  document
+  .getElementById("password")
+  .value =
+  "";
+
+
+  document
+  .getElementById("loginMessage")
+  .textContent =
+  "👋 Umetoka kwenye Admin Panel.";
 
 }
 
 
-/* ========================================= */
-/* LOAD USERS */
-/* ========================================= */
+/* ==================================================
+   USERS
+================================================== */
 
-async function loadUsers() {
+async function loadUsers(){
 
   const container =
-    document
-      .getElementById("users");
+  document.getElementById("users");
 
   const message =
-    document
-      .getElementById("usersMessage");
-
+  document.getElementById("usersMessage");
 
   const totalUsers =
-    document
-      .getElementById("totalUsers");
+  document.getElementById("totalUsers");
 
   const loggedUsers =
-    document
-      .getElementById("loggedUsers");
+  document.getElementById("loggedUsers");
 
 
-  if (!container) {
+  if(!container){
     return;
   }
 
 
   container.innerHTML =
-    "⏳ Inasoma registered users...";
+  '<div class="loading">⏳ Inasoma registered users...</div>';
+
+  message.textContent = "";
 
 
-  message.textContent =
-    "";
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+  .rpc("get_admin_users");
 
 
-  const { data, error } =
-    await supabaseClient
-      .rpc("get_admin_users");
-
-
-  if (error) {
+  if(error){
 
     container.innerHTML =
-      "❌ " +
-      escapeHTML(error.message);
+    "❌ " +
+    escapeHTML(error.message);
 
     message.textContent =
-      "❌ Imeshindikana kusoma users.";
+    "❌ Imeshindikana kusoma users.";
 
     return;
   }
 
 
-  if (!data || data.length === 0) {
+  if(!data || data.length === 0){
 
     totalUsers.textContent =
-      "0";
+    "0";
 
     loggedUsers.textContent =
-      "0";
+    "0";
 
     container.innerHTML =
-      "📭 Hakuna users bado.";
+    '<div class="empty">📭 Hakuna users bado.</div>';
 
     return;
   }
 
 
-  /* ========================= */
-  /* STATISTICS */
-  /* ========================= */
-
   const registeredCount =
-    data.length;
+  data.length;
 
 
   const loggedInCount =
-    data.filter(function(user) {
+  data.filter(function(user){
 
-      return user.last_sign_in_at !== null;
+    return user.last_sign_in_at !== null;
 
-    }).length;
+  }).length;
 
 
   totalUsers.textContent =
-    registeredCount;
+  registeredCount;
 
 
   loggedUsers.textContent =
-    loggedInCount;
+  loggedInCount;
 
 
-  /* ========================= */
-  /* DISPLAY USERS */
-  /* ========================= */
-
-  container.innerHTML =
-    "";
+  container.innerHTML = "";
 
 
-  data.forEach(function(user, index) {
+  data.forEach(function(user,index){
 
     const div =
-      document.createElement("div");
+    document.createElement("div");
 
 
     div.className =
-      "user-card";
+    "user-card";
 
 
     const hasLoggedIn =
-      user.last_sign_in_at !== null;
+    user.last_sign_in_at !== null;
 
 
     const loginBadge =
-      hasLoggedIn
+    hasLoggedIn
 
-      ? `
-        <span class="login-badge yes">
-          ✅ AMEWahi LOGIN
-        </span>
-      `
+    ? `
+      <span class="login-badge yes">
+        ✅ AMEWahi LOGIN
+      </span>
+    `
 
-      : `
-        <span class="login-badge no">
-          ⏳ HAJA-LOGIN
-        </span>
-      `;
+    : `
+      <span class="login-badge no">
+        ⏳ HAJA-LOGIN
+      </span>
+    `;
 
 
     const createdDate =
-      user.created_at
+    user.created_at
 
-      ? new Date(
-          user.created_at
-        ).toLocaleString()
+    ? new Date(
+        user.created_at
+      ).toLocaleString()
 
-      : "Haijulikani";
+    : "Haijulikani";
 
 
     const lastLogin =
-      user.last_sign_in_at
+    user.last_sign_in_at
 
-      ? new Date(
-          user.last_sign_in_at
-        ).toLocaleString()
+    ? new Date(
+        user.last_sign_in_at
+      ).toLocaleString()
 
-      : "Hajawahi login";
+    : "Hajawahi login";
 
 
     div.innerHTML = `
 
       <div class="user-email">
-
         👤 ${escapeHTML(
           user.email || "No email"
         )}
-
       </div>
 
-
       <div class="user-row">
-
         🔢 <strong>User #:</strong>
         ${index + 1}
-
       </div>
 
-
       <div class="user-row">
-
         🆔 <strong>UID:</strong><br>
-
-        ${escapeHTML(
-          user.id || ""
-        )}
-
+        ${escapeHTML(user.id || "")}
       </div>
 
-
       <div class="user-row">
-
         📅 <strong>Registered:</strong>
-
-        ${escapeHTML(
-          createdDate
-        )}
-
+        ${escapeHTML(createdDate)}
       </div>
-
 
       <div class="user-row">
-
         🕐 <strong>Last Login:</strong>
-
-        ${escapeHTML(
-          lastLogin
-        )}
-
+        ${escapeHTML(lastLogin)}
       </div>
-
 
       ${loginBadge}
 
@@ -887,108 +1321,121 @@ async function loadUsers() {
 }
 
 
-/* ========================================= */
-/* COIN ORDERS */
-/* ========================================= */
+/* ==================================================
+   COIN ORDERS
+================================================== */
 
-async function loadCoinOrders() {
+async function loadCoinOrders(){
 
   const container =
-    document
-      .getElementById("coinOrders");
+  document.getElementById("coinOrders");
 
   const message =
-    document
-      .getElementById("coinMessage");
+  document.getElementById("coinMessage");
+
+  const pendingOrders =
+  document.getElementById("pendingOrders");
 
 
-  if (!container) {
+  if(!container){
     return;
   }
 
 
   container.innerHTML =
-    "⏳ Inasoma coin orders...";
+  '<div class="loading">⏳ Inasoma coin orders...</div>';
+
+  message.textContent = "";
 
 
-  message.textContent =
-    "";
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+  .from("coin_orders")
+  .select("*")
+  .order(
+    "created_at",
+    {
+      ascending:false
+    }
+  );
 
 
-  const { data, error } =
-    await supabaseClient
-      .from("coin_orders")
-      .select("*")
-      .order("created_at", {
-        ascending: false
-      });
-
-
-  if (error) {
+  if(error){
 
     container.innerHTML =
-      "❌ " +
-      escapeHTML(
-        error.message
-      );
+    "❌ " +
+    escapeHTML(error.message);
 
     return;
   }
 
 
-  if (!data || data.length === 0) {
+  if(!data || data.length === 0){
+
+    pendingOrders.textContent =
+    "0";
 
     container.innerHTML =
-      "📭 Hakuna coin orders bado.";
+    '<div class="empty">📭 Hakuna coin orders bado.</div>';
 
     return;
   }
 
 
-  container.innerHTML =
-    "";
+  const pendingCount =
+  data.filter(function(order){
+
+    return (
+      order.status ||
+      "pending"
+    ) === "pending";
+
+  }).length;
 
 
-  data.forEach(function(order) {
+  pendingOrders.textContent =
+  pendingCount;
+
+
+  container.innerHTML = "";
+
+
+  data.forEach(function(order){
 
     const div =
-      document.createElement("div");
+    document.createElement("div");
+
+
+    const currentStatus =
+    order.status ||
+    "pending";
 
 
     div.className =
-      "coin-order " +
-      (
-        order.status ||
-        "pending"
-      );
-
-
-    const statusClass =
-      order.status ||
-      "pending";
+    "coin-order " +
+    currentStatus;
 
 
     const statusText =
 
-      order.status === "approved"
+    currentStatus === "approved"
 
-      ? "✅ APPROVED"
+    ? "✅ APPROVED"
 
-      : order.status === "rejected"
+    : currentStatus === "rejected"
 
-      ? "❌ REJECTED"
+    ? "❌ REJECTED"
 
-      : "⏳ PENDING";
-
-
-    let approveButton =
-      "";
+    : "⏳ PENDING";
 
 
-    if (
-      order.status ===
-      "pending"
-    ) {
+    let approveButton = "";
+
+
+    if(currentStatus === "pending"){
 
       approveButton = `
 
@@ -996,11 +1443,13 @@ async function loadCoinOrders() {
           class="approve"
           onclick="approveCoinOrder('${escapeAttribute(order.id)}')">
 
-          ✅ APPROVE ${escapeHTML(
-            String(
-              order.package_coins || ""
+          ✅ APPROVE ${
+            escapeHTML(
+              String(
+                order.package_coins || ""
+              )
             )
-          )} COINS
+          } COINS
 
         </button>
 
@@ -1015,102 +1464,67 @@ async function loadCoinOrders() {
         🪙 COIN ORDER
       </div>
 
-
       <div class="coin-row">
-
         👤 <strong>User ID:</strong><br>
-
-        ${escapeHTML(
-          order.user_id || ""
-        )}
-
+        ${escapeHTML(order.user_id || "")}
       </div>
 
-
       <div class="coin-row">
-
         🪙 <strong>Coins:</strong>
-
         ${escapeHTML(
-          String(
-            order.package_coins || ""
-          )
+          String(order.package_coins || "")
         )}
-
       </div>
 
-
       <div class="coin-row">
-
         💰 <strong>Amount:</strong>
-
         TSh ${escapeHTML(
-          String(
-            order.amount_tzs || ""
-          )
+          String(order.amount_tzs || "")
         )}
-
       </div>
 
-
       <div class="coin-row">
-
         📱 <strong>Payment Number:</strong>
-
         ${escapeHTML(
           order.payment_number ||
-          "0786538998"
+          "Haijawekwa"
         )}
-
       </div>
 
-
       <div class="coin-row">
-
         🧾 <strong>Payment Reference:</strong><br>
-
         ${escapeHTML(
           order.payment_reference ||
           "Hakuna reference"
         )}
-
       </div>
 
-
       <div class="coin-row">
-
         📅 <strong>Date:</strong>
-
         ${
           order.created_at
-
           ? escapeHTML(
               new Date(
                 order.created_at
               ).toLocaleString()
             )
-
           : ""
         }
-
       </div>
-
 
       <div class="coin-row">
 
         <strong>Status:</strong>
 
-        <span
-          class="status ${escapeHTML(
-            statusClass
-          )}">
+        <span class="status ${
+          escapeHTML(currentStatus)
+        }">
 
           ${statusText}
 
         </span>
 
       </div>
-
 
       ${approveButton}
 
@@ -1124,80 +1538,76 @@ async function loadCoinOrders() {
 }
 
 
-/* ========================================= */
-/* APPROVE COIN ORDER */
-/* ========================================= */
+/* ==================================================
+   APPROVE COIN
+================================================== */
 
-async function approveCoinOrder(orderId) {
+async function approveCoinOrder(orderId){
 
-  if (!orderId) {
+  if(!orderId){
     return;
   }
 
 
   const confirmApproval =
-    confirm(
-
-      "Una uhakika unataka ku-APPROVE order hii?\n\n" +
-
-      "Coins zitaongezwa kwenye account ya mteja."
-
-    );
+  confirm(
+    "Una uhakika unataka ku-APPROVE order hii?\n\n" +
+    "Coins zitaongezwa kwenye account ya mteja."
+  );
 
 
-  if (!confirmApproval) {
+  if(!confirmApproval){
     return;
   }
 
 
   const message =
-    document
-      .getElementById("coinMessage");
+  document.getElementById("coinMessage");
 
 
   message.textContent =
-    "⏳ Ina-approve payment...";
+  "⏳ Ina-approve payment...";
 
 
-  const { data, error } =
-    await supabaseClient.rpc(
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+  .rpc(
+    "approve_coin_order",
+    {
+      p_order_id:orderId
+    }
+  );
 
-      "approve_coin_order",
 
-      {
-        p_order_id:
-          orderId
-      }
-
-    );
-
-
-  if (error) {
+  if(error){
 
     message.textContent =
-      "❌ " +
-      error.message;
+    "❌ " +
+    error.message;
 
     return;
   }
 
 
-  if (
+  if(
     !data ||
     data.success !== true
-  ) {
+  ){
 
     message.textContent =
-      "❌ Approval haikukamilika.";
+    "❌ Approval haikukamilika.";
 
     return;
   }
 
 
   message.textContent =
-    "✅ Payment approved! " +
-    data.coins_added +
-    " coins zimeongezwa.";
+  "✅ Payment approved! " +
+  data.coins_added +
+  " coins zimeongezwa.";
 
 
   loadCoinOrders();
@@ -1205,112 +1615,100 @@ async function approveCoinOrder(orderId) {
 }
 
 
-/* ========================================= */
-/* IMAGE PREVIEW */
-/* ========================================= */
+/* ==================================================
+   IMAGE PREVIEW
+================================================== */
 
-function previewImage(event) {
+function previewImage(event){
 
   const file =
-    event.target.files[0];
-
+  event.target.files[0];
 
   const preview =
-    document
-      .getElementById("preview");
+  document.getElementById("preview");
 
 
-  if (!file) {
+  if(!file){
 
     preview.style.display =
-      "none";
+    "none";
 
     return;
   }
 
 
   preview.src =
-    URL.createObjectURL(file);
-
+  URL.createObjectURL(file);
 
   preview.style.display =
-    "block";
+  "block";
 
 }
 
 
-/* ========================================= */
-/* UPLOAD IMAGE */
-/* ========================================= */
+/* ==================================================
+   UPLOAD IMAGE
+================================================== */
 
-async function uploadImage(file) {
+async function uploadImage(file){
 
-  if (!file) {
+  if(!file){
     return null;
   }
 
 
   const extension =
-    file.name
-      .split(".")
-      .pop();
+  file.name
+  .split(".")
+  .pop()
+  .toLowerCase();
 
 
   const fileName =
-    Date.now() +
-    "-" +
-    Math.random()
-      .toString(36)
-      .substring(2) +
-    "." +
-    extension;
+  Date.now() +
+  "-" +
+  Math.random()
+  .toString(36)
+  .substring(2) +
+  "." +
+  extension;
 
 
   const filePath =
-    "games/" +
-    fileName;
+  "games/" +
+  fileName;
 
 
   const {
-    error: uploadError
-  } = await supabaseClient
-
-    .storage
-
-    .from("game-images")
-
-    .upload(
-
-      filePath,
-
-      file,
-
-      {
-        cacheControl:
-          "3600",
-
-        upsert:
-          false
-      }
-
-    );
+    error:uploadError
+  } =
+  await supabaseClient
+  .storage
+  .from("game-images")
+  .upload(
+    filePath,
+    file,
+    {
+      cacheControl:"3600",
+      upsert:false
+    }
+  );
 
 
-  if (uploadError) {
+  if(uploadError){
     throw uploadError;
   }
 
 
-  const { data } =
-    supabaseClient
-
-      .storage
-
-      .from("game-images")
-
-      .getPublicUrl(
-        filePath
-      );
+  const {
+    data
+  } =
+  supabaseClient
+  .storage
+  .from("game-images")
+  .getPublicUrl(
+    filePath
+  );
 
 
   return data.publicUrl;
@@ -1318,498 +1716,427 @@ async function uploadImage(file) {
 }
 
 
-/* ========================================= */
-/* ADD GAME */
-/* ========================================= */
+/* ==================================================
+   ADD GAME
+================================================== */
 
-async function addGame() {
+async function addGame(){
 
   const name =
-    document
-      .getElementById("name")
-      .value
-      .trim();
+  document
+  .getElementById("name")
+  .value
+  .trim();
 
 
   const platform =
-    document
-      .getElementById("platform")
-      .value
-      .trim();
+  document
+  .getElementById("platform")
+  .value
+  .trim();
 
 
   const size =
-    document
-      .getElementById("size")
-      .value
-      .trim();
+  document
+  .getElementById("size")
+  .value
+  .trim();
 
 
   const category =
-    document
-      .getElementById("category")
-      .value
-      .trim();
+  document
+  .getElementById("category")
+  .value
+  .trim();
 
 
   const download1 =
-    document
-      .getElementById(
-        "download_url_1"
-      )
-      .value
-      .trim();
+  document
+  .getElementById("download_url_1")
+  .value
+  .trim();
 
 
   const download2 =
-    document
-      .getElementById(
-        "download_url_2"
-      )
-      .value
-      .trim();
+  document
+  .getElementById("download_url_2")
+  .value
+  .trim();
 
 
   const download3 =
-    document
-      .getElementById(
-        "download_url_3"
-      )
-      .value
-      .trim();
+  document
+  .getElementById("download_url_3")
+  .value
+  .trim();
 
 
   const imageFile =
-    document
-      .getElementById(
-        "imageFile"
-      )
-      .files[0];
+  document
+  .getElementById("imageFile")
+  .files[0];
 
 
   const message =
-    document
-      .getElementById(
-        "message"
-      );
+  document
+  .getElementById("message");
 
 
-  /* LINK 1 NI LAZIMA */
-
-  if (
-
+  if(
     !name ||
-
     !platform ||
-
     !size ||
-
     !category ||
-
     !download1 ||
-
     !imageFile
-
-  ) {
+  ){
 
     message.textContent =
-      "⚠️ Jaza taarifa zote, Download Link 1 na chagua picha.";
+    "⚠️ Jaza taarifa zote, Download Link 1 na chagua picha.";
 
     return;
   }
 
 
-  try {
+  try{
 
     message.textContent =
-      "⏳ Inapakia picha...";
+    "⏳ Inapakia picha...";
 
 
     const imageUrl =
-      await uploadImage(
-        imageFile
-      );
+    await uploadImage(
+      imageFile
+    );
 
 
     message.textContent =
-      "⏳ Inahifadhi game...";
+    "⏳ Inahifadhi game...";
 
 
-    const { error } =
-      await supabaseClient
+    const {
+      error
+    } =
+    await supabaseClient
+    .from("games")
+    .insert({
 
-        .from("games")
+      name:name,
 
-        .insert({
+      platform:platform,
 
-          name:
-            name,
+      size:size,
 
-          platform:
-            platform,
+      category:category,
 
-          size:
-            size,
+      image:imageUrl,
 
-          category:
-            category,
+      url:download1,
 
-          image:
-            imageUrl,
+      download_url_1:download1,
 
-          url:
-            download1,
+      download_url_2:
+        download2 || null,
 
-          download_url_1:
-            download1,
+      download_url_3:
+        download3 || null
 
-          download_url_2:
-            download2 ||
-            null,
-
-          download_url_3:
-            download3 ||
-            null
-
-        });
+    });
 
 
-    if (error) {
+    if(error){
       throw error;
     }
 
 
     message.textContent =
-      "✅ Game na download links vimeongezwa!";
-
-
-    /* CLEAR FORM */
-
-    document
-      .getElementById("name")
-      .value = "";
+    "✅ Game imeongezwa successfully!";
 
 
     document
-      .getElementById("platform")
-      .value = "";
+    .getElementById("name")
+    .value = "";
 
 
     document
-      .getElementById("size")
-      .value = "";
+    .getElementById("platform")
+    .value = "";
 
 
     document
-      .getElementById("category")
-      .value = "";
+    .getElementById("size")
+    .value = "";
 
 
     document
-      .getElementById(
-        "download_url_1"
-      )
-      .value = "";
+    .getElementById("category")
+    .value = "";
 
 
     document
-      .getElementById(
-        "download_url_2"
-      )
-      .value = "";
+    .getElementById("download_url_1")
+    .value = "";
 
 
     document
-      .getElementById(
-        "download_url_3"
-      )
-      .value = "";
+    .getElementById("download_url_2")
+    .value = "";
 
 
     document
-      .getElementById(
-        "imageFile"
-      )
-      .value = "";
+    .getElementById("download_url_3")
+    .value = "";
 
 
     document
-      .getElementById(
-        "preview"
-      )
-      .style.display =
-        "none";
+    .getElementById("imageFile")
+    .value = "";
+
+
+    document
+    .getElementById("preview")
+    .style.display =
+    "none";
 
 
     loadGames();
 
+  }
+  catch(error){
 
-  } catch (error) {
+    console.error(error);
 
     message.textContent =
-      "❌ " +
-      error.message;
+    "❌ " +
+    error.message;
 
   }
 
 }
 
 
-/* ========================================= */
-/* LOAD GAMES */
-/* ========================================= */
+/* ==================================================
+   LOAD GAMES
+================================================== */
 
-async function loadGames() {
+async function loadGames(){
 
   const container =
-    document
-      .getElementById(
-        "games"
-      );
+  document.getElementById("games");
+
+  const totalGames =
+  document.getElementById("totalGames");
 
 
   container.innerHTML =
-    "⏳ Inapakia games...";
+  '<div class="loading">⏳ Inapakia games...</div>';
 
 
   const {
     data,
     error
-  } = await supabaseClient
-
-    .from("games")
-
-    .select("*")
-
-    .order(
-      "id",
-      {
-        ascending:
-          false
-      }
-    );
+  } =
+  await supabaseClient
+  .from("games")
+  .select("*")
+  .order(
+    "id",
+    {
+      ascending:false
+    }
+  );
 
 
-  if (error) {
+  if(error){
 
     container.innerHTML =
-      "❌ " +
-      escapeHTML(
-        error.message
-      );
+    "❌ " +
+    escapeHTML(error.message);
 
     return;
   }
 
 
-  if (
-    !data ||
-    data.length === 0
-  ) {
+  if(!data || data.length === 0){
+
+    totalGames.textContent =
+    "0";
 
     container.innerHTML =
-      "📭 Hakuna games bado.";
+    '<div class="empty">📭 Hakuna games bado.</div>';
 
     return;
   }
 
 
-  container.innerHTML =
-    "";
+  totalGames.textContent =
+  data.length;
 
 
-  data.forEach(
-    function(game) {
+  container.innerHTML = "";
 
-      const div =
-        document
-          .createElement(
-            "div"
-          );
 
+  data.forEach(function(game){
 
-      div.className =
-        "game";
+    const div =
+    document.createElement("div");
 
 
-      let imageHTML =
-        "";
+    div.className =
+    "game";
 
 
-      if (game.image) {
+    let imageHTML = "";
 
-        imageHTML = `
 
-          <img
-            src="${escapeHTML(
-              game.image
-            )}"
-            alt="Game image">
+    if(game.image){
 
-        `;
+      imageHTML = `
 
-      }
-
-
-      let linksHTML =
-        "";
-
-
-      if (
-        game.download_url_1
-      ) {
-
-        linksHTML += `
-
-          <div>
-            🔗 Download Link 1
-          </div>
-
-        `;
-
-      }
-
-
-      if (
-        game.download_url_2
-      ) {
-
-        linksHTML += `
-
-          <div>
-            🔗 Download Link 2
-          </div>
-
-        `;
-
-      }
-
-
-      if (
-        game.download_url_3
-      ) {
-
-        linksHTML += `
-
-          <div>
-            🔗 Download Link 3
-          </div>
-
-        `;
-
-      }
-
-
-      div.innerHTML = `
-
-        ${imageHTML}
-
-
-        <strong>
-
-          🎮 ${escapeHTML(
-            game.name
-          )}
-
-        </strong>
-
-
-        <br><br>
-
-
-        📱 Platform:
-
-        ${escapeHTML(
-          game.platform ||
-          ""
-        )}
-
-
-        <br>
-
-
-        📦 Size:
-
-        ${escapeHTML(
-          game.size ||
-          ""
-        )}
-
-
-        <br>
-
-
-        🗂️ Category:
-
-        ${escapeHTML(
-          game.category ||
-          ""
-        )}
-
-
-        <br><br>
-
-
-        ${linksHTML}
-
-
-        <br>
-
-
-        <button
-          class="delete"
-          onclick="deleteGame(${game.id})">
-
-          🗑️ DELETE
-
-        </button>
+        <img
+          src="${escapeHTML(game.image)}"
+          alt="Game image"
+          loading="lazy"
+          onerror="this.style.display='none'"
+        >
 
       `;
 
+    }
 
-      container.appendChild(
-        div
-      );
+
+    let linksHTML = "";
+
+
+    if(game.download_url_1){
+
+      linksHTML += `
+        <div>
+          🔗 Download Link 1
+        </div>
+      `;
 
     }
-  );
+
+
+    if(game.download_url_2){
+
+      linksHTML += `
+        <div>
+          🔗 Download Link 2
+        </div>
+      `;
+
+    }
+
+
+    if(game.download_url_3){
+
+      linksHTML += `
+        <div>
+          🔗 Download Link 3
+        </div>
+      `;
+
+    }
+
+
+    div.innerHTML = `
+
+      ${imageHTML}
+
+      <div class="game-name">
+        🎮 ${escapeHTML(
+          game.name || "Unnamed Game"
+        )}
+      </div>
+
+      <div class="game-info">
+
+        📱 <strong>Platform:</strong>
+        ${escapeHTML(
+          game.platform || ""
+        )}
+
+        <br>
+
+        📦 <strong>Size:</strong>
+        ${escapeHTML(
+          game.size || ""
+        )}
+
+        <br>
+
+        🗂️ <strong>Category:</strong>
+        ${escapeHTML(
+          game.category || ""
+        )}
+
+      </div>
+
+      <div class="game-links">
+
+        ${linksHTML || "🔗 Hakuna download link."}
+
+      </div>
+
+      <button
+        class="delete"
+        onclick="deleteGame('${escapeAttribute(game.id)}')">
+
+        🗑️ DELETE GAME
+
+      </button>
+
+    `;
+
+
+    container.appendChild(div);
+
+  });
 
 }
 
 
-/* ========================================= */
-/* DELETE GAME */
-/* ========================================= */
+/* ==================================================
+   DELETE GAME
+================================================== */
 
-async function deleteGame(id) {
+async function deleteGame(id){
 
-  if (
-    !confirm(
-      "Una uhakika unataka kufuta game hii?"
-    )
-  ) {
-
+  if(!id){
     return;
   }
 
 
-  const { error } =
-    await supabaseClient
-
-      .from("games")
-
-      .delete()
-
-      .eq(
-        "id",
-        id
-      );
+  const confirmed =
+  confirm(
+    "⚠️ Una uhakika unataka kufuta game hii?\n\n" +
+    "Kitendo hiki hakiwezi kurudishwa."
+  );
 
 
-  if (error) {
+  if(!confirmed){
+    return;
+  }
+
+
+  const {
+    error
+  } =
+  await supabaseClient
+  .from("games")
+  .delete()
+  .eq(
+    "id",
+    id
+  );
+
+
+  if(error){
 
     alert(
-      "❌ " +
+      "❌ Imeshindikana kufuta game:\n\n" +
       error.message
     );
 
@@ -1818,7 +2145,7 @@ async function deleteGame(id) {
 
 
   alert(
-    "✅ Game imefutwa."
+    "✅ Game imefutwa successfully."
   );
 
 
@@ -1827,67 +2154,21 @@ async function deleteGame(id) {
 }
 
 
-/* ========================================= */
-/* ESCAPE HTML */
-/* ========================================= */
+/* ==================================================
+   CHECK SESSION
+================================================== */
 
-function escapeHTML(value) {
-
-  const div =
-    document.createElement(
-      "div"
-    );
-
-
-  div.textContent =
-    value ?? "";
-
-
-  return div.innerHTML;
-
-}
-
-
-/* ========================================= */
-/* ESCAPE ATTRIBUTE */
-/* ========================================= */
-
-function escapeAttribute(value) {
-
-  return String(
-    value ?? ""
-  )
-
-  .replace(
-    /\\/g,
-    "\\\\"
-  )
-
-  .replace(
-    /'/g,
-    "\\'"
-  );
-
-}
-
-
-/* ========================================= */
-/* CHECK SESSION */
-/* ========================================= */
-
-async function checkSession() {
+async function checkSession(){
 
   const {
     data
   } =
-    await supabaseClient
-      .auth
-      .getSession();
+  await supabaseClient
+  .auth
+  .getSession();
 
 
-  if (
-    data.session
-  ) {
+  if(data && data.session){
 
     showPanel();
 
@@ -1896,11 +2177,12 @@ async function checkSession() {
 }
 
 
-/* ========================================= */
-/* START */
-/* ========================================= */
+/* ==================================================
+   START
+================================================== */
 
 checkSession();
+
 
 </script>
 
