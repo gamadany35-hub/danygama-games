@@ -1763,8 +1763,6 @@ input,select,textarea{outline:none;border:1px solid var(--dg-line)!important;bac
 input:focus,select:focus,textarea:focus{border-color:rgba(124,92,255,.75)!important;box-shadow:0 0 0 3px rgba(124,92,255,.13)}
 .market-card,.game,.coin-order{border:1px solid var(--dg-line);box-shadow:var(--dg-shadow);backdrop-filter:blur(12px);overflow:hidden}
 .market-card:hover,.game:hover{transform:translateY(-3px);border-color:rgba(124,92,255,.35)}
-.dg-topbar{position:sticky;top:0;z-index:999;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;margin:-20px -20px 20px;background:rgba(7,11,18,.84);backdrop-filter:blur(18px);border-bottom:1px solid var(--dg-line)}
-.dg-brand{font-weight:900}.dg-brand span{color:#9a86ff}.dg-live{font-size:12px;color:#8ee8c2}
 .dg-search-wrap{position:relative;margin:10px 0 15px}.dg-search-wrap input{padding-left:42px!important}.dg-search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.7}
 .dg-toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);z-index:10000;max-width:92vw;padding:13px 17px;border-radius:12px;background:#172235;color:#fff;border:1px solid var(--dg-line);box-shadow:var(--dg-shadow);opacity:0;pointer-events:none}.dg-toast.show{opacity:1;transform:translate(-50%,0)}
 .dg-scroll-top{position:fixed;right:16px;bottom:75px;width:44px;height:44px;border-radius:50%;display:none;z-index:9999;padding:0!important}.dg-scroll-top.show{display:block}
@@ -7463,11 +7461,6 @@ initialize();
 "use strict";
 function ready(fn){if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",fn);else fn()}
 ready(function(){
-if(!document.querySelector(".dg-topbar")){
- const b=document.createElement("div");b.className="dg-topbar";
- b.innerHTML='<div class="dg-brand">🎮 DANYGAMA <span>GAMES</span></div><div class="dg-live">● ONLINE</div>';
- document.body.prepend(b);
-}
 window.dgToast=function(msg){
  if(typeof window.showToast==="function"){try{window.showToast(msg);return}catch(e){}}
  let t=document.querySelector(".dg-toast");
