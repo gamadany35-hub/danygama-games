@@ -2175,6 +2175,15 @@ Loading games...
 
 </div>
 
+<div class="dg-premium-shortcuts">
+  <button onclick="showPage('gamesPage');setTimeout(()=>dgSetAccess('free'),50)"><span>🆓</span><strong>FREE GAMES</strong><small>Pakua bila coins</small></button>
+  <button onclick="showPage('gamesPage');setTimeout(()=>dgSetAccess('premium'),50)"><span>👑</span><strong>PREMIUM GAMES</strong><small>Fungua kwa coins</small></button>
+  <button onclick="showPage('myGamesPage');dgLoadMyGames()"><span>🎒</span><strong>MY GAMES</strong><small>Games ulizofungua</small></button>
+  <button onclick="showPage('accountPage')"><span>🪙</span><strong>BUY COINS</strong><small>Ongeza coins</small></button>
+  <button onclick="showPage('vipPage')"><span>💎</span><strong>VIP MEMBERSHIP</strong><small>Faida za wanachama</small></button>
+  <button onclick="showPage('leaderboardPage');dgLoadLeaderboard()"><span>🏆</span><strong>LEADERBOARD</strong><small>Gamers bora</small></button>
+</div>
+
 </section>
 
 
@@ -2223,6 +2232,11 @@ All
 
 </div>
 
+<div class="dg-access-filters" aria-label="Game access filters">
+  <button type="button" class="active" data-access="all" onclick="dgSetAccess('all')">🎮 ALL GAMES</button>
+  <button type="button" data-access="free" onclick="dgSetAccess('free')">🆓 FREE</button>
+  <button type="button" data-access="premium" onclick="dgSetAccess('premium')">👑 PREMIUM</button>
+</div>
 
 <div
 id="gamesGrid"
@@ -3379,6 +3393,25 @@ rel="noopener noreferrer"
 
 </section>
 
+
+<!-- DANYGAMA: MY GAMES -->
+<section id="myGamesPage" class="page">
+  <div class="hero"><h1>🎒 <span>MY GAMES</span></h1><p>Games ulizofungua kwa kutumia coins zitaonekana hapa.</p></div>
+  <div id="dgMyGamesGrid" class="game-grid"><div class="empty">Inapakia games zako...</div></div>
+</section>
+
+<!-- DANYGAMA: VIP MEMBERSHIP -->
+<section id="vipPage" class="page">
+  <div class="hero"><h1>💎 <span>VIP MEMBERSHIP</span></h1><p>Uanachama wa VIP utatoa manufaa maalumu kwa gamers wa Danygama Games.</p></div>
+  <div class="help-card"><h3>Faida zinazopangwa</h3><p>• Ofa maalumu za coins<br>• Promosheni za games<br>• Beji ya VIP kwenye akaunti<br>• Matangazo ya mapema ya games mpya</p><p><strong>Usajili wa VIP utawezeshwa baada ya kuweka jedwali la memberships na njia salama ya malipo. Kwa sasa hakuna malipo ya VIP yanayochukuliwa hapa.</strong></p></div>
+  <button class="btn btn-primary" onclick="showPage('accountPage')">🪙 NUNUA COINS</button>
+</section>
+
+<!-- DANYGAMA: LEADERBOARD -->
+<section id="leaderboardPage" class="page">
+  <div class="hero"><h1>🏆 <span>LEADERBOARD</span></h1><p>Orodha ya gamers wanaoongoza kwenye jumuiya ya Danygama.</p></div>
+  <div id="dgLeaderboard" class="empty">Leaderboard itawashwa baada ya kuweka jedwali salama la alama na majina ya umma. Hatutaonyesha email au taarifa binafsi za watumiaji.</div>
+</section>
 
 <!-- =========================================================
      GAME DETAILS MODAL
@@ -7522,8 +7555,82 @@ top.onclick=()=>scrollTo({top:0,behavior:"smooth"});
 document.addEventListener("error",e=>{
  const x=e.target;if(x&&x.tagName==="IMG"&&!x.dataset.dgFallback){x.dataset.dgFallback="1";x.src="https://via.placeholder.com/800x500/10243a/ffffff?text=Danygama+Games"}
 },true);
-try{if(window.supabaseClient?.auth)window.supabaseClient.auth.onAuthStateChange(e=>{if(e==="SIGNED_IN")dgToast("✅ Umeingia kwenye account.");if(e==="SIGNED_OUT")dgToast("👋 Umetoka kwenye account.")})}catch(e){}
+try{if(supabaseClient?.auth)supabaseClient.auth.onAuthStateChange(e=>{if(e==="SIGNED_IN")dgToast("✅ Umeingia kwenye account.");if(e==="SIGNED_OUT")dgToast("👋 Umetoka kwenye account.")})}catch(e){}
 });
+})();
+</script>
+
+
+<style id="danygama-premium-theme">
+:root{--dg-gold:#f6c945;--dg-blue:#4ba3ff;--dg-bg:#070d19;--dg-panel:#101b2c;--dg-line:#263b56}
+body{background:radial-gradient(ellipse at 20% -10%,#172d4d 0,transparent 42%),#070d19;color:#f5f7fb}
+header{background:rgba(5,11,22,.94);border-bottom:1px solid rgba(246,201,69,.24)}
+.logo span,.hero h1 span{color:var(--dg-gold)}
+.hero{background:linear-gradient(125deg,#102c4b,#101626 72%);border:1px solid rgba(246,201,69,.26);box-shadow:0 14px 38px #0005}
+.game-card,.details-card,.form-card,.account-card,.help-card,.chat-card,.comments-card,.coin-buy-card{border-color:#263b56;box-shadow:0 10px 28px #0003}
+.btn-primary{background:linear-gradient(135deg,#ffe27a,#e6ae22);color:#17130a}
+.dg-premium-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:18px 0 24px}
+.dg-premium-shortcuts button{min-width:0;text-align:left;border:1px solid #314765;border-radius:16px;padding:15px 12px;background:linear-gradient(145deg,#142640,#0d1727);color:#fff;display:flex;flex-direction:column;gap:6px;box-shadow:0 7px 20px #0002}
+.dg-premium-shortcuts button span{font-size:25px}.dg-premium-shortcuts button strong{font-size:12px;letter-spacing:.2px}.dg-premium-shortcuts button small{font-size:10px;color:#9fb3ca}
+.dg-access-filters{display:flex;gap:8px;overflow-x:auto;padding:5px 0 15px;margin:0 0 8px}
+.dg-access-filters button{white-space:nowrap;border:1px solid #334b68;border-radius:30px;background:#101e31;color:#cbd8e7;padding:10px 14px;font-weight:800;font-size:11px}
+.dg-access-filters button.active{background:var(--dg-gold);border-color:var(--dg-gold);color:#17130a}
+.dg-game-access{display:inline-flex;margin:0 0 8px;padding:5px 8px;border-radius:7px;font-size:10px;font-weight:900;letter-spacing:.3px}
+.dg-game-access.free{background:#123b2b;color:#81e7b3}.dg-game-access.premium{background:#493716;color:#ffe18a}
+.game-card{background:linear-gradient(160deg,#111f32,#0c1625)}
+.game-image{background:#16283e}
+.dg-premium-note{border:1px solid #755a21;background:#302613;color:#ffe49b;padding:12px;border-radius:12px;margin:10px 0;font-size:13px;line-height:1.5}
+@media(max-width:520px){.dg-premium-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.hero h1{font-size:27px}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.game-image{height:155px}}
+body.light-theme{background:#f3f6fb;color:#172033}body.light-theme .dg-premium-shortcuts button{background:#fff;color:#172033;border-color:#d8e1ec}body.light-theme .dg-premium-shortcuts button small{color:#64748b}body.light-theme .dg-access-filters button{background:#fff;color:#334155;border-color:#d5dfeb}body.light-theme .dg-access-filters button.active{background:var(--dg-gold);color:#17130a}
+</style>
+<script id="danygama-premium-features">
+(function(){
+'use strict';
+let dgAccessFilter='all';
+function isPremium(g){return String(g.access_type||g.game_type||'free').toLowerCase()==='premium';}
+window.dgSetAccess=function(type){
+ dgAccessFilter=type;
+ document.querySelectorAll('.dg-access-filters button').forEach(b=>b.classList.toggle('active',b.dataset.access===type));
+ if(typeof window.renderGames==='function')window.renderGames(allGames||[]);
+};
+window.renderGames=function(games){
+ const grid=document.getElementById('gamesGrid');const count=document.getElementById('gameCount');if(!grid)return;
+ let list=(games||[]).filter(g=>dgAccessFilter==='all'||(dgAccessFilter==='premium'?isPremium(g):!isPremium(g)));
+ if(count)count.textContent=list.length+' Games';
+ if(!list.length){grid.innerHTML='<div class="empty">'+(dgAccessFilter==='premium'?'Hakuna Premium Games zilizowekwa bado.':'Hakuna games zilizopatikana.')+'</div>';return;}
+ grid.innerHTML=list.map(g=>window.gameCard(g)).join('');
+};
+const oldGameCard=window.gameCard;
+window.gameCard=function(game){
+ const html=oldGameCard(game);const badge=isPremium(game)?'<span class="dg-game-access premium">👑 PREMIUM · 100 COINS</span>':'<span class="dg-game-access free">🆓 FREE</span>';
+ return html.replace('<div class="game-meta">','<div>'+badge+'</div><div class="game-meta">');
+};
+window.dgLoadMyGames=async function(){
+ const box=document.getElementById('dgMyGamesGrid');if(!box)return;
+ if(!currentUser){box.innerHTML='<div class="empty">Ingia kwanza ili kuona games ulizofungua.<br><br><button class="btn btn-primary" onclick="showPage(\'accountPage\')">LOGIN / REGISTER</button></div>';return;}
+ box.innerHTML='<div class="empty">Inapakia games zako...</div>';
+ try{const {data,error}=await supabaseClient.from('game_unlocks').select('game_id').eq('user_id',currentUser.id);if(error)throw error;
+ const ids=new Set((data||[]).map(x=>String(x.game_id)));const list=(allGames||[]).filter(g=>ids.has(String(g.id)));
+ box.innerHTML=list.length?list.map(g=>window.gameCard(g)).join(''):'<div class="empty">Bado hujafungua Premium Game yoyote.</div>';
+ }catch(e){console.error(e);box.innerHTML='<div class="empty">Imeshindikana kupakia My Games. Hakikisha ruhusa za game_unlocks zipo Supabase.</div>';}
+};
+window.dgLoadLeaderboard=function(){const el=document.getElementById('dgLeaderboard');if(el)el.innerHTML='Leaderboard inahitaji jedwali la public gamer profiles na scores. Tutaliunganisha baada ya kukagua admin.html na schema ya Supabase.';};
+// Free titles remain downloadable without login; premium titles still use the existing secure unlock RPC.
+window.openGameDetails=async function(id){
+ const game=(allGames||[]).find(x=>String(x.id)===String(id));if(!game){window.showToast('Game haijapatikana.');return;}
+ const image=game.image&&String(game.image).trim()?String(game.image).trim():'https://via.placeholder.com/800x500/10243a/ffffff?text=Danygama+Games';
+ document.getElementById('modalImage').src=image;document.getElementById('modalName').textContent=game.name||'Game';
+ document.getElementById('modalMeta').innerHTML='<span class="badge">🎮 '+window.escapeHTML(game.platform||'Unknown')+'</span><span class="badge">📂 '+window.escapeHTML(game.category||'Games')+'</span><span class="badge">📦 '+window.escapeHTML(game.size||'Unknown')+'</span>';
+ document.getElementById('modalDescription').textContent=window.getGameDescription(game);
+ const box=document.getElementById('modalDownloads');const links=window.getDownloadLinks(game);
+ if(!links.length){box.innerHTML='<div class="empty">⚠️ Download link haijawekwa bado.</div>';}
+ else if(!isPremium(game)){box.innerHTML='<div class="unlocked-box">🆓 FREE GAME — Pakua bila kutumia coins.</div>'+links.map((l,i)=>'<a class="download-btn '+l.className+'" href="'+window.escapeHTML(l.url)+'" target="_blank" rel="noopener noreferrer" onclick="trackDownload(\''+window.escapeHTML(game.name||'Game')+'\',\'Part '+(i+1)+'\')">'+l.label+'</a>').join('');}
+ else if(!currentUser){box.innerHTML='<div class="unlock-box"><h3>🔐 LOGIN REQUIRED</h3><p>Ingia kwenye akaunti ili kufungua game hii kwa coins.</p><button class="btn btn-primary" onclick="closeGameModal();showPage(\'accountPage\')">LOGIN / REGISTER</button></div>';}
+ else{await window.loadCoinBalance();const unlocked=await window.isGameUnlocked(game.id);if(unlocked){window.renderUnlockedDownloads(game,links,box);}else{box.innerHTML='<div class="unlock-box"><h3>👑 PREMIUM GAME LOCKED</h3><div class="unlock-cost">🪙 100 COINS</div><p>Fungua download links zote za game hii. Ukishafungua hutatozwa tena.</p><p>Salio lako: <strong style="color:#ffd21c">'+Number(currentCoins||0)+' Coins</strong></p><button class="btn btn-primary" style="width:100%" onclick="unlockGame(\''+window.escapeHTML(game.id)+'\')">🔓 UNLOCK FOR 100 COINS</button><button class="btn btn-dark" style="width:100%;margin-top:8px" onclick="closeGameModal();showPage(\'accountPage\')">💰 BUY COINS</button></div>';}}
+ document.getElementById('gameModal').classList.add('show');document.body.style.overflow='hidden';
+};
+// Re-render after initial database fetch, if it completed before this enhancement script loaded.
+if(Array.isArray(allGames)&&allGames.length)window.renderGames(allGames);
 })();
 </script>
 
