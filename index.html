@@ -1819,6 +1819,19 @@ input:focus,select:focus,textarea:focus{border-color:rgba(124,92,255,.75)!import
 body.light-theme .dg-video-card{background:#fff;border-color:#e0e7ef}body.light-theme .dg-video-search input,body.light-theme .dg-video-search select,body.light-theme .dg-video-admin input,body.light-theme .dg-video-admin select,body.light-theme .dg-video-admin textarea{background:#fff;color:#172033;border-color:#dce4ed}
 </style>
 
+
+<style id="danygama-account-redesign">
+.dg-account-shell{max-width:760px;margin:12px auto 28px;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+.dg-profile-card{position:relative;text-align:center;padding:24px 16px 20px;border:1px solid #e4ebf3;border-radius:20px;background:linear-gradient(145deg,#fff,#f2f7ff);color:#172033;margin-bottom:14px;box-shadow:0 8px 28px rgba(31,91,155,.07)}
+.dg-profile-avatar{width:76px;height:76px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#3997f5,#1263cf);color:#fff;font-size:30px;font-weight:800;box-shadow:0 7px 18px #247ddd35}
+.dg-profile-card h2{font-size:19px;margin:0 0 5px}.dg-profile-card p{font-size:12px;color:#64748b;margin:0 0 7px;overflow-wrap:anywhere}.dg-profile-card small{font-size:11px;color:#8794a5}.dg-profile-edit{display:block;margin:12px auto 0;padding:7px 13px;border:1px solid #cfe0f4;border-radius:20px;background:#fff;color:#247ddd;font-size:11px;font-weight:700;box-shadow:none;min-height:32px}
+.dg-account-brand{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid #e4ebf3;border-radius:17px;background:#fff;color:#172033;margin-bottom:14px}.dg-brand-mark{width:46px;height:46px;border-radius:14px;background:#eaf3ff;display:grid;place-items:center;font-size:24px}.dg-account-brand strong,.dg-account-brand small{display:block}.dg-account-brand strong{font-size:14px}.dg-account-brand small{font-size:11px;color:#718096;margin-top:3px}.dg-member-pill{margin-left:auto;border-radius:20px;background:#eaf3ff;color:#247ddd;font-size:9px;font-weight:800;padding:6px 9px;letter-spacing:.5px}
+.dg-account-row{display:flex;align-items:center;gap:12px;width:100%;min-height:65px;padding:10px 13px;margin:0 0 8px;border:1px solid #e5ebf2;border-radius:16px;background:#fff;color:#172033;text-align:left;box-shadow:0 3px 12px rgba(31,70,120,.035)}.dg-account-row:hover{border-color:#b8d5f5;transform:translateY(-1px)}.dg-row-icon{width:38px;height:38px;flex:0 0 38px;border-radius:12px;background:#eaf3ff;display:grid;place-items:center;font-size:18px}.dg-row-copy{min-width:0;flex:1}.dg-row-copy strong{display:block;font-size:13px}.dg-row-copy small{display:block;color:#718096;font-size:10px;line-height:1.45;margin-top:4px}.dg-token-row>b{color:#247ddd;font-size:13px}.dg-chevron{font-size:25px;line-height:1;color:#718096;font-weight:300}.dg-account-bottom{margin-top:18px;text-align:center}.dg-logout-btn{width:100%;min-height:44px;border:1.5px solid #e44b5b;border-radius:13px;background:#fff;color:#d94352;font-size:13px;font-weight:800;box-shadow:none}.dg-account-bottom p{font-size:10px;color:#8492a5;margin:17px 0}
+.dg-account-modal{display:none;position:fixed;inset:0;z-index:99990;background:#07111f9c;padding:18px;align-items:center;justify-content:center}.dg-account-modal.show{display:flex}.dg-account-modal-card{position:relative;width:100%;max-width:390px;max-height:85vh;overflow:auto;border-radius:18px;background:#fff;color:#172033;padding:23px 18px 18px;box-shadow:0 20px 60px #0004}.dg-account-modal-card h3{font-size:17px;margin:0 30px 15px 0}.dg-account-modal-close{position:absolute;right:12px;top:8px;background:transparent;color:#64748b;border:0;font-size:27px;box-shadow:none;min-height:32px}.dg-account-modal-card label{display:block;font-size:12px;font-weight:700;margin:12px 0 6px}.dg-account-modal-card input{display:block;width:100%;padding:12px;border:1px solid #dce4ed!important;border-radius:10px;background:#fff!important;color:#172033!important}.dg-account-modal-card .btn{width:100%;margin-top:14px}.dg-account-note{font-size:11px;color:#718096;line-height:1.55;margin-top:10px}
+body:not(.light-theme) .dg-profile-card,body:not(.light-theme) .dg-account-brand,body:not(.light-theme) .dg-account-row{background:#fff;color:#172033}
+@media(max-width:520px){.dg-account-shell{margin-top:4px}.dg-profile-card{padding:21px 12px 17px}.dg-account-row{min-height:62px}.dg-row-copy small{font-size:9px}}
+</style>
+
 </head>
 
 <body>
@@ -2979,101 +2992,83 @@ Login
 </div>
 
 
-<div
-id="accountBox"
-class="account-card hidden"
->
-
-<h2 style="margin-bottom:18px;">
-👤 My Account
-</h2>
-
-
-<div class="coin-card">
-
-<div class="coin-title">
-YOUR DANYGAMA COINS
-</div>
-
-<div
-id="accountCoins"
-class="coin-balance"
->
-0
-</div>
-
-<div class="coin-label">
-🪙 Coins Available
-</div>
-
-</div>
-
-
-<div class="account-row">
-
-<span>
-Email
-</span>
-
-<strong id="accountEmail">
--
-</strong>
-
-</div>
-
-
-<div class="account-row">
-
-<span>
-Status
-</span>
-
-<strong style="color:#19a463;">
-Logged In
-</strong>
-
-</div>
-
-
-<div class="coin-buy-card">
-  <h3>🪙 BUY COINS</h3>
-  <p style="color:#9db0c3;line-height:1.6;margin:10px 0 16px;">Chagua kifurushi cha coins unachotaka kununua.</p>
-  <button type="button" class="btn btn-primary" style="width:100%" onclick="openDgCoinModal()">🪙 BUY COINS</button>
-  <p style="color:#8198ad;font-size:11px;margin-top:12px;line-height:1.5;">Malipo ya simu yatawezeshwa baada ya ClickPesa kuthibitisha usajili na kutupatia API credentials.</p>
-</div>
-
-<div id="dgCoinModal" class="dg-coin-overlay" aria-hidden="true">
-  <div class="dg-coin-dialog" role="dialog" aria-modal="true" aria-labelledby="dgCoinTitle">
-    <button type="button" class="dg-coin-close" onclick="closeDgCoinModal()" aria-label="Funga">×</button>
-    <h3 id="dgCoinTitle">🪙 Buy Coins</h3>
-    <p class="dg-coin-subtitle">Purchase coins to unlock games on Danygama Games</p>
-    <label class="dg-coin-label">Country / Nchi</label>
-    <div class="dg-country-row"><button type="button" class="dg-country active" aria-pressed="true">🇹🇿 Tanzania</button><button type="button" class="dg-country" disabled>🇰🇪 Kenya</button><button type="button" class="dg-country" disabled>🇺🇬 Uganda</button></div>
-    <label class="dg-coin-label">Select Coin Package</label>
-    <div class="dg-package-grid">
-      <button type="button" class="dg-package" data-coins="100" data-price="500" onclick="selectDgCoinPackage(this)"><strong>🪙 100 Coins</strong><small>500 TZS</small></button>
-      <button type="button" class="dg-package" data-coins="200" data-price="1000" onclick="selectDgCoinPackage(this)"><strong>🪙 200 Coins</strong><small>1,000 TZS</small></button>
-      <button type="button" class="dg-package" data-coins="400" data-price="2000" onclick="selectDgCoinPackage(this)"><strong>🪙 400 Coins</strong><small>2,000 TZS</small></button>
-      <button type="button" class="dg-package" data-coins="750" data-price="4000" onclick="selectDgCoinPackage(this)"><strong>🪙 750 Coins</strong><small>4,000 TZS</small></button>
-      <button type="button" class="dg-package" data-coins="1000" data-price="6000" onclick="selectDgCoinPackage(this)"><strong>🪙 1,000 Coins</strong><small>6,000 TZS</small></button>
-      <button type="button" class="dg-package" data-coins="3000" data-price="9000" onclick="selectDgCoinPackage(this)"><strong>🪙 3,000 Coins</strong><small>9,000 TZS</small></button>
-      <button type="button" class="dg-package" data-coins="4000" data-price="10000" onclick="selectDgCoinPackage(this)"><strong>🪙 4,000 Coins</strong><small>10,000 TZS</small></button>
-    </div>
-    <label class="dg-coin-label" for="dgCoinPhone">Mobile money number (Tanzania)</label>
-    <input id="dgCoinPhone" class="dg-coin-phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="13" placeholder="07XXXXXXXX">
-    <button type="button" class="dg-coin-buy" onclick="requestDgCoinPayment()">Buy Coins</button>
-    <p class="dg-coin-footnote">USSD Push bado haijaunganishwa. Ukishakamilisha kuunganisha mtoa huduma, utaombwa kuthibitisha malipo kwenye menyu rasmi ya simu yako. Usiandike PIN yako kwenye website.</p>
+<div id="accountBox" class="account-card hidden dg-account-shell">
+  <div class="dg-profile-card">
+    <div class="dg-profile-avatar" id="dgProfileAvatar">D</div>
+    <h2 id="dgProfileName">Danygama</h2>
+    <p id="accountEmail">-</p>
+    <small>Karibu kwenye akaunti yako ya Danygama Games</small>
+    <button type="button" class="dg-profile-edit" onclick="dgOpenAccountModal('username')">✏️ Badilisha jina</button>
   </div>
-</div>
 
-<button
-class="btn btn-red"
-style="margin-top:20px;width:100%"
-onclick="logout()"
->
-🚪 LOGOUT
-</button>
+  <div class="dg-account-brand">
+    <div class="dg-brand-mark">🎮</div>
+    <div><strong>Danygama Games</strong><small>Your gaming companion</small></div>
+    <span class="dg-member-pill">MEMBER</span>
+  </div>
 
+  <button type="button" class="dg-account-row dg-token-row" onclick="openDgCoinModal()">
+    <span class="dg-row-icon">🪙</span><span class="dg-row-copy"><strong>My Tokens</strong><small>Angalia salio na nunua coins</small></span><b id="accountCoins">0</b><span class="dg-chevron">›</span>
+  </button>
+  <button type="button" class="dg-account-row" onclick="showPage('myGamesPage');dgLoadMyGames()">
+    <span class="dg-row-icon">🎮</span><span class="dg-row-copy"><strong>My Games</strong><small>Games ulizofungua kwa coins</small></span><span class="dg-chevron">›</span>
+  </button>
+  <button type="button" class="dg-account-row" onclick="dgShowAchievements()">
+    <span class="dg-row-icon">🏆</span><span class="dg-row-copy"><strong>Achievements</strong><small>Maendeleo na mafanikio yako</small></span><span class="dg-chevron">›</span>
+  </button>
+  <button type="button" class="dg-account-row" onclick="dgInviteFriends()">
+    <span class="dg-row-icon">👥</span><span class="dg-row-copy"><strong>Invite Friends</strong><small>Alika rafiki · zawadi ya 100 coins itawashwa baada ya referral verification</small></span><span class="dg-chevron">›</span>
+  </button>
+  <button type="button" class="dg-account-row" onclick="showToast('Sehemu ya Favorites itaunganishwa na mfumo wa kuhifadhi games katika hatua inayofuata.')">
+    <span class="dg-row-icon">💙</span><span class="dg-row-copy"><strong>Favorites</strong><small>Games unazopenda</small></span><span class="dg-chevron">›</span>
+  </button>
+  <button type="button" class="dg-account-row" onclick="dgOpenAccountModal('username')">
+    <span class="dg-row-icon">👤</span><span class="dg-row-copy"><strong>Badilisha Username</strong><small>Hariri jina linaloonekana kwenye profile</small></span><span class="dg-chevron">›</span>
+  </button>
+  <button type="button" class="dg-account-row" onclick="dgOpenAccountModal('password')">
+    <span class="dg-row-icon">🔒</span><span class="dg-row-copy"><strong>Badilisha Password</strong><small>Weka password mpya ya akaunti</small></span><span class="dg-chevron">›</span>
+  </button>
+  <button type="button" class="dg-account-row" onclick="dgOpenAccountModal('settings')">
+    <span class="dg-row-icon">⚙️</span><span class="dg-row-copy"><strong>Settings</strong><small>Mipangilio ya akaunti</small></span><span class="dg-chevron">›</span>
+  </button>
+
+  <div class="dg-account-modal" id="dgAccountModal" aria-hidden="true">
+    <div class="dg-account-modal-card">
+      <button type="button" class="dg-account-modal-close" onclick="dgCloseAccountModal()">×</button>
+      <h3 id="dgAccountModalTitle">Account settings</h3>
+      <div id="dgAccountModalBody"></div>
+    </div>
+  </div>
+
+  <div class="dg-account-bottom">
+    <button type="button" class="dg-logout-btn" onclick="logout()">⇥ &nbsp; Logout</button>
+    <p>🎮 Danygama Games · Cheza, jifunze na furahia games.</p>
+  </div>
+
+  <!-- Existing coin purchase modal and package prices -->
+  <div id="dgCoinModal" class="dg-coin-overlay" aria-hidden="true">
+    <div class="dg-coin-dialog" role="dialog" aria-modal="true" aria-labelledby="dgCoinTitle">
+      <button type="button" class="dg-coin-close" onclick="closeDgCoinModal()" aria-label="Funga">×</button>
+      <h3 id="dgCoinTitle">🪙 Buy Coins</h3>
+      <p class="dg-coin-subtitle">Purchase coins to unlock games on Danygama Games</p>
+      <label class="dg-coin-label">Country / Nchi</label>
+      <div class="dg-country-row"><button type="button" class="dg-country active" aria-pressed="true">🇹🇿 Tanzania</button><button type="button" class="dg-country" disabled>🇰🇪 Kenya</button><button type="button" class="dg-country" disabled>🇺🇬 Uganda</button></div>
+      <label class="dg-coin-label">Select Coin Package</label>
+      <div class="dg-package-grid">
+        <button type="button" class="dg-package" data-coins="100" data-price="500" onclick="selectDgCoinPackage(this)"><strong>🪙 100 Coins</strong><small>500 TZS</small></button>
+        <button type="button" class="dg-package" data-coins="200" data-price="1000" onclick="selectDgCoinPackage(this)"><strong>🪙 200 Coins</strong><small>1,000 TZS</small></button>
+        <button type="button" class="dg-package" data-coins="400" data-price="2000" onclick="selectDgCoinPackage(this)"><strong>🪙 400 Coins</strong><small>2,000 TZS</small></button>
+        <button type="button" class="dg-package" data-coins="750" data-price="4000" onclick="selectDgCoinPackage(this)"><strong>🪙 750 Coins</strong><small>4,000 TZS</small></button>
+        <button type="button" class="dg-package" data-coins="1000" data-price="6000" onclick="selectDgCoinPackage(this)"><strong>🪙 1,000 Coins</strong><small>6,000 TZS</small></button>
+        <button type="button" class="dg-package" data-coins="3000" data-price="9000" onclick="selectDgCoinPackage(this)"><strong>🪙 3,000 Coins</strong><small>9,000 TZS</small></button>
+        <button type="button" class="dg-package" data-coins="4000" data-price="10000" onclick="selectDgCoinPackage(this)"><strong>🪙 4,000 Coins</strong><small>10,000 TZS</small></button>
+      </div>
+      <label class="dg-coin-label" for="dgCoinPhone">Mobile money number (Tanzania)</label>
+      <input id="dgCoinPhone" class="dg-coin-phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="13" placeholder="07XXXXXXXX">
+      <button type="button" class="dg-coin-buy" onclick="requestDgCoinPayment()">Buy Coins</button>
+      <p class="dg-coin-footnote">USSD Push bado haijaunganishwa. PIN itaingizwa kwenye menyu rasmi ya mtandao wako, si kwenye website.</p>
+    </div>
+  </div>
 </div>
 
 </section>
@@ -7668,5 +7663,23 @@ function selectDgCoinPackage(btn){document.querySelectorAll('.dg-package').forEa
 function requestDgCoinPayment(){if(!currentUser){showToast('🔐 Ingia kwanza.');closeDgCoinModal();return;}if(!dgChosenCoinPack){showToast('Chagua kifurushi cha coins kwanza.');return;}const phone=(document.getElementById('dgCoinPhone').value||'').replace(/[\s-]/g,'');if(!/^(0[67][0-9]{8}|255[67][0-9]{8})$/.test(phone)){showToast('Weka namba sahihi ya simu ya Tanzania.');return;}showToast('USSD Push bado inasubiri kuunganishwa na ClickPesa. Hakuna malipo yaliyotumwa.');}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDgCoinModal();});
 </script>
+
+<script id="danygama-account-actions">
+function dgOpenAccountModal(type){
+ const modal=document.getElementById('dgAccountModal'),title=document.getElementById('dgAccountModalTitle'),body=document.getElementById('dgAccountModalBody');if(!modal||!body)return;
+ if(type==='username'){title.textContent='Badilisha Username';body.innerHTML='<label for="dgNewUsername">Jina jipya</label><input id="dgNewUsername" maxlength="30" placeholder="Andika username mpya" value="'+String(getUserName()).replace(/[&<>"']/g,'')+'"><button class="btn btn-primary" onclick="dgSaveUsername()">Hifadhi jina</button><p class="dg-account-note">Jina hili litaonekana kwenye profile yako.</p>';}
+ else if(type==='password'){title.textContent='Badilisha Password';body.innerHTML='<label for="dgNewPassword">Password mpya</label><input id="dgNewPassword" type="password" minlength="6" autocomplete="new-password" placeholder="Angalau herufi 6"><label for="dgConfirmPassword">Rudia password mpya</label><input id="dgConfirmPassword" type="password" minlength="6" autocomplete="new-password" placeholder="Rudia password"><button class="btn btn-primary" onclick="dgSavePassword()">Badilisha password</button><p class="dg-account-note">Usimshirikishe mtu yeyote password yako.</p>';}
+ else{title.textContent='Settings';body.innerHTML='<p class="dg-account-note">Akaunti yako: <strong>'+String(currentUser?.email||'').replace(/[&<>"']/g,'')+'</strong></p><p class="dg-account-note">Taarifa za push notification zitawezeshwa baada ya kuunganisha huduma ya notifications. Kwa sasa hakikisha browser yako inaruhusu notifications za website.</p><button class="btn btn-primary" onclick="dgCloseAccountModal()">Sawa</button>';}
+ modal.classList.add('show');modal.setAttribute('aria-hidden','false');
+}
+function dgCloseAccountModal(){const m=document.getElementById('dgAccountModal');if(m){m.classList.remove('show');m.setAttribute('aria-hidden','true');}}
+async function dgSaveUsername(){if(!currentUser)return;const input=document.getElementById('dgNewUsername'),name=(input?.value||'').trim();if(name.length<3||name.length>30){showToast('Username iwe na herufi 3 hadi 30.');return;}try{const {data,error}=await supabaseClient.auth.updateUser({data:{username:name}});if(error)throw error;currentUser=data.user||currentUser;updateAccountUI();dgCloseAccountModal();showToast('Username imehifadhiwa.');}catch(e){console.error(e);showToast('Imeshindikana kuhifadhi username. Jaribu tena.');}}
+async function dgSavePassword(){if(!currentUser)return;const a=document.getElementById('dgNewPassword')?.value||'',b=document.getElementById('dgConfirmPassword')?.value||'';if(a.length<6){showToast('Password iwe na angalau herufi 6.');return;}if(a!==b){showToast('Password hazifanani.');return;}try{const {error}=await supabaseClient.auth.updateUser({password:a});if(error)throw error;dgCloseAccountModal();showToast('Password imebadilishwa kikamilifu.');}catch(e){console.error(e);showToast('Imeshindikana kubadilisha password.');}}
+async function dgShowAchievements(){if(!currentUser){showToast('Ingia kwanza.');return;}let unlocked=0;try{const {count,error}=await supabaseClient.from('game_unlocks').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id);if(!error)unlocked=Number(count||0);}catch(e){console.warn(e);}const modal=document.getElementById('dgAccountModal'),title=document.getElementById('dgAccountModalTitle'),body=document.getElementById('dgAccountModalBody');title.textContent='🏆 Achievements';body.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="padding:15px;border-radius:13px;background:#eef6ff"><small>Coins ulizonazo</small><h2 style="color:#247ddd;margin-top:7px">'+Number(currentCoins||0)+'</h2></div><div style="padding:15px;border-radius:13px;background:#eef6ff"><small>Premium games</small><h2 style="color:#247ddd;margin-top:7px">'+unlocked+'</h2></div></div><p class="dg-account-note">Mafanikio mengine yataongezwa kadri unavyotumia Danygama Games.</p><button class="btn btn-primary" onclick="dgCloseAccountModal()">Funga</button>';modal.classList.add('show');modal.setAttribute('aria-hidden','false');}
+async function dgInviteFriends(){if(!currentUser){showToast('Ingia kwanza.');return;}const link=location.origin+location.pathname+'?ref='+encodeURIComponent(currentUser.id);try{if(navigator.share){await navigator.share({title:'Jiunge na Danygama Games',text:'Pakua na furahia games kupitia Danygama Games!',url:link});}else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(link);showToast('Link imenakiliwa. Referral coins 100 zitaanza baada ya mfumo wa uthibitisho kuwekwa.');}else{showToast('Kifaa hiki hakiwezi kushare link moja kwa moja.');}}catch(e){if(e?.name!=='AbortError')console.warn(e);}}
+(function(){const old=window.updateAccountUI;window.updateAccountUI=function(){if(typeof old==='function')old();if(currentUser){const name=getUserName(),n=document.getElementById('dgProfileName'),a=document.getElementById('dgProfileAvatar');if(n)n.textContent=name;if(a)a.textContent=(name.trim()[0]||'D').toUpperCase();}};})();
+document.addEventListener('keydown',e=>{if(e.key==='Escape')dgCloseAccountModal();});
+</script>
+
 </body>
 </html>
