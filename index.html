@@ -1791,6 +1791,10 @@ input:focus,select:focus,textarea:focus{border-color:rgba(124,92,255,.75)!import
 @media(max-width:700px){body{padding:10px!important}.box{padding:15px!important;border-radius:18px}h1{font-size:25px}h2{font-size:20px}button{min-height:45px}}
 </style>
 
+
+<style id="danygama-coin-modal-style">
+.dg-coin-overlay{display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.68);padding:16px;align-items:center;justify-content:center;overflow-y:auto}.dg-coin-overlay.show{display:flex}.dg-coin-dialog{position:relative;width:100%;max-width:390px;max-height:92vh;overflow-y:auto;background:#fff;color:#172033;border-radius:17px;padding:22px 20px 18px;box-shadow:0 22px 70px #0007}.dg-coin-close{position:absolute;right:12px;top:8px;border:0;background:transparent;color:#64748b;font-size:27px;min-height:30px;box-shadow:none}.dg-coin-dialog h3{font-size:17px;margin:0 34px 5px 0}.dg-coin-subtitle{font-size:11px;color:#718096;margin:0 0 17px;line-height:1.5}.dg-coin-label{display:block;font-size:12px;font-weight:700;margin:14px 0 9px;color:#1f2937}.dg-country-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.dg-country{border:1px solid #d8e0e9;border-radius:22px;background:#fff;color:#273449;padding:9px 3px;font-size:11px;min-height:38px;box-shadow:none}.dg-country.active{border:2px solid #2783ed;background:#eef6ff}.dg-country:disabled{opacity:.45}.dg-package-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.dg-package{border:1px solid #dce3eb;border-radius:13px;background:#fff;color:#172033;text-align:left;padding:11px 10px;min-height:62px;box-shadow:none}.dg-package strong{display:block;font-size:12px}.dg-package small{display:block;color:#64748b;font-size:11px;margin-top:7px}.dg-package.selected{border:2px solid #2783ed;background:#eef6ff}.dg-coin-phone{width:100%;height:43px;border:1px solid #dce3eb!important;border-radius:22px;padding:0 14px;background:#fff!important;color:#172033!important;font-size:13px}.dg-coin-buy{width:100%;margin-top:17px;border:0;border-radius:22px;background:#83b5f4;color:#fff;font-weight:800;height:44px;box-shadow:none}.dg-coin-footnote{font-size:10px;line-height:1.5;color:#7b8795;margin-top:12px}@media(max-width:380px){.dg-coin-dialog{padding:20px 15px}.dg-package{padding:10px 8px}}
+</style>
 </head>
 
 <body>
@@ -3102,111 +3106,35 @@ Logged In
 
 
 <div class="coin-buy-card">
-
-<h3>
-💰 BUY COINS
-</h3>
-
-<p style="color:#9db0c3;line-height:1.6;">
-Lipa kupitia namba:
-<strong style="color:#ffd21c;">
-0786538998
-</strong>
-</p>
-
-
-<div class="payment-note">
-
-<strong>
-📱 NAMBA YA MALIPO: 0786538998
-</strong>
-
-<br>
-
-Baada ya kulipa, weka
-<strong>
-Payment Reference / Transaction ID
-</strong>
-hapo chini ili order yako iweze kutambuliwa.
-
+  <h3>🪙 BUY COINS</h3>
+  <p style="color:#9db0c3;line-height:1.6;margin:10px 0 16px;">Chagua kifurushi cha coins unachotaka kununua.</p>
+  <button type="button" class="btn btn-primary" style="width:100%" onclick="openDgCoinModal()">🪙 BUY COINS</button>
+  <p style="color:#8198ad;font-size:11px;margin-top:12px;line-height:1.5;">Malipo ya simu yatawezeshwa baada ya ClickPesa kuthibitisha usajili na kutupatia API credentials.</p>
 </div>
 
-
-<div
-class="form-group"
-style="margin-top:14px;"
->
-
-<label>
-Payment Reference / Transaction ID
-</label>
-
-<input
-id="paymentReference"
-type="text"
-maxlength="100"
-placeholder="Mfano: MPESA123456789"
->
-
+<div id="dgCoinModal" class="dg-coin-overlay" aria-hidden="true">
+  <div class="dg-coin-dialog" role="dialog" aria-modal="true" aria-labelledby="dgCoinTitle">
+    <button type="button" class="dg-coin-close" onclick="closeDgCoinModal()" aria-label="Funga">×</button>
+    <h3 id="dgCoinTitle">🪙 Buy Coins</h3>
+    <p class="dg-coin-subtitle">Purchase coins to unlock games on Danygama Games</p>
+    <label class="dg-coin-label">Country / Nchi</label>
+    <div class="dg-country-row"><button type="button" class="dg-country active" aria-pressed="true">🇹🇿 Tanzania</button><button type="button" class="dg-country" disabled>🇰🇪 Kenya</button><button type="button" class="dg-country" disabled>🇺🇬 Uganda</button></div>
+    <label class="dg-coin-label">Select Coin Package</label>
+    <div class="dg-package-grid">
+      <button type="button" class="dg-package" data-coins="100" data-price="500" onclick="selectDgCoinPackage(this)"><strong>🪙 100 Coins</strong><small>500 TZS</small></button>
+      <button type="button" class="dg-package" data-coins="200" data-price="1000" onclick="selectDgCoinPackage(this)"><strong>🪙 200 Coins</strong><small>1,000 TZS</small></button>
+      <button type="button" class="dg-package" data-coins="400" data-price="2000" onclick="selectDgCoinPackage(this)"><strong>🪙 400 Coins</strong><small>2,000 TZS</small></button>
+      <button type="button" class="dg-package" data-coins="750" data-price="4000" onclick="selectDgCoinPackage(this)"><strong>🪙 750 Coins</strong><small>4,000 TZS</small></button>
+      <button type="button" class="dg-package" data-coins="1000" data-price="6000" onclick="selectDgCoinPackage(this)"><strong>🪙 1,000 Coins</strong><small>6,000 TZS</small></button>
+      <button type="button" class="dg-package" data-coins="3000" data-price="9000" onclick="selectDgCoinPackage(this)"><strong>🪙 3,000 Coins</strong><small>9,000 TZS</small></button>
+      <button type="button" class="dg-package" data-coins="4000" data-price="10000" onclick="selectDgCoinPackage(this)"><strong>🪙 4,000 Coins</strong><small>10,000 TZS</small></button>
+    </div>
+    <label class="dg-coin-label" for="dgCoinPhone">Mobile money number (Tanzania)</label>
+    <input id="dgCoinPhone" class="dg-coin-phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="13" placeholder="07XXXXXXXX">
+    <button type="button" class="dg-coin-buy" onclick="requestDgCoinPayment()">Buy Coins</button>
+    <p class="dg-coin-footnote">USSD Push bado haijaunganishwa. Ukishakamilisha kuunganisha mtoa huduma, utaombwa kuthibitisha malipo kwenye menyu rasmi ya simu yako. Usiandike PIN yako kwenye website.</p>
+  </div>
 </div>
-
-
-<div class="coin-package">
-
-<div>
-
-<strong>
-🪙 50 COINS
-</strong>
-
-<small>
-TSh 200
-</small>
-
-</div>
-
-<button
-class="btn btn-primary"
-onclick="createCoinOrder(50,200)"
->
-BUY 50
-</button>
-
-</div>
-
-
-<div class="coin-package">
-
-<div>
-
-<strong>
-🪙 100 COINS
-</strong>
-
-<small>
-TSh 500
-</small>
-
-</div>
-
-<button
-class="btn btn-primary"
-onclick="createCoinOrder(100,500)"
->
-BUY 100
-</button>
-
-</div>
-
-
-<p style="color:#8198ad;font-size:11px;margin-top:12px;line-height:1.5;">
-Baada ya kufanya malipo na kutuma reference, order itaingia
-kwenye mfumo ikiwa <strong>Pending</strong>. Admin akithibitisha,
-Coins zitaongezwa kwenye account yako.
-</p>
-
-</div>
-
 
 <button
 class="btn btn-red"
@@ -7634,5 +7562,14 @@ if(Array.isArray(allGames)&&allGames.length)window.renderGames(allGames);
 })();
 </script>
 
+
+<script id="danygama-coin-modal-script">
+let dgChosenCoinPack=null;
+function openDgCoinModal(){if(!currentUser){showToast('🔐 Ingia kwenye akaunti kwanza.');showPage('accountPage');return;}const m=document.getElementById('dgCoinModal');if(m){m.classList.add('show');m.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}}
+function closeDgCoinModal(){const m=document.getElementById('dgCoinModal');if(m){m.classList.remove('show');m.setAttribute('aria-hidden','true');}document.body.style.overflow='';}
+function selectDgCoinPackage(btn){document.querySelectorAll('.dg-package').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');dgChosenCoinPack={coins:Number(btn.dataset.coins),price:Number(btn.dataset.price)};}
+function requestDgCoinPayment(){if(!currentUser){showToast('🔐 Ingia kwanza.');closeDgCoinModal();return;}if(!dgChosenCoinPack){showToast('Chagua kifurushi cha coins kwanza.');return;}const phone=(document.getElementById('dgCoinPhone').value||'').replace(/[\s-]/g,'');if(!/^(0[67][0-9]{8}|255[67][0-9]{8})$/.test(phone)){showToast('Weka namba sahihi ya simu ya Tanzania.');return;}showToast('USSD Push bado inasubiri kuunganishwa na ClickPesa. Hakuna malipo yaliyotumwa.');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDgCoinModal();});
+</script>
 </body>
 </html>
