@@ -1795,6 +1795,30 @@ input:focus,select:focus,textarea:focus{border-color:rgba(124,92,255,.75)!import
 <style id="danygama-coin-modal-style">
 .dg-coin-overlay{display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.68);padding:16px;align-items:center;justify-content:center;overflow-y:auto}.dg-coin-overlay.show{display:flex}.dg-coin-dialog{position:relative;width:100%;max-width:390px;max-height:92vh;overflow-y:auto;background:#fff;color:#172033;border-radius:17px;padding:22px 20px 18px;box-shadow:0 22px 70px #0007}.dg-coin-close{position:absolute;right:12px;top:8px;border:0;background:transparent;color:#64748b;font-size:27px;min-height:30px;box-shadow:none}.dg-coin-dialog h3{font-size:17px;margin:0 34px 5px 0}.dg-coin-subtitle{font-size:11px;color:#718096;margin:0 0 17px;line-height:1.5}.dg-coin-label{display:block;font-size:12px;font-weight:700;margin:14px 0 9px;color:#1f2937}.dg-country-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.dg-country{border:1px solid #d8e0e9;border-radius:22px;background:#fff;color:#273449;padding:9px 3px;font-size:11px;min-height:38px;box-shadow:none}.dg-country.active{border:2px solid #2783ed;background:#eef6ff}.dg-country:disabled{opacity:.45}.dg-package-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.dg-package{border:1px solid #dce3eb;border-radius:13px;background:#fff;color:#172033;text-align:left;padding:11px 10px;min-height:62px;box-shadow:none}.dg-package strong{display:block;font-size:12px}.dg-package small{display:block;color:#64748b;font-size:11px;margin-top:7px}.dg-package.selected{border:2px solid #2783ed;background:#eef6ff}.dg-coin-phone{width:100%;height:43px;border:1px solid #dce3eb!important;border-radius:22px;padding:0 14px;background:#fff!important;color:#172033!important;font-size:13px}.dg-coin-buy{width:100%;margin-top:17px;border:0;border-radius:22px;background:#83b5f4;color:#fff;font-weight:800;height:44px;box-shadow:none}.dg-coin-footnote{font-size:10px;line-height:1.5;color:#7b8795;margin-top:12px}@media(max-width:380px){.dg-coin-dialog{padding:20px 15px}.dg-package{padding:10px 8px}}
 </style>
+
+<style id="danygama-video-hub-styles">
+.dg-video-intro{display:flex;align-items:center;gap:13px;padding:15px;margin:0 0 16px;border:1px solid var(--dg-line,#dbe4ee);border-radius:16px;background:rgba(36,125,220,.08)}
+.dg-video-intro-icon{width:48px;height:48px;flex:0 0 48px;border-radius:14px;display:grid;place-items:center;background:#247ddd;color:#fff;font-size:23px}
+.dg-video-intro strong{display:block;font-size:15px}.dg-video-intro p{font-size:12px;color:var(--dg-muted,#91a7bb);margin:5px 0 0}
+.dg-video-search{display:grid;grid-template-columns:1fr 190px;gap:10px;margin:0 0 18px}
+.dg-video-search input,.dg-video-search select,.dg-video-form-grid input,.dg-video-form-grid select,.dg-video-form-field input,.dg-video-full-field input,.dg-video-full-field textarea{width:100%;min-width:0;background:var(--input-bg,#091624);border:1px solid var(--dg-line,#27435d);border-radius:11px;padding:12px;color:inherit;outline:none}
+.dg-video-admin{padding:17px;margin:0 0 22px;border:1px solid #287bd0;border-radius:17px;background:rgba(36,125,220,.07)}
+.dg-video-admin h2{font-size:18px;margin:0 0 7px}.dg-video-admin-note{font-size:12px;color:var(--dg-muted,#91a7bb);line-height:1.6;margin:0 0 14px}
+.dg-video-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.dg-video-admin label{display:block;font-size:12px;font-weight:700;margin:0 0 12px;color:inherit}
+.dg-video-admin label input,.dg-video-admin label select,.dg-video-admin label textarea{display:block;margin-top:6px;font-weight:400}
+.dg-video-form-field small{display:block;color:var(--dg-muted,#91a7bb);font-size:11px;margin:-5px 0 12px}
+.dg-video-full-field{display:block}.dg-video-admin button{width:100%;margin-top:5px}
+.dg-video-section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 12px}.dg-video-section-heading h2{font-size:19px;margin:0}.dg-video-section-heading span{font-size:12px;color:var(--dg-muted,#91a7bb)}
+.dg-video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:15px}
+.dg-video-card{overflow:hidden;border:1px solid var(--dg-line,#203d57);border-radius:16px;background:var(--card-bg,#0d1b2b);min-width:0}
+.dg-video-player{width:100%;aspect-ratio:16/9;background:#050b13;display:block;border:0}.dg-video-player iframe,.dg-video-player video{width:100%;height:100%;display:block;border:0;object-fit:contain;background:#050b13}
+.dg-video-card-body{padding:13px}.dg-video-card-title{font-size:15px;font-weight:800;margin:0 0 6px}.dg-video-card-meta{font-size:11px;color:var(--dg-muted,#91a7bb);margin-bottom:8px}.dg-video-card-description{font-size:12px;line-height:1.55;color:var(--dg-muted,#91a7bb);white-space:pre-wrap;overflow-wrap:anywhere}
+.dg-video-card-actions{display:flex;gap:8px;margin-top:12px}.dg-video-card-actions button{flex:1}
+@media(max-width:560px){.dg-video-search{grid-template-columns:1fr}.dg-video-form-grid{grid-template-columns:1fr}.dg-video-grid{grid-template-columns:1fr}}
+body.light-theme .dg-video-card{background:#fff;border-color:#e0e7ef}body.light-theme .dg-video-search input,body.light-theme .dg-video-search select,body.light-theme .dg-video-admin input,body.light-theme .dg-video-admin select,body.light-theme .dg-video-admin textarea{background:#fff;color:#172033;border-color:#dce4ed}
+</style>
+
 </head>
 
 <body>
@@ -2000,11 +2024,11 @@ onclick="menuNavigate('marketPage')"
 >
 
 <span class="menu-icon">
-🛒
+🎬
 </span>
 
 <span>
-Marketplace
+Videos
 </span>
 
 </button>
@@ -2257,164 +2281,71 @@ Loading games...
 
 
 <!-- =========================================================
-     MARKETPLACE
+     DANYGAMA VIDEO TUTORIALS (replaces Marketplace)
 ========================================================= -->
 
 <section id="marketPage" class="page">
+  <div class="hero">
+    <h1>🎬 DANYGAMA <span>VIDEOS</span></h1>
+    <p>Tazama gameplay, jinsi ya kufungua games na namna ya kuziseti moja kwa moja hapa.</p>
+  </div>
 
-<div class="hero">
+  <div class="dg-video-intro">
+    <div class="dg-video-intro-icon">▶</div>
+    <div>
+      <strong>Gaming tutorials sehemu moja</strong>
+      <p>Gameplay · Installation · Settings · Tips & Tricks</p>
+    </div>
+  </div>
 
-<h1>
-🛒 TEAM <span>MARKETPLACE</span>
-</h1>
+  <div class="dg-video-search">
+    <input id="dgVideoSearch" type="search" placeholder="🔎 Tafuta video au game..." oninput="filterTutorialVideos(this.value)">
+    <select id="dgVideoCategory" onchange="filterTutorialVideos(document.getElementById('dgVideoSearch').value)">
+      <option value="all">Makundi yote</option>
+      <option value="Gameplay">Gameplay</option>
+      <option value="Installation">Kufungua / Installation</option>
+      <option value="Settings">Settings</option>
+      <option value="Tips">Tips & Tricks</option>
+    </select>
+  </div>
 
-<p>
-Sell or advertise your gaming team and connect with other gamers.
-</p>
+  <div id="dgVideoAdminPanel" class="dg-video-admin hidden">
+    <h2>➕ Ongeza Video Mpya</h2>
+    <p class="dg-video-admin-note">Sehemu hii inaonekana kwa Admin pekee. Unaweza kuweka YouTube link au kupakia video kutoka kwenye simu.</p>
+    <form id="dgVideoAdminForm">
+      <div class="dg-video-form-grid">
+        <label>Jina la video<input id="dgVideoTitle" required maxlength="120" placeholder="Mfano: GTA San Andreas Gameplay"></label>
+        <label>Jina la game<input id="dgVideoGame" required maxlength="100" placeholder="Mfano: GTA San Andreas"></label>
+        <label>Aina ya mafunzo<select id="dgVideoTypeCategory"><option>Gameplay</option><option>Installation</option><option>Settings</option><option>Tips</option></select></label>
+        <label>Chanzo cha video<select id="dgVideoSource" onchange="toggleTutorialVideoSource()"><option value="youtube">YouTube link</option><option value="upload">Upload kutoka simu</option></select></label>
+      </div>
+      <div id="dgYoutubeField" class="dg-video-form-field">
+        <label>Weka YouTube link<input id="dgVideoYoutubeUrl" type="url" placeholder="https://youtu.be/..." autocomplete="url"></label>
+      </div>
+      <div id="dgUploadField" class="dg-video-form-field hidden">
+        <label>Chagua video kutoka kwenye simu<input id="dgVideoFile" type="file" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov"></label>
+        <small>Video isiwe zaidi ya MB 50. Kwa video kubwa, tumia YouTube link.</small>
+      </div>
+      <label class="dg-video-full-field">Thumbnail URL (hiari)<input id="dgVideoThumbnail" type="url" placeholder="https://... picha ya video"></label>
+      <label class="dg-video-full-field">Maelezo ya video<textarea id="dgVideoDescription" rows="3" maxlength="1200" placeholder="Eleza video inafundisha nini..."></textarea></label>
+      <button class="btn btn-primary" id="dgVideoSubmit" type="submit">📤 HIFADHI VIDEO</button>
+    </form>
+  </div>
 
-</div>
+  <div class="dg-video-section-heading">
+    <h2>🔥 Video za Mafunzo</h2>
+    <span id="dgVideoCount">0 Videos</span>
+  </div>
+  <div id="dgTutorialVideoGrid" class="dg-video-grid">
+    <div class="loading">Inapakia video...</div>
+  </div>
 
-
-<div class="form-card">
-
-<h3>
-➕ Sell / Advertise Your Team
-</h3>
-
-
-<div
-id="marketLoginMessage"
-class="hidden"
->
-
-<p style="color:#9db0c3;margin-bottom:12px;">
-You need to login before posting on Marketplace.
-</p>
-
-
-<button
-class="btn btn-primary"
-onclick="showPage('accountPage')"
->
-LOGIN / REGISTER
-</button>
-
-</div>
-
-
-<form
-id="marketForm"
-class="hidden"
->
-
-<div class="form-group">
-
-<label>
-Team / Item Name
-</label>
-
-<input
-id="marketName"
-required
-placeholder="Example: Danygama FC"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Price
-</label>
-
-<input
-id="marketPrice"
-required
-placeholder="Example: 15000 TSH"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Description
-</label>
-
-<textarea
-id="marketDescription"
-required
-placeholder="Write details about your team..."
-></textarea>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-WhatsApp Number
-</label>
-
-<input
-id="marketWhatsapp"
-required
-placeholder="Example: 2557XXXXXXXX"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Team Image
-</label>
-
-<input
-id="marketImage"
-type="file"
-accept="image/*"
-required
->
-
-</div>
-
-
-<button
-class="btn btn-primary"
-type="submit"
->
-📤 POST TO MARKETPLACE
-</button>
-
-</form>
-
-</div>
-
-
-<div class="section-title">
-
-<h2>
-🔥 Marketplace
-</h2>
-
-</div>
-
-
-<div
-id="marketGrid"
-class="market-grid"
->
-
-<div class="loading">
-Loading Marketplace...
-</div>
-
-</div>
-
+  <!-- Hidden legacy elements retained so the existing account script remains compatible. -->
+  <div class="hidden" aria-hidden="true">
+    <div id="marketLoginMessage"></div>
+    <form id="marketForm"></form>
+    <div id="marketGrid"></div>
+  </div>
 </section>
 
 
@@ -2513,7 +2444,7 @@ na gamers wengine.
 </li>
 
 <li>
-🛒 Kutumia Team Marketplace.
+🎬 Kutazama video za gameplay na mafunzo ya games.
 </li>
 
 <li>
@@ -2851,12 +2782,11 @@ Download all required parts when a game has multiple links.
 <div class="help-card">
 
 <h3>
-🛒 Marketplace
+🎬 Danygama Videos
 </h3>
 
 <p>
-Login to your account, open Marketplace and use the posting form
-to advertise your gaming team.
+Fungua sehemu ya Videos kutazama gameplay, mafunzo ya kufungua games na settings.
 </p>
 
 </div>
@@ -3451,9 +3381,9 @@ data-page="marketPage"
 onclick="showPage('marketPage')"
 >
 <span class="icon">
-🛒
+▶️
 </span>
-Market
+Videos
 </button>
 
 
@@ -3708,7 +3638,8 @@ behavior:"smooth"
 
 
 if(pageId === "marketPage"){
-loadMarketplace();
+loadTutorialVideos();
+updateVideoAdminUI();
 }
 
 
@@ -7418,6 +7349,172 @@ closeMenu();
 
 
 /* =========================================================
+   DANYGAMA VIDEO TUTORIALS
+========================================================= */
+
+const DG_VIDEO_ADMIN_EMAIL = "gamadany35@gmail.com";
+let dgTutorialVideos = [];
+
+function dgIsVideoAdmin(){
+  return !!(currentUser && String(currentUser.email || "").toLowerCase() === DG_VIDEO_ADMIN_EMAIL);
+}
+
+function updateVideoAdminUI(){
+  const panel = document.getElementById("dgVideoAdminPanel");
+  if(panel) panel.classList.toggle("hidden", !dgIsVideoAdmin());
+}
+
+function toggleTutorialVideoSource(){
+  const source = document.getElementById("dgVideoSource");
+  const youtube = document.getElementById("dgYoutubeField");
+  const upload = document.getElementById("dgUploadField");
+  if(!source || !youtube || !upload) return;
+  const isUpload = source.value === "upload";
+  youtube.classList.toggle("hidden", isUpload);
+  upload.classList.toggle("hidden", !isUpload);
+  document.getElementById("dgVideoYoutubeUrl").required = !isUpload;
+  document.getElementById("dgVideoFile").required = isUpload;
+}
+
+function getYouTubeEmbedUrl(value){
+  try{
+    const url = new URL(String(value || "").trim());
+    const host = url.hostname.toLowerCase().replace(/^www\./,"");
+    let id = "";
+    if(host === "youtu.be") id = url.pathname.split("/").filter(Boolean)[0] || "";
+    else if(host === "youtube.com" || host === "m.youtube.com" || host === "youtube-nocookie.com"){
+      if(url.pathname === "/watch") id = url.searchParams.get("v") || "";
+      else if(/^\/(embed|shorts|live)\//.test(url.pathname)) id = url.pathname.split("/")[2] || "";
+    }
+    if(!/^[A-Za-z0-9_-]{11}$/.test(id)) return "";
+    return "https://www.youtube-nocookie.com/embed/" + id;
+  }catch(e){ return ""; }
+}
+
+function tutorialVideoCard(item){
+  const title = escapeHTML(item.title || "Video tutorial");
+  const game = escapeHTML(item.game_name || "Game");
+  const category = escapeHTML(item.category || "Gameplay");
+  const description = escapeHTML(item.description || "");
+  const thumb = item.thumbnail_url && /^https:\/\//i.test(item.thumbnail_url) ? escapeHTML(item.thumbnail_url) : "";
+  let player = "";
+  if(item.video_type === "youtube"){
+    const embed = getYouTubeEmbedUrl(item.video_url);
+    player = embed ? `<div class="dg-video-player"><iframe src="${embed}" title="${title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>` : `<div class="dg-video-player" style="display:grid;place-items:center;color:white">YouTube link si sahihi</div>`;
+  }else{
+    player = `<div class="dg-video-player"><video controls playsinline preload="metadata" ${thumb ? `poster="${thumb}"` : ""}><source src="${escapeHTML(item.video_url || "")}" type="video/mp4">Simu yako haiwezi kucheza video hii.</video></div>`;
+  }
+  const adminDelete = dgIsVideoAdmin() ? `<div class="dg-video-card-actions"><button class="btn btn-red" type="button" onclick="deleteTutorialVideo('${escapeHTML(item.id)}')">🗑️ Futa video</button></div>` : "";
+  const date = item.created_at ? new Date(item.created_at).toLocaleDateString("sw-TZ") : "";
+  return `<article class="dg-video-card">${player}<div class="dg-video-card-body"><h3 class="dg-video-card-title">${title}</h3><div class="dg-video-card-meta">🎮 ${game} · 📚 ${category}${date ? " · " + escapeHTML(date) : ""}</div>${description ? `<div class="dg-video-card-description">${description}</div>` : ""}${adminDelete}</div></article>`;
+}
+
+function filterTutorialVideos(query){
+  const grid = document.getElementById("dgTutorialVideoGrid");
+  if(!grid) return;
+  const q = String(query || "").toLowerCase().trim();
+  const category = (document.getElementById("dgVideoCategory") || {}).value || "all";
+  const filtered = dgTutorialVideos.filter(v => {
+    const matchesText = !q || [v.title,v.game_name,v.description,v.category].join(" ").toLowerCase().includes(q);
+    const matchesCategory = category === "all" || v.category === category;
+    return matchesText && matchesCategory;
+  });
+  const count = document.getElementById("dgVideoCount");
+  if(count) count.textContent = `${filtered.length} Videos`;
+  grid.innerHTML = filtered.length ? filtered.map(tutorialVideoCard).join("") : `<div class="empty">🎬 Hakuna video iliyopatikana kwa utafutaji huu.</div>`;
+}
+
+async function loadTutorialVideos(){
+  const grid = document.getElementById("dgTutorialVideoGrid");
+  if(!grid) return;
+  updateVideoAdminUI();
+  grid.innerHTML = `<div class="loading">Inapakia video...</div>`;
+  try{
+    const {data,error} = await supabaseClient.from("tutorial_videos").select("*").order("created_at",{ascending:false});
+    if(error){
+      console.error("Tutorial videos load error:",error);
+      grid.innerHTML = `<div class="empty">⚠️ Mfumo wa video bado haujaandaliwa kwenye Supabase. Admin anatakiwa kuweka SQL ya video na bucket ya game-videos kwanza.</div>`;
+      return;
+    }
+    dgTutorialVideos = data || [];
+    filterTutorialVideos((document.getElementById("dgVideoSearch") || {}).value || "");
+  }catch(error){
+    console.error(error);
+    grid.innerHTML = `<div class="empty">❌ Imeshindikana kupakia video. Jaribu tena.</div>`;
+  }
+}
+
+const dgVideoAdminForm = document.getElementById("dgVideoAdminForm");
+if(dgVideoAdminForm){
+  dgVideoAdminForm.addEventListener("submit", async function(event){
+    event.preventDefault();
+    if(!dgIsVideoAdmin()){ showToast("Admin pekee ndiye anayeweza kuongeza video."); return; }
+    const title = document.getElementById("dgVideoTitle").value.trim();
+    const gameName = document.getElementById("dgVideoGame").value.trim();
+    const category = document.getElementById("dgVideoTypeCategory").value;
+    const source = document.getElementById("dgVideoSource").value;
+    const description = document.getElementById("dgVideoDescription").value.trim();
+    const thumbnail = document.getElementById("dgVideoThumbnail").value.trim();
+    let videoUrl = "";
+    let storagePath = null;
+    if(!title || !gameName){ showToast("Jaza jina la video na jina la game."); return; }
+    if(thumbnail && !/^https:\/\//i.test(thumbnail)){ showToast("Thumbnail URL lazima ianze na https://"); return; }
+    const submit = document.getElementById("dgVideoSubmit");
+    submit.disabled = true;
+    submit.textContent = "Inahifadhi...";
+    try{
+      if(source === "youtube"){
+        const rawUrl = document.getElementById("dgVideoYoutubeUrl").value.trim();
+        if(!getYouTubeEmbedUrl(rawUrl)){ showToast("Weka YouTube link sahihi."); return; }
+        videoUrl = rawUrl;
+      }else{
+        const file = document.getElementById("dgVideoFile").files[0];
+        if(!file){ showToast("Chagua video kutoka kwenye simu."); return; }
+        if(file.size > 50 * 1024 * 1024){ showToast("Video imezidi MB 50. Tumia YouTube link kwa video kubwa."); return; }
+        if(!["video/mp4","video/webm","video/quicktime"].includes(file.type)){ showToast("Tumia video ya MP4, WEBM au MOV."); return; }
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+        storagePath = `${currentUser.id}/${Date.now()}-${safeName}`;
+        const {error:uploadError} = await supabaseClient.storage.from("game-videos").upload(storagePath,file,{upsert:false,contentType:file.type,cacheControl:"3600"});
+        if(uploadError) throw uploadError;
+        const {data:publicData} = supabaseClient.storage.from("game-videos").getPublicUrl(storagePath);
+        videoUrl = publicData.publicUrl;
+      }
+      const {error:insertError} = await supabaseClient.from("tutorial_videos").insert({
+        title,game_name:gameName,category,description,video_type:source,video_url:videoUrl,storage_path:storagePath,thumbnail_url:thumbnail || null,created_by:currentUser.id
+      });
+      if(insertError){
+        if(storagePath) await supabaseClient.storage.from("game-videos").remove([storagePath]);
+        throw insertError;
+      }
+      dgVideoAdminForm.reset();
+      toggleTutorialVideoSource();
+      showToast("✅ Video imeongezwa!");
+      await loadTutorialVideos();
+    }catch(error){
+      console.error("Video save error:",error);
+      showToast("❌ Imeshindikana kuhifadhi: " + (error.message || "Angalia Supabase setup."));
+    }finally{
+      submit.disabled = false;
+      submit.textContent = "📤 HIFADHI VIDEO";
+    }
+  });
+}
+
+async function deleteTutorialVideo(id){
+  if(!dgIsVideoAdmin()){ showToast("Admin pekee."); return; }
+  const item = dgTutorialVideos.find(v => String(v.id) === String(id));
+  if(!item || !confirm("Una uhakika unataka kufuta video hii?")) return;
+  try{
+    const {error} = await supabaseClient.from("tutorial_videos").delete().eq("id",id);
+    if(error) throw error;
+    if(item.storage_path) await supabaseClient.storage.from("game-videos").remove([item.storage_path]);
+    showToast("Video imefutwa.");
+    await loadTutorialVideos();
+  }catch(error){ console.error(error); showToast("❌ Imeshindikana kufuta video: " + (error.message || "")); }
+}
+
+
+/* =========================================================
    INITIALIZE
 ========================================================= */
 
@@ -7429,7 +7526,7 @@ await checkUser();
 
 await loadGames();
 
-loadMarketplace();
+loadTutorialVideos();
 
 loadComments();
 
