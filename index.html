@@ -7681,5 +7681,34 @@ async function dgInviteFriends(){if(!currentUser){showToast('Ingia kwanza.');ret
 document.addEventListener('keydown',e=>{if(e.key==='Escape')dgCloseAccountModal();});
 </script>
 
+
+<style id="danygama-theme-contrast-fix">
+/* Consistent text contrast in both White and Dark themes */
+:root{--dg-light-bg:#f3f6fb;--dg-light-card:#ffffff;--dg-light-text:#172033;--dg-light-muted:#52667a;--dg-dark-bg:#070d19;--dg-dark-card:#101b2c;--dg-dark-text:#f5f7fb;--dg-dark-muted:#a9bbce}
+/* WHITE THEME */
+body.light-theme{background:var(--dg-light-bg)!important;color:var(--dg-light-text)!important;color-scheme:light}
+body.light-theme main,body.light-theme section,body.light-theme .page{color:var(--dg-light-text)}
+body.light-theme .game-card,body.light-theme .details-card,body.light-theme .form-card,body.light-theme .market-card,body.light-theme .auth-box,body.light-theme .account-card,body.light-theme .help-card,body.light-theme .about-card,body.light-theme .comments-card,body.light-theme .chat-card,body.light-theme .coin-card,body.light-theme .coin-buy-card,body.light-theme .social-card,body.light-theme .dg-video-card{background:var(--dg-light-card)!important;color:var(--dg-light-text)!important;border-color:#d9e2ec!important}
+body.light-theme .game-name,body.light-theme .game-info,body.light-theme .game-info strong,body.light-theme .game-info h3,body.light-theme .game-info p,body.light-theme .details-content,body.light-theme .details-content h1,body.light-theme .details-content h2,body.light-theme .details-description,body.light-theme .section-title h2,body.light-theme .market-card h3,body.light-theme .market-card strong,body.light-theme .auth-box h2,body.light-theme .account-card h2,body.light-theme .dg-video-card-title,body.light-theme .dg-video-section-heading h2{color:var(--dg-light-text)!important}
+body.light-theme .game-size,body.light-theme .section-title span,body.light-theme .details-meta,body.light-theme .market-seller,body.light-theme .dg-video-card-meta,body.light-theme .dg-video-card-description,body.light-theme .dg-video-intro p,body.light-theme .dg-video-admin-note,body.light-theme .dg-account-bottom p{color:var(--dg-light-muted)!important}
+body.light-theme .game-card .badge,body.light-theme .badge{background:#edf3f8!important;color:#40546a!important}
+body.light-theme .search-box input,body.light-theme input,body.light-theme textarea,body.light-theme select{color:var(--dg-light-text)}
+body.light-theme input::placeholder,body.light-theme textarea::placeholder{color:#77879a!important;opacity:1}
+body.light-theme .dg-profile-card,body.light-theme .dg-account-brand,body.light-theme .dg-account-row{background:#fff!important;color:#172033!important;border-color:#dce5ef!important}
+body.light-theme .dg-profile-card h2,body.light-theme .dg-account-brand strong,body.light-theme .dg-account-row strong{color:#172033!important}
+body.light-theme .dg-profile-card p,body.light-theme .dg-profile-card small,body.light-theme .dg-account-brand small,body.light-theme .dg-row-copy small{color:#64748b!important}
+/* DARK THEME */
+body:not(.light-theme){background:var(--dg-dark-bg);color:var(--dg-dark-text);color-scheme:dark}
+body:not(.light-theme) .game-card,body:not(.light-theme) .details-card,body:not(.light-theme) .form-card,body:not(.light-theme) .market-card,body:not(.light-theme) .auth-box,body:not(.light-theme) .account-card,body:not(.light-theme) .help-card,body:not(.light-theme) .about-card,body:not(.light-theme) .comments-card,body:not(.light-theme) .chat-card,body:not(.light-theme) .coin-card,body:not(.light-theme) .coin-buy-card,body:not(.light-theme) .social-card,body:not(.light-theme) .dg-video-card{background:var(--dg-dark-card)!important;color:var(--dg-dark-text)!important;border-color:#263b56!important}
+body:not(.light-theme) .game-name,body:not(.light-theme) .game-info,body:not(.light-theme) .game-info strong,body:not(.light-theme) .game-info h3,body:not(.light-theme) .game-info p,body:not(.light-theme) .details-content,body:not(.light-theme) .details-content h1,body:not(.light-theme) .details-content h2,body:not(.light-theme) .details-description,body:not(.light-theme) .section-title h2,body:not(.light-theme) .market-card h3,body:not(.light-theme) .market-card strong,body:not(.light-theme) .auth-box h2,body:not(.light-theme) .account-card h2,body:not(.light-theme) .dg-video-card-title,body:not(.light-theme) .dg-video-section-heading h2{color:var(--dg-dark-text)!important}
+body:not(.light-theme) .game-size,body:not(.light-theme) .section-title span,body:not(.light-theme) .details-meta,body:not(.light-theme) .market-seller,body:not(.light-theme) .dg-video-card-meta,body:not(.light-theme) .dg-video-card-description,body:not(.light-theme) .dg-video-intro p,body:not(.light-theme) .dg-video-admin-note,body:not(.light-theme) .dg-row-copy small,body:not(.light-theme) .dg-account-bottom p{color:var(--dg-dark-muted)!important}
+body:not(.light-theme) .dg-profile-card,body:not(.light-theme) .dg-account-brand,body:not(.light-theme) .dg-account-row{background:var(--dg-dark-card)!important;color:var(--dg-dark-text)!important;border-color:#263b56!important}
+body:not(.light-theme) .dg-profile-card h2,body:not(.light-theme) .dg-account-brand strong,body:not(.light-theme) .dg-account-row strong{color:var(--dg-dark-text)!important}
+body:not(.light-theme) .dg-profile-card p,body:not(.light-theme) .dg-profile-card small,body:not(.light-theme) .dg-account-brand small,body:not(.light-theme) .dg-row-copy small{color:var(--dg-dark-muted)!important}
+/* Preserve readable controls and intentional white text on colored buttons */
+body.light-theme .form-group input,body.light-theme .form-group textarea,body.light-theme .form-group select,body.light-theme .comment-form textarea,body.light-theme .chat-input,body.light-theme .dg-video-search input,body.light-theme .dg-video-search select,body.light-theme .dg-video-admin input,body.light-theme .dg-video-admin select,body.light-theme .dg-video-admin textarea{background:#fff!important;color:#172033!important;border-color:#ccd8e5!important}
+body:not(.light-theme) .form-group input,body:not(.light-theme) .form-group textarea,body:not(.light-theme) .form-group select,body:not(.light-theme) .comment-form textarea,body:not(.light-theme) .chat-input,body:not(.light-theme) .dg-video-search input,body:not(.light-theme) .dg-video-search select,body:not(.light-theme) .dg-video-admin input,body:not(.light-theme) .dg-video-admin select,body:not(.light-theme) .dg-video-admin textarea{background:#091624!important;color:#f5f7fb!important;border-color:#27435d!important}
+</style>
+
 </body>
 </html>
