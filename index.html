@@ -1818,8 +1818,9 @@ input:focus,select:focus,textarea:focus{border-color:rgba(124,92,255,.75)!import
 .dg-video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:15px}
 .dg-video-card{overflow:hidden;border:1px solid var(--dg-line,#203d57);border-radius:16px;background:var(--card-bg,#0d1b2b);min-width:0}
 .dg-video-player{width:100%;aspect-ratio:16/9;background:#050b13;display:block;border:0}.dg-video-player iframe,.dg-video-player video{width:100%;height:100%;display:block;border:0;object-fit:contain;background:#050b13}
+.dg-video-poster{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#050b13}.dg-video-lock{aspect-ratio:16/9;display:grid;place-items:center;text-align:center;padding:18px;background:linear-gradient(135deg,#111c31,#263b58);color:#fff}.dg-video-lock strong{font-size:22px;display:block;margin-bottom:6px}.dg-video-price{display:inline-block;border-radius:20px;padding:6px 10px;background:#f5c542;color:#182235;font-size:11px;font-weight:900;margin-top:8px}
 .dg-video-card-body{padding:13px}.dg-video-card-title{font-size:15px;font-weight:800;margin:0 0 6px}.dg-video-card-meta{font-size:11px;color:var(--dg-muted,#91a7bb);margin-bottom:8px}.dg-video-card-description{font-size:12px;line-height:1.55;color:var(--dg-muted,#91a7bb);white-space:pre-wrap;overflow-wrap:anywhere}
-.dg-video-card-actions{display:flex;gap:8px;margin-top:12px}.dg-video-card-actions button{flex:1}
+.dg-video-card-actions{display:flex;gap:8px;margin-top:12px}.dg-video-card-actions button{flex:1}.dg-movie-tag{display:inline-block;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:900;margin:0 5px 7px 0}.dg-movie-free{background:#d8f7e6;color:#12643a}.dg-movie-premium{background:#fff0bd;color:#805600}
 @media(max-width:560px){.dg-video-search{grid-template-columns:1fr}.dg-video-form-grid{grid-template-columns:1fr}.dg-video-grid{grid-template-columns:1fr}}
 body.light-theme .dg-video-card{background:#fff;border-color:#e0e7ef}body.light-theme .dg-video-search input,body.light-theme .dg-video-search select,body.light-theme .dg-video-admin input,body.light-theme .dg-video-admin select,body.light-theme .dg-video-admin textarea{background:#fff;color:#172033;border-color:#dce4ed}
 </style>
@@ -2299,71 +2300,60 @@ Loading games...
 
 
 <!-- =========================================================
-     DANYGAMA VIDEO TUTORIALS (replaces Marketplace)
+     DANYGAMA MOVIES & ENTERTAINMENT
 ========================================================= -->
-
 <section id="marketPage" class="page">
   <div class="hero">
-    <h1>🎬 DANYGAMA <span>VIDEOS</span></h1>
-    <p>Tazama gameplay, jinsi ya kufungua games na namna ya kuziseti moja kwa moja hapa.</p>
+    <h1>🎬 DANYGAMA <span>MOVIES</span></h1>
+    <p>Tazama movies moja kwa moja kwenye website. Kuna movie za bure na za Premium zinazofunguliwa kwa Coins.</p>
   </div>
 
   <div class="dg-video-intro">
     <div class="dg-video-intro-icon">▶</div>
-    <div>
-      <strong>Gaming tutorials sehemu moja</strong>
-      <p>Gameplay · Installation · Settings · Tips & Tricks</p>
-    </div>
+    <div><strong>Movies sehemu moja</strong><p>🆓 FREE movies · 👑 Premium movies · 🪙 Coin unlock</p></div>
   </div>
 
   <div class="dg-video-search">
-    <input id="dgVideoSearch" type="search" placeholder="🔎 Tafuta video au game..." oninput="filterTutorialVideos(this.value)">
+    <input id="dgVideoSearch" type="search" placeholder="🔎 Tafuta movie..." oninput="filterTutorialVideos(this.value)">
     <select id="dgVideoCategory" onchange="filterTutorialVideos(document.getElementById('dgVideoSearch').value)">
       <option value="all">Makundi yote</option>
-      <option value="Gameplay">Gameplay</option>
-      <option value="Installation">Kufungua / Installation</option>
-      <option value="Settings">Settings</option>
-      <option value="Tips">Tips & Tricks</option>
+      <option value="Action">Action</option><option value="Adventure">Adventure</option>
+      <option value="Comedy">Comedy</option><option value="Drama">Drama</option>
+      <option value="Animation">Animation</option><option value="Documentary">Documentary</option>
+      <option value="Other">Mengineyo</option>
     </select>
   </div>
 
   <div id="dgVideoAdminPanel" class="dg-video-admin hidden">
-    <h2>➕ Ongeza Video Mpya</h2>
-    <p class="dg-video-admin-note">Sehemu hii inaonekana kwa Admin pekee. Unaweza kuweka YouTube link au kupakia video kutoka kwenye simu.</p>
+    <h2>➕ Ongeza Movie Mpya</h2>
+    <p class="dg-video-admin-note">Admin pekee ndiye anayeweza kuongeza movie. Unaweza kupakia video kutoka kwenye simu au kuweka link ya video ya bure. Movie za Premium lazima zipakiwe kwenye private storage ili link isivuje.</p>
     <form id="dgVideoAdminForm">
       <div class="dg-video-form-grid">
-        <label>Jina la video<input id="dgVideoTitle" required maxlength="120" placeholder="Mfano: GTA San Andreas Gameplay"></label>
-        <label>Jina la game<input id="dgVideoGame" required maxlength="100" placeholder="Mfano: GTA San Andreas"></label>
-        <label>Aina ya mafunzo<select id="dgVideoTypeCategory"><option>Gameplay</option><option>Installation</option><option>Settings</option><option>Tips</option></select></label>
-        <label>Chanzo cha video<select id="dgVideoSource" onchange="toggleTutorialVideoSource()"><option value="youtube">YouTube link</option><option value="upload">Upload kutoka simu</option></select></label>
+        <label>Jina la movie<input id="dgVideoTitle" required maxlength="120" placeholder="Mfano: Adventure Movie"></label>
+        <label>Kategoria<select id="dgVideoTypeCategory"><option>Action</option><option>Adventure</option><option>Comedy</option><option>Drama</option><option>Animation</option><option>Documentary</option><option>Other</option></select></label>
+        <label>Aina ya movie<select id="dgMovieAccess" onchange="toggleDgMovieAccess()"><option value="free">🆓 Bure (FREE)</option><option value="premium">👑 Premium (Coins)</option></select></label>
+        <label id="dgMoviePriceWrap" class="hidden">Bei ya Coins<input id="dgMoviePrice" type="number" min="1" max="1000000" step="1" value="100" placeholder="Mfano: 100"></label>
+        <label>Chanzo cha video<select id="dgVideoSource" onchange="toggleTutorialVideoSource()"><option value="upload">📱 Upload kutoka simu</option><option value="link">🔗 Video link (FREE pekee)</option></select></label>
       </div>
-      <div id="dgYoutubeField" class="dg-video-form-field">
-        <label>Weka YouTube link<input id="dgVideoYoutubeUrl" type="url" placeholder="https://youtu.be/..." autocomplete="url"></label>
+      <div id="dgYoutubeField" class="dg-video-form-field hidden">
+        <label>Video link<input id="dgVideoYoutubeUrl" type="url" placeholder="YouTube link au direct MP4 URL" autocomplete="url"></label>
+        <small>Link za nje zinapatikana kwa movie za FREE pekee. Tumia HTTPS.</small>
       </div>
-      <div id="dgUploadField" class="dg-video-form-field hidden">
-        <label>Chagua video kutoka kwenye simu<input id="dgVideoFile" type="file" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov"></label>
-        <small>Video isiwe zaidi ya MB 50. Kwa video kubwa, tumia YouTube link.</small>
+      <div id="dgUploadField" class="dg-video-form-field">
+        <label>Chagua movie kutoka kwenye simu<input id="dgVideoFile" type="file" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov"></label>
+        <small>Private storage ina limit inayotegemea mpango na mipangilio ya Supabase. Faili kubwa zinaweza kuhitaji Resumable Upload au video hosting.</small>
       </div>
-      <label class="dg-video-full-field">Thumbnail URL (hiari)<input id="dgVideoThumbnail" type="url" placeholder="https://... picha ya video"></label>
-      <label class="dg-video-full-field">Maelezo ya video<textarea id="dgVideoDescription" rows="3" maxlength="1200" placeholder="Eleza video inafundisha nini..."></textarea></label>
-      <button class="btn btn-primary" id="dgVideoSubmit" type="submit">📤 HIFADHI VIDEO</button>
+      <label class="dg-video-full-field">Poster / Cover URL (hiari)<input id="dgVideoThumbnail" type="url" placeholder="https://... picha ya movie"></label>
+      <label class="dg-video-full-field">Maelezo ya movie<textarea id="dgVideoDescription" rows="3" maxlength="2000" placeholder="Andika maelezo mafupi ya movie..."></textarea></label>
+      <button class="btn btn-primary" id="dgVideoSubmit" type="submit">📤 HIFADHI MOVIE</button>
     </form>
   </div>
 
-  <div class="dg-video-section-heading">
-    <h2>🔥 Video za Mafunzo</h2>
-    <span id="dgVideoCount">0 Videos</span>
-  </div>
-  <div id="dgTutorialVideoGrid" class="dg-video-grid">
-    <div class="loading">Inapakia video...</div>
-  </div>
+  <div class="dg-video-section-heading"><h2>🍿 Movie Zote</h2><span id="dgVideoCount">0 Movies</span></div>
+  <div id="dgTutorialVideoGrid" class="dg-video-grid"><div class="loading">Inapakia movies...</div></div>
 
-  <!-- Hidden legacy elements retained so the existing account script remains compatible. -->
-  <div class="hidden" aria-hidden="true">
-    <div id="marketLoginMessage"></div>
-    <form id="marketForm"></form>
-    <div id="marketGrid"></div>
-  </div>
+  <!-- Hidden legacy elements retained for compatibility with existing navigation. -->
+  <div class="hidden" aria-hidden="true"><div id="marketLoginMessage"></div><form id="marketForm"></form><div id="marketGrid"></div></div>
 </section>
 
 
@@ -2462,7 +2452,7 @@ na gamers wengine.
 </li>
 
 <li>
-🎬 Kutazama video za gameplay na mafunzo ya games.
+🎬 Kutazama movies na gaming videos.
 </li>
 
 <li>
@@ -7349,14 +7339,32 @@ closeMenu();
 
 
 /* =========================================================
-   DANYGAMA VIDEO TUTORIALS
+   DANYGAMA MOVIES & COIN ACCESS
 ========================================================= */
 
-const DG_VIDEO_ADMIN_EMAIL = "gamadany35@gmail.com";
+const DG_MOVIE_BUCKET = "movie-videos";
+const DG_MOVIE_MAX_UPLOAD_BYTES = 500 * 1024 * 1024;
 let dgTutorialVideos = [];
+let dgMovieUnlockedIds = new Set();
+let dgMoviePlayableUrls = new Map();
+let dgMovieAdmin = false;
 
 function dgIsVideoAdmin(){
-  return !!(currentUser && String(currentUser.email || "").toLowerCase() === DG_VIDEO_ADMIN_EMAIL);
+  return !!(currentUser && dgMovieAdmin);
+}
+
+async function refreshDgMovieAdmin(){
+  if(!currentUser){ dgMovieAdmin = false; updateVideoAdminUI(); return false; }
+  try{
+    const {data,error} = await supabaseClient.rpc("is_dg_movie_admin");
+    if(error) throw error;
+    dgMovieAdmin = data === true;
+  }catch(error){
+    console.warn("Movie admin check:", error);
+    dgMovieAdmin = false;
+  }
+  updateVideoAdminUI();
+  return dgMovieAdmin;
 }
 
 function updateVideoAdminUI(){
@@ -7364,22 +7372,47 @@ function updateVideoAdminUI(){
   if(panel) panel.classList.toggle("hidden", !dgIsVideoAdmin());
 }
 
+function toggleDgMovieAccess(){
+  const access = document.getElementById("dgMovieAccess");
+  const priceWrap = document.getElementById("dgMoviePriceWrap");
+  const source = document.getElementById("dgVideoSource");
+  const price = document.getElementById("dgMoviePrice");
+  if(!access || !priceWrap || !source || !price) return;
+  const premium = access.value === "premium";
+  priceWrap.classList.toggle("hidden", !premium);
+  price.required = premium;
+  if(premium && source.value === "link"){
+    source.value = "upload";
+    toggleTutorialVideoSource();
+    showToast("Movie za Premium lazima zipakiwe kwenye private storage.");
+  }
+  const linkOption = source.querySelector('option[value="link"]');
+  if(linkOption) linkOption.disabled = premium;
+}
+
 function toggleTutorialVideoSource(){
   const source = document.getElementById("dgVideoSource");
-  const youtube = document.getElementById("dgYoutubeField");
+  const link = document.getElementById("dgYoutubeField");
   const upload = document.getElementById("dgUploadField");
-  if(!source || !youtube || !upload) return;
-  const isUpload = source.value === "upload";
-  youtube.classList.toggle("hidden", isUpload);
-  upload.classList.toggle("hidden", !isUpload);
-  document.getElementById("dgVideoYoutubeUrl").required = !isUpload;
-  document.getElementById("dgVideoFile").required = isUpload;
+  const url = document.getElementById("dgVideoYoutubeUrl");
+  const file = document.getElementById("dgVideoFile");
+  if(!source || !link || !upload || !url || !file) return;
+  const isLink = source.value === "link";
+  link.classList.toggle("hidden", !isLink);
+  upload.classList.toggle("hidden", isLink);
+  url.required = isLink;
+  file.required = !isLink;
+  if(isLink && document.getElementById("dgMovieAccess")?.value === "premium"){
+    document.getElementById("dgMovieAccess").value = "free";
+    toggleDgMovieAccess();
+    showToast("Link ya nje inaruhusiwa kwa movie za FREE pekee.");
+  }
 }
 
 function getYouTubeEmbedUrl(value){
   try{
     const url = new URL(String(value || "").trim());
-    const host = url.hostname.toLowerCase().replace(/^www\./,"");
+    const host = url.hostname.toLowerCase().replace(/^www\./, "");
     let id = "";
     if(host === "youtu.be") id = url.pathname.split("/").filter(Boolean)[0] || "";
     else if(host === "youtube.com" || host === "m.youtube.com" || host === "youtube-nocookie.com"){
@@ -7391,22 +7424,36 @@ function getYouTubeEmbedUrl(value){
   }catch(e){ return ""; }
 }
 
-function tutorialVideoCard(item){
-  const title = escapeHTML(item.title || "Video tutorial");
-  const game = escapeHTML(item.game_name || "Game");
-  const category = escapeHTML(item.category || "Gameplay");
-  const description = escapeHTML(item.description || "");
-  const thumb = item.thumbnail_url && /^https:\/\//i.test(item.thumbnail_url) ? escapeHTML(item.thumbnail_url) : "";
-  let player = "";
-  if(item.video_type === "youtube"){
-    const embed = getYouTubeEmbedUrl(item.video_url);
-    player = embed ? `<div class="dg-video-player"><iframe src="${embed}" title="${title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>` : `<div class="dg-video-player" style="display:grid;place-items:center;color:white">YouTube link si sahihi</div>`;
-  }else{
-    player = `<div class="dg-video-player"><video controls playsinline preload="metadata" ${thumb ? `poster="${thumb}"` : ""}><source src="${escapeHTML(item.video_url || "")}" type="video/mp4">Simu yako haiwezi kucheza video hii.</video></div>`;
+function dgIsDirectVideoUrl(value){
+  try{
+    const u = new URL(String(value || ""));
+    return u.protocol === "https:" && /\.(mp4|webm|mov)(?:$|\?)/i.test(u.href);
+  }catch(e){ return false; }
+}
+
+function dgMoviePlayer(item){
+  const url = dgMoviePlayableUrls.get(String(item.id));
+  if(!url) return "";
+  if(item.source_type === "link"){
+    const embed = getYouTubeEmbedUrl(url);
+    if(embed) return `<div class="dg-video-player"><iframe src="${embed}" title="${escapeHTML(item.title)}" loading="lazy" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
   }
-  const adminDelete = dgIsVideoAdmin() ? `<div class="dg-video-card-actions"><button class="btn btn-red" type="button" onclick="deleteTutorialVideo('${escapeHTML(item.id)}')">🗑️ Futa video</button></div>` : "";
+  return `<div class="dg-video-player"><video controls playsinline preload="metadata" controlsList="nodownload" ${item.poster_url ? `poster="${escapeHTML(item.poster_url)}"` : ""}><source src="${escapeHTML(url)}">Kifaa chako hakiwezi kucheza video hii.</video></div>`;
+}
+
+function tutorialVideoCard(item){
+  const title = escapeHTML(item.title || "Movie");
+  const category = escapeHTML(item.category || "Other");
+  const description = escapeHTML(item.description || "");
+  const poster = item.poster_url && /^https:\/\//i.test(item.poster_url) ? `<img class="dg-video-poster" src="${escapeHTML(item.poster_url)}" alt="${title}" loading="lazy">` : `<div class="dg-video-lock"><div><strong>🎬</strong>Movie poster</div></div>`;
+  const isUnlocked = !!item.is_free || dgMovieUnlockedIds.has(String(item.id)) || dgIsVideoAdmin();
+  const player = isUnlocked ? (dgMoviePlayer(item) || poster) : `<div class="dg-video-lock">${poster ? poster : ""}<div><strong>🔒 PREMIUM</strong>Fungua movie kwa Coins<span class="dg-video-price">🪙 ${Number(item.coin_price || 0)} Coins</span></div></div>`;
+  const accessTag = item.is_free ? `<span class="dg-movie-tag dg-movie-free">🆓 FREE</span>` : `<span class="dg-movie-tag dg-movie-premium">👑 PREMIUM · ${Number(item.coin_price || 0)} COINS</span>`;
+  const action = (!item.is_free && !dgMovieUnlockedIds.has(String(item.id)) && !dgIsVideoAdmin())
+    ? `<div class="dg-video-card-actions"><button class="btn btn-primary" type="button" onclick="purchaseDgMovie('${String(item.id)}')">🔓 FUNGUA KWA ${Number(item.coin_price || 0)} COINS</button></div>`
+    : (dgIsVideoAdmin() ? `<div class="dg-video-card-actions"><button class="btn btn-red" type="button" onclick="deleteTutorialVideo('${String(item.id)}')">🗑️ Futa movie</button></div>` : "");
   const date = item.created_at ? new Date(item.created_at).toLocaleDateString("sw-TZ") : "";
-  return `<article class="dg-video-card">${player}<div class="dg-video-card-body"><h3 class="dg-video-card-title">${title}</h3><div class="dg-video-card-meta">🎮 ${game} · 📚 ${category}${date ? " · " + escapeHTML(date) : ""}</div>${description ? `<div class="dg-video-card-description">${description}</div>` : ""}${adminDelete}</div></article>`;
+  return `<article class="dg-video-card">${player}<div class="dg-video-card-body">${accessTag}<h3 class="dg-video-card-title">${title}</h3><div class="dg-video-card-meta">🎞️ ${category}${date ? " · " + escapeHTML(date) : ""}</div>${description ? `<div class="dg-video-card-description">${description}</div>` : ""}${action}</div></article>`;
 }
 
 function filterTutorialVideos(query){
@@ -7415,32 +7462,69 @@ function filterTutorialVideos(query){
   const q = String(query || "").toLowerCase().trim();
   const category = (document.getElementById("dgVideoCategory") || {}).value || "all";
   const filtered = dgTutorialVideos.filter(v => {
-    const matchesText = !q || [v.title,v.game_name,v.description,v.category].join(" ").toLowerCase().includes(q);
+    const matchesText = !q || [v.title, v.description, v.category].join(" ").toLowerCase().includes(q);
     const matchesCategory = category === "all" || v.category === category;
     return matchesText && matchesCategory;
   });
   const count = document.getElementById("dgVideoCount");
-  if(count) count.textContent = `${filtered.length} Videos`;
-  grid.innerHTML = filtered.length ? filtered.map(tutorialVideoCard).join("") : `<div class="empty">🎬 Hakuna video iliyopatikana kwa utafutaji huu.</div>`;
+  if(count) count.textContent = `${filtered.length} Movies`;
+  grid.innerHTML = filtered.length ? filtered.map(tutorialVideoCard).join("") : `<div class="empty">🎬 Hakuna movie iliyopatikana.</div>`;
 }
 
 async function loadTutorialVideos(){
   const grid = document.getElementById("dgTutorialVideoGrid");
   if(!grid) return;
+  await refreshDgMovieAdmin();
   updateVideoAdminUI();
-  grid.innerHTML = `<div class="loading">Inapakia video...</div>`;
+  grid.innerHTML = `<div class="loading">Inapakia movies...</div>`;
   try{
-    const {data,error} = await supabaseClient.from("tutorial_videos").select("*").order("created_at",{ascending:false});
-    if(error){
-      console.error("Tutorial videos load error:",error);
-      grid.innerHTML = `<div class="empty">⚠️ Mfumo wa video bado haujaandaliwa kwenye Supabase. Admin anatakiwa kuweka SQL ya video na bucket ya game-videos kwanza.</div>`;
-      return;
-    }
+    const {data,error} = await supabaseClient.from("movie_catalog").select("*").order("created_at", {ascending:false});
+    if(error) throw error;
     dgTutorialVideos = data || [];
+    dgMovieUnlockedIds = new Set();
+    dgMoviePlayableUrls = new Map();
+
+    if(currentUser){
+      const {data:unlocks,error:unlockError} = await supabaseClient.from("movie_unlocks").select("movie_id").eq("user_id", currentUser.id);
+      if(unlockError) console.warn("Movie unlock list:", unlockError);
+      (unlocks || []).forEach(row => dgMovieUnlockedIds.add(String(row.movie_id)));
+    }
+
+    for(const item of dgTutorialVideos){
+      const canWatch = item.is_free || dgMovieUnlockedIds.has(String(item.id)) || dgIsVideoAdmin();
+      if(!canWatch) continue;
+      if(item.source_type === "upload" && item.storage_path){
+        const {data:signed,error:signedError} = await supabaseClient.storage.from(DG_MOVIE_BUCKET).createSignedUrl(item.storage_path, 3600);
+        if(!signedError && signed?.signedUrl) dgMoviePlayableUrls.set(String(item.id), signed.signedUrl);
+        else console.warn("Movie signed URL unavailable:", signedError);
+      }else if(item.source_type === "link" && item.is_free && item.video_url){
+        dgMoviePlayableUrls.set(String(item.id), item.video_url);
+      }
+    }
     filterTutorialVideos((document.getElementById("dgVideoSearch") || {}).value || "");
   }catch(error){
-    console.error(error);
-    grid.innerHTML = `<div class="empty">❌ Imeshindikana kupakia video. Jaribu tena.</div>`;
+    console.error("Movies load error:", error);
+    grid.innerHTML = `<div class="empty">⚠️ Movie database haijaandaliwa. Tekeleza SQL file ya Danygama Movies kwenye Supabase SQL Editor.</div>`;
+  }
+}
+
+async function purchaseDgMovie(movieId){
+  if(!currentUser){ showToast("Ingia kwenye account kwanza ili kufungua Premium movie."); showPage("accountPage"); return; }
+  const item = dgTutorialVideos.find(v => String(v.id) === String(movieId));
+  if(!item || item.is_free || dgMovieUnlockedIds.has(String(movieId))) return;
+  const price = Number(item.coin_price || 0);
+  if(!confirm(`Fungua movie: ${item.title}?\n\nGharama: ${price} Coins.\nCoins zitakatwa mara moja.`)) return;
+  try{
+    const {data,error} = await supabaseClient.rpc("purchase_movie_with_coins", {p_movie_id: movieId});
+    if(error) throw error;
+    if(data && data.ok === false) throw new Error(data.message || "Movie haikufunguliwa.");
+    await loadCoinBalance();
+    await loadTutorialVideos();
+    showToast("✅ Movie imefunguliwa kwenye account yako!");
+  }catch(error){
+    console.error("Movie purchase error:", error);
+    showToast("❌ " + (error.message || "Imeshindikana kufungua movie."));
+    await loadCoinBalance();
   }
 }
 
@@ -7448,54 +7532,65 @@ const dgVideoAdminForm = document.getElementById("dgVideoAdminForm");
 if(dgVideoAdminForm){
   dgVideoAdminForm.addEventListener("submit", async function(event){
     event.preventDefault();
-    if(!dgIsVideoAdmin()){ showToast("Admin pekee ndiye anayeweza kuongeza video."); return; }
+    if(!dgIsVideoAdmin()){ showToast("Admin pekee ndiye anayeweza kuongeza movie."); return; }
     const title = document.getElementById("dgVideoTitle").value.trim();
-    const gameName = document.getElementById("dgVideoGame").value.trim();
     const category = document.getElementById("dgVideoTypeCategory").value;
     const source = document.getElementById("dgVideoSource").value;
+    const isFree = document.getElementById("dgMovieAccess").value === "free";
+    const coinPrice = isFree ? 0 : Number(document.getElementById("dgMoviePrice").value);
     const description = document.getElementById("dgVideoDescription").value.trim();
-    const thumbnail = document.getElementById("dgVideoThumbnail").value.trim();
-    let videoUrl = "";
-    let storagePath = null;
-    if(!title || !gameName){ showToast("Jaza jina la video na jina la game."); return; }
-    if(thumbnail && !/^https:\/\//i.test(thumbnail)){ showToast("Thumbnail URL lazima ianze na https://"); return; }
+    const poster = document.getElementById("dgVideoThumbnail").value.trim();
     const submit = document.getElementById("dgVideoSubmit");
+    if(!title){ showToast("Weka jina la movie."); return; }
+    if(!isFree && (!Number.isInteger(coinPrice) || coinPrice < 1)){ showToast("Bei ya Premium iwe angalau Coin 1."); return; }
+    if(poster && !/^https:\/\//i.test(poster)){ showToast("Poster URL lazima ianze na https://"); return; }
+    if(!isFree && source !== "upload"){ showToast("Movie za Premium lazima zipakiwe kwenye private storage."); return; }
+
     submit.disabled = true;
-    submit.textContent = "Inahifadhi...";
+    submit.textContent = "Inahifadhi movie...";
+    let createdMovieId = null;
+    let storagePath = null;
     try{
-      if(source === "youtube"){
-        const rawUrl = document.getElementById("dgVideoYoutubeUrl").value.trim();
-        if(!getYouTubeEmbedUrl(rawUrl)){ showToast("Weka YouTube link sahihi."); return; }
-        videoUrl = rawUrl;
+      let videoUrl = null;
+      if(source === "link"){
+        videoUrl = document.getElementById("dgVideoYoutubeUrl").value.trim();
+        if(!getYouTubeEmbedUrl(videoUrl) && !dgIsDirectVideoUrl(videoUrl)) throw new Error("Weka YouTube link au direct MP4/WEBM/MOV link sahihi ya HTTPS.");
       }else{
         const file = document.getElementById("dgVideoFile").files[0];
-        if(!file){ showToast("Chagua video kutoka kwenye simu."); return; }
-        if(file.size > 50 * 1024 * 1024){ showToast("Video imezidi MB 50. Tumia YouTube link kwa video kubwa."); return; }
-        if(!["video/mp4","video/webm","video/quicktime"].includes(file.type)){ showToast("Tumia video ya MP4, WEBM au MOV."); return; }
-        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
-        storagePath = `${currentUser.id}/${Date.now()}-${safeName}`;
-        const {error:uploadError} = await supabaseClient.storage.from("game-videos").upload(storagePath,file,{upsert:false,contentType:file.type,cacheControl:"3600"});
+        if(!file) throw new Error("Chagua movie kutoka kwenye simu.");
+        if(file.size > DG_MOVIE_MAX_UPLOAD_BYTES) throw new Error("Faili limezidi 500 MB. Tumia video hosting yenye private playback au punguza ukubwa wa video.");
+        if(!["video/mp4","video/webm","video/quicktime"].includes(file.type)) throw new Error("Tumia video ya MP4, WEBM au MOV.");
+        const movieId = crypto.randomUUID();
+        const ext = (file.name.split(".").pop() || "mp4").toLowerCase().replace(/[^a-z0-9]/g, "") || "mp4";
+        storagePath = `${movieId}/${crypto.randomUUID()}.${ext}`;
+        const {error:insertError} = await supabaseClient.from("movie_catalog").insert({id:movieId,title,category,description,poster_url:poster || null,is_free:isFree,coin_price:coinPrice,source_type:"upload",storage_path:storagePath,video_url:null,created_by:currentUser.id,is_published:true});
+        if(insertError) throw insertError;
+        createdMovieId = movieId;
+        const {error:uploadError} = await supabaseClient.storage.from(DG_MOVIE_BUCKET).upload(storagePath,file,{upsert:false,contentType:file.type,cacheControl:"3600"});
         if(uploadError) throw uploadError;
-        const {data:publicData} = supabaseClient.storage.from("game-videos").getPublicUrl(storagePath);
-        videoUrl = publicData.publicUrl;
       }
-      const {error:insertError} = await supabaseClient.from("tutorial_videos").insert({
-        title,game_name:gameName,category,description,video_type:source,video_url:videoUrl,storage_path:storagePath,thumbnail_url:thumbnail || null,created_by:currentUser.id
-      });
-      if(insertError){
-        if(storagePath) await supabaseClient.storage.from("game-videos").remove([storagePath]);
-        throw insertError;
+
+      if(source === "link"){
+        const {error:insertError} = await supabaseClient.from("movie_catalog").insert({title,category,description,poster_url:poster || null,is_free:true,coin_price:0,source_type:"link",video_url:videoUrl,storage_path:null,created_by:currentUser.id,is_published:true});
+        if(insertError) throw insertError;
       }
       dgVideoAdminForm.reset();
+      toggleDgMovieAccess();
       toggleTutorialVideoSource();
-      showToast("✅ Video imeongezwa!");
+      showToast("✅ Movie imeongezwa!");
       await loadTutorialVideos();
     }catch(error){
-      console.error("Video save error:",error);
-      showToast("❌ Imeshindikana kuhifadhi: " + (error.message || "Angalia Supabase setup."));
+      console.error("Movie save error:", error);
+      if(storagePath){
+        try{ await supabaseClient.storage.from(DG_MOVIE_BUCKET).remove([storagePath]); }catch(cleanupError){ console.warn(cleanupError); }
+      }
+      if(createdMovieId){
+        try{ await supabaseClient.from("movie_catalog").delete().eq("id",createdMovieId); }catch(cleanupError){ console.warn(cleanupError); }
+      }
+      showToast("❌ " + (error.message || "Imeshindikana kuhifadhi movie."));
     }finally{
       submit.disabled = false;
-      submit.textContent = "📤 HIFADHI VIDEO";
+      submit.textContent = "📤 HIFADHI MOVIE";
     }
   });
 }
@@ -7503,15 +7598,21 @@ if(dgVideoAdminForm){
 async function deleteTutorialVideo(id){
   if(!dgIsVideoAdmin()){ showToast("Admin pekee."); return; }
   const item = dgTutorialVideos.find(v => String(v.id) === String(id));
-  if(!item || !confirm("Una uhakika unataka kufuta video hii?")) return;
+  if(!item || !confirm("Una uhakika unataka kufuta movie hii?")) return;
   try{
-    const {error} = await supabaseClient.from("tutorial_videos").delete().eq("id",id);
+    const {error} = await supabaseClient.from("movie_catalog").delete().eq("id",id);
     if(error) throw error;
-    if(item.storage_path) await supabaseClient.storage.from("game-videos").remove([item.storage_path]);
-    showToast("Video imefutwa.");
+    if(item.storage_path){
+      const {error:removeError} = await supabaseClient.storage.from(DG_MOVIE_BUCKET).remove([item.storage_path]);
+      if(removeError) console.warn("Storage cleanup:", removeError);
+    }
+    showToast("Movie imefutwa.");
     await loadTutorialVideos();
-  }catch(error){ console.error(error); showToast("❌ Imeshindikana kufuta video: " + (error.message || "")); }
+  }catch(error){ console.error(error); showToast("❌ Imeshindikana kufuta movie: " + (error.message || "")); }
 }
+
+/* Legacy function name retained because existing navigation calls it. */
+function filterTutorialVideosLegacy(query){ filterTutorialVideos(query); }
 
 
 /* =========================================================
