@@ -2304,55 +2304,84 @@ Loading games...
 ========================================================= -->
 <section id="marketPage" class="page">
   <div class="hero">
-    <h1>🎬 DANYGAMA <span>MOVIES</span></h1>
-    <p>Tazama movies moja kwa moja kwenye website. Kuna movie za bure na za Premium zinazofunguliwa kwa Coins.</p>
+    <h1>🎬 DANYGAMA <span>VIDEOS</span></h1>
+    <p>Chagua unachotaka kutazama: movie, michapo au mafunzo ya video games.</p>
   </div>
 
-  <div class="dg-video-intro">
-    <div class="dg-video-intro-icon">▶</div>
-    <div><strong>Movies sehemu moja</strong><p>🆓 FREE movies · 👑 Premium movies · 🪙 Coin unlock</p></div>
+  <div class="dg-video-tabs" role="tablist" aria-label="Makundi ya video">
+    <button type="button" class="active" data-dg-tab="movies" onclick="dgSelectVideoSection('movies')">🎥 MOVIE KALI <small>PREMIUM</small></button>
+    <button type="button" data-dg-tab="comedy" onclick="dgSelectVideoSection('comedy')">😂 MICHAPO <small>PREMIUM</small></button>
+    <button type="button" data-dg-tab="games" onclick="dgSelectVideoSection('games')">🎮 VIDEO GAMES <small>FREE</small></button>
   </div>
 
-  <div class="dg-video-search">
-    <input id="dgVideoSearch" type="search" placeholder="🔎 Tafuta movie..." oninput="filterTutorialVideos(this.value)">
-    <select id="dgVideoCategory" onchange="filterTutorialVideos(document.getElementById('dgVideoSearch').value)">
-      <option value="all">Makundi yote</option>
-      <option value="Action">Action</option><option value="Adventure">Adventure</option>
-      <option value="Comedy">Comedy</option><option value="Drama">Drama</option>
-      <option value="Animation">Animation</option><option value="Documentary">Documentary</option>
-      <option value="Other">Mengineyo</option>
-    </select>
+  <div id="dgPaidVideoSection">
+    <div class="dg-video-intro">
+      <div class="dg-video-intro-icon">▶</div>
+      <div><strong id="dgVideoSectionTitle">Movie Kali</strong><p id="dgVideoSectionDescription">Movie mpya na zilizotafsiriwa kwa Kiswahili. Fungua kwa Coins na utazame ndani ya website.</p></div>
+    </div>
+    <div class="dg-video-search">
+      <input id="dgVideoSearch" type="search" placeholder="🔎 Tafuta movie..." oninput="filterTutorialVideos(this.value)">
+      <select id="dgVideoCategory" onchange="filterTutorialVideos(document.getElementById('dgVideoSearch').value)">
+        <option value="Movie Kali">Movie Kali</option>
+        <option value="Michapo">Michapo</option>
+        <option value="all">Makundi yote</option>
+      </select>
+    </div>
+
+    <div id="dgVideoAdminPanel" class="dg-video-admin hidden">
+      <h2>➕ Ongeza Movie au Michapo</h2>
+      <p class="dg-video-admin-note">Admin pekee. Movie na michapo za Premium lazima zipakiwe kwenye private storage. Link ya nje inaruhusiwa kwa maudhui ya bure tu.</p>
+      <form id="dgVideoAdminForm">
+        <div class="dg-video-form-grid">
+          <label>Jina la video<input id="dgVideoTitle" required maxlength="120" placeholder="Mfano: Movie ya Kiswahili"></label>
+          <label>Kundi<select id="dgVideoTypeCategory"><option>Movie Kali</option><option>Michapo</option></select></label>
+          <label>Aina ya video<select id="dgMovieAccess" onchange="toggleDgMovieAccess()"><option value="premium">👑 Premium (Coins)</option></select></label>
+          <label id="dgMoviePriceWrap">Bei ya Coins<input id="dgMoviePrice" type="number" min="1" max="1000000" step="1" value="100" placeholder="Mfano: 100"></label>
+          <label>Chanzo cha video<select id="dgVideoSource" onchange="toggleTutorialVideoSource()"><option value="upload">📱 Upload kutoka simu (Private)</option></select></label>
+        </div>
+        <div id="dgYoutubeField" class="dg-video-form-field hidden"><label>Video link<input id="dgVideoYoutubeUrl" type="url" placeholder="YouTube link au direct MP4 URL" autocomplete="url"></label></div>
+        <div id="dgUploadField" class="dg-video-form-field"><label>Chagua video kutoka kwenye simu<input id="dgVideoFile" type="file" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov"></label><small>Faili lisizidi 500 MB kwa upload hii.</small></div>
+        <label class="dg-video-full-field">Poster / Cover URL (hiari)<input id="dgVideoThumbnail" type="url" placeholder="https://... picha ya video"></label>
+        <label class="dg-video-full-field">Maelezo yaliyotafsiriwa / maelezo ya video<textarea id="dgVideoDescription" rows="3" maxlength="2000" placeholder="Andika maelezo ya movie au michapo..."></textarea></label>
+        <button class="btn btn-primary" id="dgVideoSubmit" type="submit">📤 HIFADHI VIDEO</button>
+      </form>
+    </div>
+    <div class="dg-video-section-heading"><h2 id="dgPaidGridTitle">🍿 Movie Kali</h2><span id="dgVideoCount">0 Videos</span></div>
+    <div id="dgTutorialVideoGrid" class="dg-video-grid"><div class="loading">Inapakia video...</div></div>
   </div>
 
-  <div id="dgVideoAdminPanel" class="dg-video-admin hidden">
-    <h2>➕ Ongeza Movie Mpya</h2>
-    <p class="dg-video-admin-note">Admin pekee ndiye anayeweza kuongeza movie. Unaweza kupakia video kutoka kwenye simu au kuweka link ya video ya bure. Movie za Premium lazima zipakiwe kwenye private storage ili link isivuje.</p>
-    <form id="dgVideoAdminForm">
-      <div class="dg-video-form-grid">
-        <label>Jina la movie<input id="dgVideoTitle" required maxlength="120" placeholder="Mfano: Adventure Movie"></label>
-        <label>Kategoria<select id="dgVideoTypeCategory"><option>Action</option><option>Adventure</option><option>Comedy</option><option>Drama</option><option>Animation</option><option>Documentary</option><option>Other</option></select></label>
-        <label>Aina ya movie<select id="dgMovieAccess" onchange="toggleDgMovieAccess()"><option value="free">🆓 Bure (FREE)</option><option value="premium">👑 Premium (Coins)</option></select></label>
-        <label id="dgMoviePriceWrap" class="hidden">Bei ya Coins<input id="dgMoviePrice" type="number" min="1" max="1000000" step="1" value="100" placeholder="Mfano: 100"></label>
-        <label>Chanzo cha video<select id="dgVideoSource" onchange="toggleTutorialVideoSource()"><option value="upload">📱 Upload kutoka simu</option><option value="link">🔗 Video link (FREE pekee)</option></select></label>
-      </div>
-      <div id="dgYoutubeField" class="dg-video-form-field hidden">
-        <label>Video link<input id="dgVideoYoutubeUrl" type="url" placeholder="YouTube link au direct MP4 URL" autocomplete="url"></label>
-        <small>Link za nje zinapatikana kwa movie za FREE pekee. Tumia HTTPS.</small>
-      </div>
-      <div id="dgUploadField" class="dg-video-form-field">
-        <label>Chagua movie kutoka kwenye simu<input id="dgVideoFile" type="file" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov"></label>
-        <small>Private storage ina limit inayotegemea mpango na mipangilio ya Supabase. Faili kubwa zinaweza kuhitaji Resumable Upload au video hosting.</small>
-      </div>
-      <label class="dg-video-full-field">Poster / Cover URL (hiari)<input id="dgVideoThumbnail" type="url" placeholder="https://... picha ya movie"></label>
-      <label class="dg-video-full-field">Maelezo ya movie<textarea id="dgVideoDescription" rows="3" maxlength="2000" placeholder="Andika maelezo mafupi ya movie..."></textarea></label>
-      <button class="btn btn-primary" id="dgVideoSubmit" type="submit">📤 HIFADHI MOVIE</button>
-    </form>
+  <div id="dgGameVideoSection" class="hidden">
+    <div class="dg-video-intro">
+      <div class="dg-video-intro-icon">🎮</div>
+      <div><strong>Video Games — sehemu ya kujifunza</strong><p>Jifunze ku-install game, kuseti controls, kuanza kucheza na kutazama gameplay. Video zote za hapa ni FREE.</p></div>
+    </div>
+    <div class="dg-video-search">
+      <input id="dgGameVideoSearch" type="search" placeholder="🔎 Tafuta game au mafunzo..." oninput="filterDgGameTutorials(this.value)">
+      <select id="dgGameVideoCategory" onchange="filterDgGameTutorials(document.getElementById('dgGameVideoSearch').value)">
+        <option value="all">Mafunzo yote</option><option value="Gameplay">Gameplay</option><option value="Installation">Ku-install game</option><option value="Settings">Settings</option><option value="Tips">Tips & Tricks</option>
+      </select>
+    </div>
+    <div id="dgGameVideoAdminPanel" class="dg-video-admin hidden">
+      <h2>➕ Ongeza Video ya Game (FREE)</h2>
+      <p class="dg-video-admin-note">Video za mafunzo ya games ni bure. Unaweza kuweka YouTube link au kupakia video kutoka kwenye simu.</p>
+      <form id="dgGameVideoAdminForm">
+        <div class="dg-video-form-grid">
+          <label>Jina la video<input id="dgGameVideoTitle" required maxlength="120" placeholder="Mfano: Jinsi ya ku-install GTA V"></label>
+          <label>Jina la game<input id="dgGameVideoGame" required maxlength="100" placeholder="Mfano: GTA V"></label>
+          <label>Aina ya mafunzo<select id="dgGameVideoType"><option>Gameplay</option><option>Installation</option><option>Settings</option><option>Tips</option></select></label>
+          <label>Chanzo cha video<select id="dgGameVideoSource" onchange="toggleDgGameVideoSource()"><option value="youtube">YouTube link</option><option value="upload">Upload kutoka simu</option></select></label>
+        </div>
+        <div id="dgGameYoutubeField" class="dg-video-form-field"><label>YouTube link<input id="dgGameVideoYoutubeUrl" type="url" placeholder="https://youtu.be/..." autocomplete="url"></label></div>
+        <div id="dgGameUploadField" class="dg-video-form-field hidden"><label>Chagua video<input id="dgGameVideoFile" type="file" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov"></label><small>Video isizidi MB 50. Kwa video kubwa tumia YouTube link.</small></div>
+        <label class="dg-video-full-field">Thumbnail URL (hiari)<input id="dgGameVideoThumbnail" type="url" placeholder="https://... picha ya video"></label>
+        <label class="dg-video-full-field">Maelezo<textarea id="dgGameVideoDescription" rows="3" maxlength="1200" placeholder="Eleza video inafundisha nini..."></textarea></label>
+        <button class="btn btn-primary" id="dgGameVideoSubmit" type="submit">📤 HIFADHI VIDEO YA GAME</button>
+      </form>
+    </div>
+    <div class="dg-video-section-heading"><h2>🕹️ Mafunzo na Gameplay za Games</h2><span id="dgGameVideoCount">0 Videos</span></div>
+    <div id="dgGameTutorialVideoGrid" class="dg-video-grid"><div class="loading">Inapakia mafunzo ya games...</div></div>
   </div>
 
-  <div class="dg-video-section-heading"><h2>🍿 Movie Zote</h2><span id="dgVideoCount">0 Movies</span></div>
-  <div id="dgTutorialVideoGrid" class="dg-video-grid"><div class="loading">Inapakia movies...</div></div>
-
-  <!-- Hidden legacy elements retained for compatibility with existing navigation. -->
   <div class="hidden" aria-hidden="true"><div id="marketLoginMessage"></div><form id="marketForm"></form><div id="marketGrid"></div></div>
 </section>
 
@@ -7368,8 +7397,11 @@ async function refreshDgMovieAdmin(){
 }
 
 function updateVideoAdminUI(){
+  const isAdmin = dgIsVideoAdmin();
   const panel = document.getElementById("dgVideoAdminPanel");
-  if(panel) panel.classList.toggle("hidden", !dgIsVideoAdmin());
+  const gamePanel = document.getElementById("dgGameVideoAdminPanel");
+  if(panel) panel.classList.toggle("hidden", !isAdmin);
+  if(gamePanel) gamePanel.classList.toggle("hidden", !isAdmin);
 }
 
 function toggleDgMovieAccess(){
@@ -7460,15 +7492,15 @@ function filterTutorialVideos(query){
   const grid = document.getElementById("dgTutorialVideoGrid");
   if(!grid) return;
   const q = String(query || "").toLowerCase().trim();
-  const category = (document.getElementById("dgVideoCategory") || {}).value || "all";
+  const category = (document.getElementById("dgVideoCategory") || {}).value || "Movie Kali";
   const filtered = dgTutorialVideos.filter(v => {
     const matchesText = !q || [v.title, v.description, v.category].join(" ").toLowerCase().includes(q);
     const matchesCategory = category === "all" || v.category === category;
     return matchesText && matchesCategory;
   });
   const count = document.getElementById("dgVideoCount");
-  if(count) count.textContent = `${filtered.length} Movies`;
-  grid.innerHTML = filtered.length ? filtered.map(tutorialVideoCard).join("") : `<div class="empty">🎬 Hakuna movie iliyopatikana.</div>`;
+  if(count) count.textContent = `${filtered.length} Videos`;
+  grid.innerHTML = filtered.length ? filtered.map(tutorialVideoCard).join("") : `<div class="empty">🎬 Hakuna video iliyopatikana kwenye kundi hili.</div>`;
 }
 
 async function loadTutorialVideos(){
@@ -7536,7 +7568,7 @@ if(dgVideoAdminForm){
     const title = document.getElementById("dgVideoTitle").value.trim();
     const category = document.getElementById("dgVideoTypeCategory").value;
     const source = document.getElementById("dgVideoSource").value;
-    const isFree = document.getElementById("dgMovieAccess").value === "free";
+    const isFree = false; // Movie Kali and Michapo are always paid; game tutorials are the free section.
     const coinPrice = isFree ? 0 : Number(document.getElementById("dgMoviePrice").value);
     const description = document.getElementById("dgVideoDescription").value.trim();
     const poster = document.getElementById("dgVideoThumbnail").value.trim();
@@ -7815,6 +7847,128 @@ body:not(.light-theme) .dg-profile-card p,body:not(.light-theme) .dg-profile-car
 body.light-theme .form-group input,body.light-theme .form-group textarea,body.light-theme .form-group select,body.light-theme .comment-form textarea,body.light-theme .chat-input,body.light-theme .dg-video-search input,body.light-theme .dg-video-search select,body.light-theme .dg-video-admin input,body.light-theme .dg-video-admin select,body.light-theme .dg-video-admin textarea{background:#fff!important;color:#172033!important;border-color:#ccd8e5!important}
 body:not(.light-theme) .form-group input,body:not(.light-theme) .form-group textarea,body:not(.light-theme) .form-group select,body:not(.light-theme) .comment-form textarea,body:not(.light-theme) .chat-input,body:not(.light-theme) .dg-video-search input,body:not(.light-theme) .dg-video-search select,body:not(.light-theme) .dg-video-admin input,body:not(.light-theme) .dg-video-admin select,body:not(.light-theme) .dg-video-admin textarea{background:#091624!important;color:#f5f7fb!important;border-color:#27435d!important}
 </style>
+
+
+<style id="danygama-three-video-sections">
+.dg-video-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:16px 0 20px}
+.dg-video-tabs button{min-width:0;border:1px solid #314765;border-radius:13px;padding:13px 7px;background:#101e31;color:#dbe7f5;font-weight:900;font-size:12px;line-height:1.35}
+.dg-video-tabs button small{display:block;font-size:9px;letter-spacing:.7px;margin-top:5px;color:#f5ce61}
+.dg-video-tabs button.active{background:linear-gradient(135deg,#ffe27a,#e6ae22);border-color:#f5ce61;color:#17130a}
+.dg-video-tabs button.active small{color:#47340a}
+.dg-game-free-note{padding:10px 12px;border:1px solid #247b50;background:#103624;color:#a8f0c7;border-radius:10px;margin:10px 0;font-size:12px}
+@media(max-width:420px){.dg-video-tabs{gap:5px}.dg-video-tabs button{font-size:10px;padding:11px 4px}}
+body.light-theme .dg-video-tabs button{background:#fff;color:#25364b;border-color:#d2deea}body.light-theme .dg-video-tabs button.active{background:linear-gradient(135deg,#ffe27a,#e6ae22);color:#17130a}
+</style>
+<script id="danygama-game-tutorials-restored">
+(function(){
+  let dgGameTutorialVideos=[];
+  window.dgSelectVideoSection=function(which){
+    const games=which==='games';
+    const paid=document.getElementById('dgPaidVideoSection');
+    const game=document.getElementById('dgGameVideoSection');
+    if(paid) paid.classList.toggle('hidden',games);
+    if(game) game.classList.toggle('hidden',!games);
+    document.querySelectorAll('.dg-video-tabs [data-dg-tab]').forEach(b=>b.classList.toggle('active',b.dataset.dgTab===which));
+    const cat=document.getElementById('dgVideoCategory');
+    const title=document.getElementById('dgVideoSectionTitle');
+    const gridTitle=document.getElementById('dgPaidGridTitle');
+    const desc=document.getElementById('dgVideoSectionDescription');
+    if(!games && cat){cat.value=which==='comedy'?'Michapo':'Movie Kali';filterTutorialVideos(document.getElementById('dgVideoSearch')?.value||'');}
+    if(title) title.textContent=which==='comedy'?'Michapo':'Movie Kali';
+    if(gridTitle) gridTitle.textContent=which==='comedy'?'😂 Michapo Zote':'🍿 Movie Kali Zote';
+    if(desc) desc.textContent=which==='comedy'?'Vichekesho na video za burudani. Fungua kwa Coins na utazame ndani ya website.':'Movie mpya na zilizotafsiriwa kwa Kiswahili. Fungua kwa Coins na utazame ndani ya website.';
+    if(games) loadDgGameTutorials();
+  };
+  function gameTutorialCard(item){
+    const title=escapeHTML(item.title||'Video ya game');
+    const game=escapeHTML(item.game_name||'Game');
+    const category=escapeHTML(item.category||'Gameplay');
+    const description=escapeHTML(item.description||'');
+    const thumb=item.thumbnail_url&&/^https:\/\//i.test(item.thumbnail_url)?escapeHTML(item.thumbnail_url):'';
+    let player='';
+    if(item.video_type==='youtube'){
+      const embed=getYouTubeEmbedUrl(item.video_url);
+      player=embed?`<div class="dg-video-player"><iframe src="${embed}" title="${title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`:`<div class="dg-video-player">YouTube link si sahihi</div>`;
+    }else{
+      player=`<div class="dg-video-player"><video controls playsinline preload="metadata" ${thumb?`poster="${thumb}"`:''}><source src="${escapeHTML(item.video_url||'')}" type="video/mp4">Kifaa chako hakiwezi kucheza video hii.</video></div>`;
+    }
+    const date=item.created_at?new Date(item.created_at).toLocaleDateString('sw-TZ'):'';
+    const del=dgIsVideoAdmin()?`<div class="dg-video-card-actions"><button class="btn btn-red" type="button" onclick="deleteDgGameTutorial('${String(item.id)}')">🗑️ Futa video</button></div>`:'';
+    return `<article class="dg-video-card">${player}<div class="dg-video-card-body"><span class="dg-movie-tag dg-movie-free">🆓 FREE</span><h3 class="dg-video-card-title">${title}</h3><div class="dg-video-card-meta">🎮 ${game} · 📚 ${category}${date?' · '+escapeHTML(date):''}</div>${description?`<div class="dg-video-card-description">${description}</div>`:''}${del}</div></article>`;
+  }
+  window.filterDgGameTutorials=function(query){
+    const grid=document.getElementById('dgGameTutorialVideoGrid');if(!grid)return;
+    const q=String(query||'').toLowerCase().trim();
+    const category=document.getElementById('dgGameVideoCategory')?.value||'all';
+    const list=dgGameTutorialVideos.filter(v=>(!q||[v.title,v.game_name,v.description,v.category].join(' ').toLowerCase().includes(q))&&(category==='all'||v.category===category));
+    const count=document.getElementById('dgGameVideoCount');if(count)count.textContent=list.length+' Videos';
+    grid.innerHTML=list.length?list.map(gameTutorialCard).join(''):'<div class="empty">🎮 Bado hakuna video za mafunzo kwenye kundi hili.</div>';
+  };
+  window.loadDgGameTutorials=async function(){
+    const grid=document.getElementById('dgGameTutorialVideoGrid');if(!grid)return;
+    grid.innerHTML='<div class="loading">Inapakia mafunzo ya games...</div>';
+    try{
+      const {data,error}=await supabaseClient.from('tutorial_videos').select('*').order('created_at',{ascending:false});
+      if(error)throw error;
+      dgGameTutorialVideos=data||[];
+      filterDgGameTutorials(document.getElementById('dgGameVideoSearch')?.value||'');
+    }catch(error){
+      console.error('Game tutorial load error:',error);
+      grid.innerHTML='<div class="empty">⚠️ Video za zamani za games hazikuweza kupakiwa. Hakikisha jedwali tutorial_videos na ruhusa zake zipo Supabase. Video zako za zamani hazijafutwa.</div>';
+    }
+  };
+  window.toggleDgGameVideoSource=function(){
+    const source=document.getElementById('dgGameVideoSource')?.value||'youtube';
+    document.getElementById('dgGameYoutubeField')?.classList.toggle('hidden',source!=='youtube');
+    document.getElementById('dgGameUploadField')?.classList.toggle('hidden',source!=='upload');
+    const y=document.getElementById('dgGameVideoYoutubeUrl');const f=document.getElementById('dgGameVideoFile');
+    if(y)y.required=source==='youtube';if(f)f.required=source==='upload';
+  };
+  const form=document.getElementById('dgGameVideoAdminForm');
+  if(form)form.addEventListener('submit',async function(e){
+    e.preventDefault();if(!dgIsVideoAdmin()){showToast('Admin pekee ndiye anayeweza kuongeza video.');return;}
+    const title=document.getElementById('dgGameVideoTitle').value.trim();
+    const gameName=document.getElementById('dgGameVideoGame').value.trim();
+    const category=document.getElementById('dgGameVideoType').value;
+    const source=document.getElementById('dgGameVideoSource').value;
+    const description=document.getElementById('dgGameVideoDescription').value.trim();
+    const thumbnail=document.getElementById('dgGameVideoThumbnail').value.trim();
+    if(!title||!gameName){showToast('Jaza jina la video na jina la game.');return;}
+    if(thumbnail&&!/^https:\/\//i.test(thumbnail)){showToast('Thumbnail URL lazima ianze na https://');return;}
+    const submit=document.getElementById('dgGameVideoSubmit');submit.disabled=true;submit.textContent='Inahifadhi...';
+    let storagePath=null;
+    try{
+      let videoUrl='';
+      if(source==='youtube'){
+        videoUrl=document.getElementById('dgGameVideoYoutubeUrl').value.trim();
+        if(!getYouTubeEmbedUrl(videoUrl))throw new Error('Weka YouTube link sahihi.');
+      }else{
+        const file=document.getElementById('dgGameVideoFile').files[0];
+        if(!file)throw new Error('Chagua video kutoka kwenye simu.');
+        if(file.size>50*1024*1024)throw new Error('Video imezidi MB 50. Tumia YouTube link kwa video kubwa.');
+        if(!['video/mp4','video/webm','video/quicktime'].includes(file.type))throw new Error('Tumia MP4, WEBM au MOV.');
+        const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+        storagePath=`${currentUser.id}/${Date.now()}-${safeName}`;
+        const {error:upErr}=await supabaseClient.storage.from('game-videos').upload(storagePath,file,{upsert:false,contentType:file.type,cacheControl:'3600'});
+        if(upErr)throw upErr;
+        const {data:pub}=supabaseClient.storage.from('game-videos').getPublicUrl(storagePath);videoUrl=pub.publicUrl;
+      }
+      const {error}=await supabaseClient.from('tutorial_videos').insert({title,game_name:gameName,category,description,video_type:source,video_url:videoUrl,storage_path:storagePath,thumbnail_url:thumbnail||null,created_by:currentUser.id});
+      if(error){if(storagePath)await supabaseClient.storage.from('game-videos').remove([storagePath]);throw error;}
+      form.reset();toggleDgGameVideoSource();showToast('✅ Video ya game ya FREE imeongezwa!');await loadDgGameTutorials();
+    }catch(error){console.error(error);showToast('❌ Imeshindikana kuhifadhi: '+(error.message||'Angalia Supabase.'));}
+    finally{submit.disabled=false;submit.textContent='📤 HIFADHI VIDEO YA GAME';}
+  });
+  window.deleteDgGameTutorial=async function(id){
+    if(!dgIsVideoAdmin())return;const item=dgGameTutorialVideos.find(v=>String(v.id)===String(id));
+    if(!item||!confirm('Una uhakika unataka kufuta video hii ya game?'))return;
+    try{const {error}=await supabaseClient.from('tutorial_videos').delete().eq('id',id);if(error)throw error;if(item.storage_path)await supabaseClient.storage.from('game-videos').remove([item.storage_path]);showToast('Video ya game imefutwa.');await loadDgGameTutorials();}
+    catch(error){console.error(error);showToast('Imeshindikana kufuta video: '+(error.message||''));}
+  };
+  document.addEventListener('DOMContentLoaded',()=>{loadDgGameTutorials();});
+  setTimeout(()=>{if(document.getElementById('dgGameTutorialVideoGrid'))loadDgGameTutorials();},1200);
+})();
+</script>
 
 </body>
 </html>
