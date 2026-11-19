@@ -3037,6 +3037,9 @@ Login
   <button type="button" class="dg-account-row" onclick="showPage('myGamesPage');dgLoadMyGames()">
     <span class="dg-row-icon">🎮</span><span class="dg-row-copy"><strong>My Games</strong><small>Games ulizofungua kwa coins</small></span><span class="dg-chevron">›</span>
   </button>
+  <button type="button" class="dg-account-row" onclick="dgShowMyMoviePurchases()">
+    <span class="dg-row-icon">🎬</span><span class="dg-row-copy"><strong>My Movie Purchases</strong><small>Movie na michapo ulizonunua · pakua tena bila kulipa</small></span><span class="dg-chevron">›</span>
+  </button>
   <button type="button" class="dg-account-row" onclick="dgShowAchievements()">
     <span class="dg-row-icon">🏆</span><span class="dg-row-copy"><strong>Achievements</strong><small>Maendeleo na mafanikio yako</small></span><span class="dg-chevron">›</span>
   </button>
@@ -7481,9 +7484,15 @@ function tutorialVideoCard(item){
   const isUnlocked = !!item.is_free || dgMovieUnlockedIds.has(String(item.id)) || dgIsVideoAdmin();
   const player = isUnlocked ? (dgMoviePlayer(item) || poster) : `<div class="dg-video-lock">${poster ? poster : ""}<div><strong>🔒 PREMIUM</strong>Fungua movie kwa Coins<span class="dg-video-price">🪙 ${Number(item.coin_price || 0)} Coins</span></div></div>`;
   const accessTag = item.is_free ? `<span class="dg-movie-tag dg-movie-free">🆓 FREE</span>` : `<span class="dg-movie-tag dg-movie-premium">👑 PREMIUM · ${Number(item.coin_price || 0)} COINS</span>`;
-  const action = (!item.is_free && !dgMovieUnlockedIds.has(String(item.id)) && !dgIsVideoAdmin())
-    ? `<div class="dg-video-card-actions"><button class="btn btn-primary" type="button" onclick="purchaseDgMovie('${String(item.id)}')">🔓 FUNGUA KWA ${Number(item.coin_price || 0)} COINS</button></div>`
-    : (dgIsVideoAdmin() ? `<div class="dg-video-card-actions"><button class="btn btn-red" type="button" onclick="deleteTutorialVideo('${String(item.id)}')">🗑️ Futa movie</button></div>` : "");
+  const hasAccess = !!item.is_free || dgMovieUnlockedIds.has(String(item.id)) || dgIsVideoAdmin();
+  const purchaseButton = (!item.is_free && !hasAccess)
+    ? `<button class="btn btn-primary" type="button" onclick="purchaseDgMovie('${String(item.id)}')">🔓 FUNGUA KWA ${Number(item.coin_price || 0)} COINS</button>` : "";
+  const downloadButton = (hasAccess && item.source_type === "upload" && item.storage_path)
+    ? `<button class="btn btn-primary" type="button" onclick="downloadDgMovie('${String(item.id)}')">⬇️ DOWNLOAD VIDEO</button>` : "";
+  const deleteButton = dgIsVideoAdmin()
+    ? `<button class="btn btn-red" type="button" onclick="deleteTutorialVideo('${String(item.id)}')">🗑️ Futa movie</button>` : "";
+  const action = (purchaseButton || downloadButton || deleteButton)
+    ? `<div class="dg-video-card-actions">${purchaseButton}${downloadButton}${deleteButton}</div>` : "";
   const date = item.created_at ? new Date(item.created_at).toLocaleDateString("sw-TZ") : "";
   return `<article class="dg-video-card">${player}<div class="dg-video-card-body">${accessTag}<h3 class="dg-video-card-title">${title}</h3><div class="dg-video-card-meta">🎞️ ${category}${date ? " · " + escapeHTML(date) : ""}</div>${description ? `<div class="dg-video-card-description">${description}</div>` : ""}${action}</div></article>`;
 }
@@ -7558,6 +7567,90 @@ async function purchaseDgMovie(movieId){
     showToast("❌ " + (error.message || "Imeshindikana kufungua movie."));
     await loadCoinBalance();
   }
+}
+
+// Download uses a fresh short-lived signed URL. The private Storage SELECT policy
+// checks the user's movie_unlocks row, so downloading never deducts Coins again.
+async function downloadDgMovie(movieId){
+  if(!currentUser){ showToast("Ingia kwenye account kwanza."); showPage("accountPage"); return; }
+  const item = dgTutorialVideos.find(v => String(v.id) === String(movieId));
+  if(!item || !item.storage_path || item.source_type !== "upload"){
+    showToast("Download inapatikana kwa video zilizohifadhiwa kwenye private storage.");
+    return;
+  }
+  let hasAccess = dgIsVideoAdmin() || !!item.is_free || dgMovieUnlockedIds.has(String(movieId));
+  if(!hasAccess && currentUser){
+    const {data:owned,error:ownedError} = await supabaseClient.from("movie_unlocks").select("movie_id").eq("user_id",currentUser.id).eq("movie_id",movieId).maybeSingle();
+    if(ownedError) throw ownedError;
+    hasAccess = !!owned;
+    if(hasAccess) dgMovieUnlockedIds.add(String(movieId));
+  }
+  if(!hasAccess){ showToast("Lipa Coins kwanza ili kupakua movie hii."); return; }
+  try{
+    const safeTitle = String(item.title || "danygama-video").replace(/[^a-z0-9 _-]/gi, "").trim().replace(/\s+/g, "-").slice(0,80) || "danygama-video";
+    const extension = (String(item.storage_path).split(".").pop() || "mp4").replace(/[^a-z0-9]/gi, "").toLowerCase() || "mp4";
+    const {data,error} = await supabaseClient.storage.from(DG_MOVIE_BUCKET).createSignedUrl(item.storage_path, 300, {download: safeTitle + "." + extension});
+    if(error) throw error;
+    if(!data || !data.signedUrl) throw new Error("Download link haikupatikana.");
+    const link = document.createElement("a");
+    link.href = data.signedUrl;
+    link.rel = "noopener";
+    link.target = "_blank";
+    link.download = safeTitle + "." + extension;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    showToast("⬇️ Download imeanzishwa. Huna haja ya kulipa tena.");
+  }catch(error){
+    console.error("Movie download error:", error);
+    showToast("❌ Imeshindikana kupakua: " + (error.message || "Jaribu tena."));
+  }
+}
+
+async function dgShowMyMoviePurchases(){
+  if(!currentUser){ showToast("Ingia kwenye account kwanza."); showPage("accountPage"); return; }
+  const modal = document.getElementById("dgAccountModal");
+  const title = document.getElementById("dgAccountModalTitle");
+  const body = document.getElementById("dgAccountModalBody");
+  if(!modal || !body || !title) return;
+  title.textContent = "🎬 My Movie Purchases";
+  body.innerHTML = '<p class="dg-account-note">Inapakia movie na michapo ulizonunua...</p>';
+  modal.classList.add("show"); modal.setAttribute("aria-hidden","false");
+  try{
+    const {data:unlocks,error:unlockError} = await supabaseClient.from("movie_unlocks").select("movie_id,unlocked_at").eq("user_id",currentUser.id).order("unlocked_at",{ascending:false});
+    if(unlockError) throw unlockError;
+    const ids = (unlocks || []).map(row => row.movie_id);
+    if(!ids.length){ body.innerHTML = '<p class="dg-account-note">Bado hujanunua movie au michapo. Ukishanunua, vitaonekana hapa na utaweza kuvipakua tena bila kulipa Coins.</p><button class="btn btn-primary" type="button" onclick="dgCloseAccountModal();showPage(&quot;marketPage&quot;)">🎬 Nenda Movies</button>'; return; }
+    const {data:movies,error:movieError} = await supabaseClient.from("movie_catalog").select("id,title,category,poster_url,coin_price,source_type,storage_path,is_published").in("id",ids);
+    if(movieError) throw movieError;
+    const rows = movies || [];
+    if(!rows.length){ body.innerHTML = '<p class="dg-account-note">Movie ulizonunua hazipatikani kwa sasa.</p>'; return; }
+    body.innerHTML = rows.map(item => {
+      const id = String(item.id);
+      const movieTitle = escapeHTML(item.title || "Movie");
+      const category = escapeHTML(item.category || "Movie");
+      const poster = item.poster_url && /^https:\/\//i.test(item.poster_url) ? `<img src="${escapeHTML(item.poster_url)}" alt="${movieTitle}" style="width:72px;height:96px;object-fit:cover;border-radius:9px">` : '<div style="width:72px;height:96px;border-radius:9px;background:#17263a;display:grid;place-items:center;font-size:28px">🎬</div>';
+      const download = item.source_type === "upload" && item.storage_path ? `<button class="btn btn-primary" type="button" onclick="downloadDgMovie('${id}')">⬇️ DOWNLOAD TENA</button>` : '<small>Download haipatikani kwa link hii ya nje.</small>';
+      return `<div style="display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid #31445c">${poster}<div style="flex:1;min-width:0"><strong>${movieTitle}</strong><div class="dg-account-note">${category} · Umenunua tayari</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:8px"><button class="btn btn-dark" type="button" onclick="dgPlayPurchasedMovie('${id}')">▶ TAZAMA</button>${download}</div></div></div>`;
+    }).join("");
+  }catch(error){
+    console.error("My movie purchases error:",error);
+    body.innerHTML = '<p class="dg-account-note">Imeshindikana kupakia ulivyonunua. Hakikisha movie_unlocks na ruhusa zake zipo Supabase, kisha jaribu tena.</p>';
+  }
+}
+
+async function dgPlayPurchasedMovie(movieId){
+  dgCloseAccountModal();
+  showPage("marketPage");
+  const item = dgTutorialVideos.find(v => String(v.id) === String(movieId));
+  await loadTutorialVideos();
+  const purchased = dgTutorialVideos.find(v => String(v.id) === String(movieId));
+  if(!purchased){ showToast("Movie haipatikani kwa sasa."); return; }
+  const category = document.getElementById("dgVideoCategory");
+  if(category) category.value = purchased.category === "Michapo" ? "Michapo" : "Movie Kali";
+  dgSelectVideoSection(purchased.category === "Michapo" ? "comedy" : "movies");
+  filterTutorialVideos("");
+  setTimeout(() => document.getElementById("dgTutorialVideoGrid")?.scrollIntoView({behavior:"smooth",block:"start"}),100);
 }
 
 const dgVideoAdminForm = document.getElementById("dgVideoAdminForm");
