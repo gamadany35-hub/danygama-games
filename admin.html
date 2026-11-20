@@ -1,10 +1,4 @@
-ALTER TABLE public.games
-ADD COLUMN IF NOT EXISTS access_type TEXT
-DEFAULT 'free'
-CHECK (access_type IN ('free', 'premium'));ALTER TABLE public.games
-ADD COLUMN IF NOT EXISTS access_type TEXT
-DEFAULT 'free'
-CHECK (access_type IN ('free', 'premium'));<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080d18"><title>Danygama Games - Admin Panel</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{color-scheme:dark;--bg:#080d18;--p:#111a2b;--p2:#1a263b;--line:#2b3a55;--txt:#f5f7fb;--muted:#aab6ca;--purple:#7658ff;--green:#16a34a;--red:#dc2626;--orange:#f59e0b}*{box-sizing:border-box}body{margin:0;padding:14px;font-family:Arial,sans-serif;background:var(--bg);color:var(--txt)}.box{width:100%;max-width:950px;margin:auto}.login-box,.section,.admin-header{background:var(--p);border:1px solid var(--line);border-radius:18px;padding:18px;margin:0 0 18px}.login-box{max-width:480px;margin:45px auto;padding:25px}.logo{text-align:center;font-size:27px;font-weight:800;margin-bottom:6px}.subtitle{text-align:center;color:var(--muted);margin:0 0 22px}input,select,button{width:100%;padding:13px;margin:6px 0;border-radius:10px;border:1px solid var(--line);font-size:15px}input,select{background:#1b263a;color:white;outline:none}input:focus,select:focus{border-color:var(--purple)}input::placeholder{color:#91a0b8}input[type=file]{padding:10px}button{background:var(--purple);color:white;border:0;font-weight:bold;cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}.admin-header{background:linear-gradient(135deg,#192541,#111827)}.header-top{display:flex;justify-content:space-between;align-items:center;gap:12px}.admin-title{font-size:23px;font-weight:800}.admin-email,.muted,.description,.small{color:var(--muted);font-size:13px;overflow-wrap:anywhere}.logout{width:auto;min-width:90px;background:#3b465a;margin:0}.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}.stat{background:var(--p2);border:1px solid var(--line);border-radius:13px;padding:13px 7px;text-align:center}.stat-icon{font-size:23px}.stat-number{font-size:25px;font-weight:bold;margin-top:5px}.stat-label{font-size:11px;color:var(--muted);margin-top:3px}.section-title{font-size:20px;font-weight:bold;margin-bottom:5px}.description{margin-bottom:14px;line-height:1.5}.quick-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.quick-actions button{margin:0}.form-label{display:block;font-size:13px;font-weight:bold;margin:12px 0 4px;color:#dce4f2}.message{font-weight:bold;line-height:1.5;overflow-wrap:anywhere;margin:10px 0 0}.success{color:#4ade80}.error{color:#fca5a5}.warning{color:#fbbf24}.user-card,.coin-order,.game{background:var(--p2);border:1px solid var(--line);border-radius:13px;padding:14px;margin-top:11px;overflow-wrap:anywhere}.user-card{border-left:4px solid var(--purple)}.coin-order.pending{border-left:4px solid var(--orange)}.coin-order.approved{border-left:4px solid var(--green)}.coin-order.rejected{border-left:4px solid var(--red)}.game img{width:100%;max-height:230px;object-fit:cover;border-radius:10px;margin-bottom:10px;background:#0b1220}#preview{display:none;width:100%;max-height:220px;object-fit:cover;border-radius:10px;margin-top:9px}.game-name,.coin-title{font-size:17px;font-weight:bold;margin-bottom:8px}.game-info,.coin-row,.user-row{font-size:13px;line-height:1.7;color:#d4dbea;overflow-wrap:anywhere}.status{display:inline-block;padding:5px 9px;border-radius:7px;font-size:11px;font-weight:bold;background:#555}.status.pending{background:var(--orange);color:#171717}.status.approved{background:var(--green)}.status.rejected,.delete{background:var(--red)}.approve{background:var(--green)}.secondary{background:#3b465a}.refresh{background:#263650}.action-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.action-row button{margin:0}.empty,.loading{padding:18px;text-align:center;background:var(--p2);border-radius:11px;color:var(--muted);margin-top:10px}.search{margin:8px 0 12px}@media(max-width:620px){body{padding:9px}.section{padding:14px}.dashboard{grid-template-columns:repeat(2,1fr)}.admin-title{font-size:19px}.header-top{align-items:flex-start}.logout{min-width:75px;padding:10px}}@media(max-width:360px){.quick-actions,.action-row{grid-template-columns:1fr}}
@@ -28,8 +22,44 @@ function jsArg(v){return JSON.stringify(String(v??""))}
 function showMessage(id,text,type=""){const e=byId(id);if(e){e.textContent=text;e.className="message "+type}}
 function goTo(id){const e=byId(id);if(e)e.scrollIntoView({behavior:"smooth",block:"start"})}
 
-async function sendPushNotification(){const title=byId("pushTitle").value.trim(),body=byId("pushBody").value.trim(),url=byId("pushUrl").value.trim();if(!title||!body){showMessage("pushMessage","⚠️ Weka kichwa na ujumbe wa notification.","warning");return}if(url&&!/^https:\/\//i.test(url)){showMessage("pushMessage","⚠️ Link lazima ianze na https://.","warning");return}const button=byId("sendPushButton");button.disabled=true;showMessage("pushMessage","⏳ Inathibitisha ruhusa ya admin...");try{const {data:adminOk,error:adminError}=await supabaseClient.rpc("is_dg_movie_admin");if(adminError)throw adminError;if(adminOk!==true)throw new Error("Akaunti hii haina ruhusa ya kutuma notifications.");showMessage("pushMessage","⏳ Inatuma notification...");const {data,error}=await supabaseClient.functions.invoke("send-dg-notification",{body:{title,body,url:url||"/"}});if(error)throw error;if(data?.success===false)throw new Error(data.message||"Notification haikutumwa.");showMessage("pushMessage","✅ Ombi la kutuma notification limepokelewa.","success");byId("pushTitle").value="";byId("pushBody").value="";byId("pushUrl").value=""}catch(e){showMessage("pushMessage","❌ "+friendlyError(e),"error")}finally{button.disabled=false}}
-function friendlyError(e){let m=e?.message||String(e||"Hitilafu isiyojulikana.");if(/game-images|bucket/i.test(m))m+=" Hakikisha Storage bucket 'game-images' ipo na ina ruhusa za upload.";if(/access_type|column .* does not exist/i.test(m))m+=" Ongeza column access_type kwenye public.games kwa SQL niliyokupa.";return m}
+async function sendPushNotification(){
+ const title=byId("pushTitle").value.trim();
+ const body=byId("pushBody").value.trim();
+ const url=byId("pushUrl").value.trim();
+ if(!title||!body){showMessage("pushMessage","⚠️ Weka kichwa na ujumbe wa notification.","warning");return}
+ if(url&&!/^https:\/\//i.test(url)){showMessage("pushMessage","⚠️ Link lazima ianze na https://.","warning");return}
+ const button=byId("sendPushButton");button.disabled=true;
+ showMessage("pushMessage","⏳ Inathibitisha ruhusa ya admin...");
+ try{
+  const {data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
+  if(sessionError)throw sessionError;
+  if(!sessionData?.session?.access_token)throw new Error("Session ya admin haipo. Tafadhali logout kisha login tena.");
+  const {data:adminOk,error:adminError}=await supabaseClient.rpc("is_dg_movie_admin");
+  if(adminError)throw new Error("Imeshindwa kuthibitisha ruhusa ya admin (RPC is_dg_movie_admin): "+adminError.message);
+  if(adminOk!==true)throw new Error("Akaunti hii haina ruhusa ya kutuma notifications.");
+  showMessage("pushMessage","⏳ Inatuma notification kupitia send-push...");
+  const {data,error}=await supabaseClient.functions.invoke("send-push",{body:{title,body,url:url||"/"}});
+  if(error){
+   let detail=error.message||"Hitilafu ya Edge Function.";
+   const response=error.context;
+   if(response){
+    try{
+     if(typeof response.json==="function"){
+      const payload=await response.clone().json();
+      detail+=(payload?.message?" | "+payload.message:payload?.error?" | "+payload.error:" | "+JSON.stringify(payload));
+     }else if(response.message){detail+=" | "+response.message}
+     if(response.status)detail+=" (HTTP "+response.status+")";
+    }catch(_){if(response.status)detail+=" (HTTP "+response.status+")";}
+   }
+   throw new Error(detail);
+  }
+  if(data?.success===false)throw new Error(data.message||data.error||"send-push imerudisha success=false.");
+  showMessage("pushMessage","✅ Ombi la kutuma notification limepokelewa na send-push.","success");
+  byId("pushTitle").value="";byId("pushBody").value="";byId("pushUrl").value="";
+ }catch(e){showMessage("pushMessage","❌ "+friendlyError(e),"error")}
+ finally{button.disabled=false}
+}
+function friendlyError(e){let m=e?.message||e?.error_description||String(e||"Hitilafu isiyojulikana.");if(e?.code)m+=" [Code: "+e.code+"]";if(e?.details)m+=" | Details: "+e.details;if(e?.hint)m+=" | Hint: "+e.hint;if(/game-images|bucket/i.test(m))m+=" Hakikisha Storage bucket 'game-images' ipo na ina ruhusa za upload.";if(/access_type|column .* does not exist/i.test(m))m+=" Ongeza column access_type kwenye public.games kwa SQL niliyokupa.";if(/send-push/i.test(m)&&/404|not found/i.test(m))m+=" Hakikisha Edge Function 'send-push' ime-deployiwa kwenye Supabase.";return m}
 async function login(){const email=byId("email").value.trim(),password=byId("password").value;if(!email||!password){showMessage("loginMessage","⚠️ Weka email na password.","warning");return}const b=byId("loginButton");b.disabled=true;showMessage("loginMessage","⏳ Inaingia...");try{const {error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw error;showMessage("loginMessage","✅ Login imefanikiwa.","success");await showPanel()}catch(e){showMessage("loginMessage","❌ "+friendlyError(e),"error")}finally{b.disabled=false}}
 async function showPanel(){const {data,error}=await supabaseClient.auth.getUser();if(error||!data?.user){byId("panel").style.display="none";byId("login").style.display="block";return}byId("login").style.display="none";byId("panel").style.display="block";byId("adminEmail").textContent=data.user.email||"Administrator";await Promise.allSettled([loadUsers(),loadGames(),loadCoinOrders()])}
 async function logout(){const {error}=await supabaseClient.auth.signOut();if(error){alert("Imeshindikana kutoka: "+error.message);return}byId("panel").style.display="none";byId("login").style.display="block";byId("password").value="";showMessage("loginMessage","Umetoka kwenye Admin Panel.")}
