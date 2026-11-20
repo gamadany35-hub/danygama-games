@@ -7898,7 +7898,7 @@ function dgOpenAccountModal(type){
  const modal=document.getElementById('dgAccountModal'),title=document.getElementById('dgAccountModalTitle'),body=document.getElementById('dgAccountModalBody');if(!modal||!body)return;
  if(type==='username'){title.textContent='Badilisha Username';body.innerHTML='<label for="dgNewUsername">Jina jipya</label><input id="dgNewUsername" maxlength="30" placeholder="Andika username mpya" value="'+String(getUserName()).replace(/[&<>"']/g,'')+'"><button class="btn btn-primary" onclick="dgSaveUsername()">Hifadhi jina</button><p class="dg-account-note">Jina hili litaonekana kwenye profile yako.</p>';}
  else if(type==='password'){title.textContent='Badilisha Password';body.innerHTML='<label for="dgNewPassword">Password mpya</label><input id="dgNewPassword" type="password" minlength="6" autocomplete="new-password" placeholder="Angalau herufi 6"><label for="dgConfirmPassword">Rudia password mpya</label><input id="dgConfirmPassword" type="password" minlength="6" autocomplete="new-password" placeholder="Rudia password"><button class="btn btn-primary" onclick="dgSavePassword()">Badilisha password</button><p class="dg-account-note">Usimshirikishe mtu yeyote password yako.</p>';}
- else{title.textContent='Settings';body.innerHTML='<p class="dg-account-note">Akaunti yako: <strong>'+String(currentUser?.email||'').replace(/[&<>"']/g,'')+'</strong></p><p class="dg-account-note">Taarifa za push notification zitawezeshwa baada ya kuunganisha huduma ya notifications. Kwa sasa hakikisha browser yako inaruhusu notifications za website.</p><button class="btn btn-primary" onclick="dgCloseAccountModal()">Sawa</button>';}
+ else{title.textContent='Settings';body.innerHTML='<p class="dg-account-note">Akaunti yako: <strong>'+String(currentUser?.email||'').replace(/[&<>"']/g,'')+'</strong></p><p class="dg-account-note">Unaweza kuwasha au kusimamia matangazo ya Danygama Games kwenye kifaa hiki. Usajili wa notifications hauhitaji login.</p><button class="btn btn-primary" onclick="dgCloseAccountModal();dgSubscribeToPush()">🔔 Washa Notifications</button><button class="btn btn-dark" onclick="dgCloseAccountModal();dgUnsubscribeFromPush()" style="margin-top:8px">Zima Notifications kwenye kifaa hiki</button>';}
  modal.classList.add('show');modal.setAttribute('aria-hidden','false');
 }
 function dgCloseAccountModal(){const m=document.getElementById('dgAccountModal');if(m){m.classList.remove('show');m.setAttribute('aria-hidden','true');}}
@@ -8060,6 +8060,201 @@ body.light-theme .dg-video-tabs button{background:#fff;color:#25364b;border-colo
   setTimeout(()=>{if(document.getElementById('dgGameTutorialVideoGrid'))loadDgGameTutorials();},1200);
 })();
 </script>
+
+
+
+<!-- DANYGAMA GAMES: GUEST WEB PUSH NOTIFICATIONS -->
+<style id="danygama-push-styles">
+#dgPushPanel{margin:16px 0 20px;padding:18px;border:1px solid #365d8b;border-radius:18px;background:linear-gradient(135deg,rgba(28,75,125,.35),rgba(13,27,43,.96));color:inherit}
+#dgPushPanel h2{font-size:19px;margin:0 0 7px}
+#dgPushPanel p{font-size:13px;line-height:1.6;color:#a9bfd4;margin:0 0 12px}
+#dgPushPanel .dg-push-actions{display:flex;gap:9px;flex-wrap:wrap}
+#dgPushPanel .dg-push-status{font-size:11px;margin-top:10px;color:#b8c8d8;min-height:16px}
+#dgPushPanel button{min-height:42px}
+body.light-theme #dgPushPanel{background:linear-gradient(135deg,#eaf3ff,#fff);border-color:#c8dcf2}
+body.light-theme #dgPushPanel p,body.light-theme #dgPushPanel .dg-push-status{color:#52667a}
+</style>
+
+<script id="danygama-guest-push-integration">
+(function(){
+  "use strict";
+
+  /*
+   * MUHIMU:
+   * Weka VAPID PUBLIC KEY inayolingana na VAPID_PRIVATE_KEY ya Supabase Edge Function.
+   * Hii ni public key tu; USIWEKE VAPID_PRIVATE_KEY hapa.
+   */
+  const DG_PUSH_VAPID_PUBLIC_KEY = "034e708f99f6cad30712338276cacc2b405eb8b95c0ae9407ebe0997025c07b8";
+  const DG_PUSH_TABLE = "dg_push_subscriptions";
+  const DG_PUSH_SW_FILE = "danygama-push-sw.js";
+
+  function dgPushToast(message){
+    if(typeof window.showToast === "function") window.showToast(message);
+    else alert(message);
+  }
+
+  function dgUrlSafeBase64ToUint8Array(base64String){
+    const padding = "=".repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+    const raw = window.atob(base64);
+    const output = new Uint8Array(raw.length);
+    for(let i = 0; i < raw.length; ++i) output[i] = raw.charCodeAt(i);
+    return output;
+  }
+
+  function dgPushSupported(){
+    return window.isSecureContext &&
+      "serviceWorker" in navigator &&
+      "PushManager" in window &&
+      "Notification" in window;
+  }
+
+  async function dgGetPushRegistration(){
+    const swUrl = new URL(DG_PUSH_SW_FILE, document.baseURI);
+    const scopeUrl = new URL("./", document.baseURI);
+    return await navigator.serviceWorker.register(swUrl.href, {scope: scopeUrl.pathname});
+  }
+
+  async function dgGetExistingPushSubscription(registration){
+    return await registration.pushManager.getSubscription();
+  }
+
+  window.dgSubscribeToPush = async function(){
+    const panelStatus = document.getElementById("dgPushStatus");
+    const setStatus = (message) => { if(panelStatus) panelStatus.textContent = message; };
+
+    if(!dgPushSupported()){
+      setStatus("Kifaa/browser hii haitumii Web Push hapa. Tumia website kupitia HTTPS na browser inayoruhusu notifications.");
+      dgPushToast("Web Push haitumiki kwenye browser hii au website haijafunguliwa kwa HTTPS.");
+      return;
+    }
+    if(!DG_PUSH_VAPID_PUBLIC_KEY || DG_PUSH_VAPID_PUBLIC_KEY === ""){
+      setStatus("Bado haijawekwa VAPID PUBLIC KEY inayolingana na Supabase.");
+      dgPushToast("Weka VAPID PUBLIC KEY kwenye index.html kwanza.");
+      return;
+    }
+    if(typeof supabaseClient === "undefined" || !supabaseClient){
+      setStatus("Supabase haijaanza. Refresh website ujaribu tena.");
+      return;
+    }
+
+    try{
+      setStatus("Inaomba ruhusa ya notifications...");
+      const permission = await Notification.requestPermission();
+      if(permission !== "granted"){
+        setStatus("Ruhusa haijatolewa. Ruhusu notifications kwenye mipangilio ya browser.");
+        dgPushToast("Hujaruhusu notifications.");
+        return;
+      }
+
+      const registration = await dgGetPushRegistration();
+      let subscription = await dgGetExistingPushSubscription(registration);
+
+      if(!subscription){
+        setStatus("Inaunganisha kifaa chako...");
+        subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: dgUrlSafeBase64ToUint8Array(DG_PUSH_VAPID_PUBLIC_KEY)
+        });
+      }
+
+      const subscriptionJson = subscription.toJSON();
+      const {error} = await supabaseClient
+        .from(DG_PUSH_TABLE)
+        .insert({subscription: subscriptionJson});
+
+      if(error){
+        // Subscription may already exist in the database; do not silently claim success.
+        console.error("Danygama push subscription save error:", error);
+        if(/duplicate|unique/i.test(error.message || "")){
+          setStatus("Kifaa hiki tayari kimejiunga na notifications.");
+          dgPushToast("Kifaa hiki tayari kimejiunga.");
+          return;
+        }
+        throw error;
+      }
+
+      setStatus("Umejiunga! Utapokea matangazo ya Danygama Games kwenye kifaa hiki.");
+      dgPushToast("✅ Umejiunga na Danygama Games notifications!");
+    }catch(error){
+      console.error("Danygama push subscribe error:", error);
+      const message = error && error.message ? error.message : "Jaribu tena.";
+      setStatus("Imeshindikana kujiunga: " + message);
+      dgPushToast("Imeshindikana kujiunga na notifications. " + message);
+    }
+  };
+
+  window.dgUnsubscribeFromPush = async function(){
+    try{
+      if(!dgPushSupported()){
+        dgPushToast("Web Push haitumiki kwenye browser hii.");
+        return;
+      }
+      const registration = await navigator.serviceWorker.getRegistration(
+        new URL("./", document.baseURI).pathname
+      );
+      if(!registration){
+        dgPushToast("Hakuna subscription kwenye kifaa hiki.");
+        return;
+      }
+      const subscription = await registration.pushManager.getSubscription();
+      if(!subscription){
+        dgPushToast("Notifications hazijawashwa kwenye kifaa hiki.");
+        return;
+      }
+      await subscription.unsubscribe();
+      dgPushToast("Notifications zimezimwa kwenye kifaa hiki. Rekodi ya zamani inaweza kubaki server-side hadi ifutwe.");
+      const status = document.getElementById("dgPushStatus");
+      if(status) status.textContent = "Notifications zimezimwa kwenye kifaa hiki.";
+    }catch(error){
+      console.error("Danygama push unsubscribe error:", error);
+      dgPushToast("Imeshindikana kuzima notifications.");
+    }
+  };
+
+  function dgInstallPushPanel(){
+    if(document.getElementById("dgPushPanel")) return;
+    const home = document.getElementById("homePage");
+    if(!home) return;
+    const hero = home.querySelector(".hero");
+    if(!hero) return;
+
+    const panel = document.createElement("section");
+    panel.id = "dgPushPanel";
+    panel.setAttribute("aria-label", "Danygama Games notifications");
+    panel.innerHTML =
+      '<h2>🔔 Pata Matangazo ya Danygama Games</h2>' +
+      '<p>Jiunge bure kupokea taarifa za games mpya, updates na matangazo moja kwa moja kwenye simu yako. Huhitaji login wala account.</p>' +
+      '<div class="dg-push-actions">' +
+        '<button type="button" class="btn btn-primary" id="dgEnablePushButton">🔔 Jiunge na Notifications</button>' +
+        '<button type="button" class="btn btn-dark" id="dgDisablePushButton">Zima kwenye kifaa hiki</button>' +
+      '</div>' +
+      '<div class="dg-push-status" id="dgPushStatus" role="status" aria-live="polite">Bofya Jiunge ili kuruhusu matangazo kwenye kifaa hiki.</div>';
+
+    hero.insertAdjacentElement("afterend", panel);
+    document.getElementById("dgEnablePushButton").addEventListener("click", window.dgSubscribeToPush);
+    document.getElementById("dgDisablePushButton").addEventListener("click", window.dgUnsubscribeFromPush);
+  }
+
+  function dgStartPushIntegration(){
+    dgInstallPushPanel();
+    if(!dgPushSupported()){
+      const status = document.getElementById("dgPushStatus");
+      if(status) status.textContent = "Web Push inahitaji HTTPS na browser inayotumia Service Worker na Push API.";
+    }else if(DG_PUSH_VAPID_PUBLIC_KEY === ""){
+      const status = document.getElementById("dgPushStatus");
+      if(status) status.textContent = "Tayari kwa kuunganishwa: bado weka VAPID PUBLIC KEY inayolingana na Supabase.";
+    }
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", dgStartPushIntegration);
+  }else{
+    dgStartPushIntegration();
+  }
+})();
+</script>
+<!-- END DANYGAMA GAMES GUEST WEB PUSH NOTIFICATIONS -->
 
 </body>
 </html>
