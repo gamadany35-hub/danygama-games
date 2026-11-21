@@ -8069,7 +8069,7 @@ body.light-theme .dg-video-tabs button{background:#fff;color:#25364b;border-colo
 #dgPushPanel h2{font-size:19px;margin:0 0 7px}
 #dgPushPanel p{font-size:13px;line-height:1.6;color:#a9bfd4;margin:0 0 12px}
 #dgPushPanel .dg-push-actions{display:flex;gap:9px;flex-wrap:wrap}
-#dgPushPanel .dg-push-status{font-size:11px;margin-top:10px;color:#b8c8d8;min-height:16px}
+#dgPushPanel .dg-push-status{font-size:12px;margin-top:10px;color:#b8c8d8;min-height:18px;overflow-wrap:anywhere}
 #dgPushPanel button{min-height:42px}
 body.light-theme #dgPushPanel{background:linear-gradient(135deg,#eaf3ff,#fff);border-color:#c8dcf2}
 body.light-theme #dgPushPanel p,body.light-theme #dgPushPanel .dg-push-status{color:#52667a}
@@ -8079,11 +8079,7 @@ body.light-theme #dgPushPanel p,body.light-theme #dgPushPanel .dg-push-status{co
 (function(){
   "use strict";
 
-  /*
-   * MUHIMU:
-   * Weka VAPID PUBLIC KEY inayolingana na VAPID_PRIVATE_KEY ya Supabase Edge Function.
-   * Hii ni public key tu; USIWEKE VAPID_PRIVATE_KEY hapa.
-   */
+  // Hii ni VAPID PUBLIC KEY tu. Usiiweke PRIVATE KEY kwenye HTML.
   const DG_PUSH_VAPID_PUBLIC_KEY = "BE-HraApKIDycjJv39cHmf-W6cNrg46P5qv_UgdX9kcYlpbxrNpVl_t3Jj7ULGqTfXj-JM2qOaQ9frEheP6RAf4";
   const DG_PUSH_TABLE = "dg_push_subscriptions";
   const DG_PUSH_SW_FILE = "danygama-push-sw.js";
@@ -8091,6 +8087,11 @@ body.light-theme #dgPushPanel p,body.light-theme #dgPushPanel .dg-push-status{co
   function dgPushToast(message){
     if(typeof window.showToast === "function") window.showToast(message);
     else alert(message);
+  }
+
+  function dgSetPushStatus(message){
+    const status = document.getElementById("dgPushStatus");
+    if(status) status.textContent = message;
   }
 
   function dgUrlSafeBase64ToUint8Array(base64String){
@@ -8110,77 +8111,89 @@ body.light-theme #dgPushPanel p,body.light-theme #dgPushPanel .dg-push-status{co
   }
 
   async function dgGetPushRegistration(){
-    const swUrl = new URL(DG_PUSH_SW_FILE, document.baseURI);
-    const scopeUrl = new URL("./", document.baseURI);
-    return await navigator.serviceWorker.register(swUrl.href, {scope: scopeUrl.pathname});
-  }
+    const basePath = new URL("./", window.location.href);
+    const swUrl = new URL(DG_PUSH_SW_FILE, basePath);
+    const scopePath = basePath.pathname;
 
-  async function dgGetExistingPushSubscription(registration){
-    return await registration.pushManager.getSubscription();
+    // Register worker in the GitHub Pages project folder, not the domain root.
+    const registration = await navigator.serviceWorker.register(swUrl.href, {
+      scope: scopePath,
+      updateViaCache: "none"
+    });
+    await navigator.serviceWorker.ready;
+
+    if(!registration.pushManager){
+      throw new Error("Service Worker imefunguka lakini PushManager haipatikani.");
+    }
+    return registration;
   }
 
   window.dgSubscribeToPush = async function(){
-    const panelStatus = document.getElementById("dgPushStatus");
-    const setStatus = (message) => { if(panelStatus) panelStatus.textContent = message; };
-
     if(!dgPushSupported()){
-      setStatus("Kifaa/browser hii haitumii Web Push hapa. Tumia website kupitia HTTPS na browser inayoruhusu notifications.");
+      dgSetPushStatus("Browser hii haitumii Web Push. Tumia Chrome kupitia HTTPS.");
       dgPushToast("Web Push haitumiki kwenye browser hii au website haijafunguliwa kwa HTTPS.");
       return;
     }
-    if(!DG_PUSH_VAPID_PUBLIC_KEY || DG_PUSH_VAPID_PUBLIC_KEY === ""){
-      setStatus("Bado haijawekwa VAPID PUBLIC KEY inayolingana na Supabase.");
-      dgPushToast("Weka VAPID PUBLIC KEY kwenye index.html kwanza.");
+    if(!DG_PUSH_VAPID_PUBLIC_KEY){
+      dgSetPushStatus("VAPID PUBLIC KEY haijawekwa.");
       return;
     }
-    if(typeof supabaseClient === "undefined" || !supabaseClient){
-      setStatus("Supabase haijaanza. Refresh website ujaribu tena.");
+    if(!window.supabaseClient){
+      dgSetPushStatus("Supabase haijaanza. Refresh website ujaribu tena.");
       return;
     }
+
+    const button = document.getElementById("dgEnablePushButton");
+    if(button) button.disabled = true;
 
     try{
-      setStatus("Inaomba ruhusa ya notifications...");
-      const permission = await Notification.requestPermission();
+      dgSetPushStatus("Inasajili Service Worker ya Danygama Games...");
+      const registration = await dgGetPushRegistration();
+
+      dgSetPushStatus("Inaomba ruhusa ya notifications...");
+      let permission = Notification.permission;
+      if(permission === "default"){
+        permission = await Notification.requestPermission();
+      }
       if(permission !== "granted"){
-        setStatus("Ruhusa haijatolewa. Ruhusu notifications kwenye mipangilio ya browser.");
-        dgPushToast("Hujaruhusu notifications.");
-        return;
+        throw new Error(permission === "denied"
+          ? "Ruhusa imekataliwa na browser. Fungua Site settings > Notifications na uchague Allow."
+          : "Ruhusa haijatolewa. Jaribu tena na uchague Allow.");
       }
 
-      const registration = await dgGetPushRegistration();
-      let subscription = await dgGetExistingPushSubscription(registration);
-
+      let subscription = await registration.pushManager.getSubscription();
       if(!subscription){
-        setStatus("Inaunganisha kifaa chako...");
+        dgSetPushStatus("Inaunda usajili wa kifaa...");
         subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: dgUrlSafeBase64ToUint8Array(DG_PUSH_VAPID_PUBLIC_KEY)
         });
       }
 
+      dgSetPushStatus("Inahifadhi kifaa kwenye Supabase...");
       const subscriptionJson = subscription.toJSON();
-      const {error} = await supabaseClient
+      const {error} = await window.supabaseClient
         .from(DG_PUSH_TABLE)
         .insert({subscription: subscriptionJson});
 
       if(error){
-        // Subscription may already exist in the database; do not silently claim success.
-        console.error("Danygama push subscription save error:", error);
         if(/duplicate|unique/i.test(error.message || "")){
-          setStatus("Kifaa hiki tayari kimejiunga na notifications.");
-          dgPushToast("Kifaa hiki tayari kimejiunga.");
+          dgSetPushStatus("Kifaa hiki tayari kimejiunga na notifications.");
+          dgPushToast("✅ Kifaa hiki tayari kimejiunga.");
           return;
         }
-        throw error;
+        throw new Error("Supabase (" + (error.code || "error") + "): " + error.message);
       }
 
-      setStatus("Umejiunga! Utapokea matangazo ya Danygama Games kwenye kifaa hiki.");
+      dgSetPushStatus("Umejiunga! Utapokea matangazo ya Danygama Games kwenye kifaa hiki.");
       dgPushToast("✅ Umejiunga na Danygama Games notifications!");
     }catch(error){
       console.error("Danygama push subscribe error:", error);
-      const message = error && error.message ? error.message : "Jaribu tena.";
-      setStatus("Imeshindikana kujiunga: " + message);
-      dgPushToast("Imeshindikana kujiunga na notifications. " + message);
+      const message = error && error.message ? error.message : String(error);
+      dgSetPushStatus("Imeshindikana kujiunga: " + message);
+      dgPushToast("Imeshindikana kujiunga na notifications: " + message);
+    }finally{
+      if(button) button.disabled = false;
     }
   };
 
@@ -8190,11 +8203,10 @@ body.light-theme #dgPushPanel p,body.light-theme #dgPushPanel .dg-push-status{co
         dgPushToast("Web Push haitumiki kwenye browser hii.");
         return;
       }
-      const registration = await navigator.serviceWorker.getRegistration(
-        new URL("./", document.baseURI).pathname
-      );
+      const basePath = new URL("./", window.location.href);
+      const registration = await navigator.serviceWorker.getRegistration(basePath.pathname);
       if(!registration){
-        dgPushToast("Hakuna subscription kwenye kifaa hiki.");
+        dgPushToast("Hakuna Service Worker iliyosajiliwa. Jaribu kujiunga kwanza.");
         return;
       }
       const subscription = await registration.pushManager.getSubscription();
@@ -8203,12 +8215,11 @@ body.light-theme #dgPushPanel p,body.light-theme #dgPushPanel .dg-push-status{co
         return;
       }
       await subscription.unsubscribe();
-      dgPushToast("Notifications zimezimwa kwenye kifaa hiki. Rekodi ya zamani inaweza kubaki server-side hadi ifutwe.");
-      const status = document.getElementById("dgPushStatus");
-      if(status) status.textContent = "Notifications zimezimwa kwenye kifaa hiki.";
+      dgSetPushStatus("Notifications zimezimwa kwenye kifaa hiki. Rekodi ya zamani inaweza kubaki Supabase hadi ifutwe.");
+      dgPushToast("Notifications zimezimwa kwenye kifaa hiki.");
     }catch(error){
       console.error("Danygama push unsubscribe error:", error);
-      dgPushToast("Imeshindikana kuzima notifications.");
+      dgPushToast("Imeshindikana kuzima notifications: " + (error.message || error));
     }
   };
 
@@ -8234,16 +8245,21 @@ body.light-theme #dgPushPanel p,body.light-theme #dgPushPanel .dg-push-status{co
     hero.insertAdjacentElement("afterend", panel);
     document.getElementById("dgEnablePushButton").addEventListener("click", window.dgSubscribeToPush);
     document.getElementById("dgDisablePushButton").addEventListener("click", window.dgUnsubscribeFromPush);
+
+    if(!dgPushSupported()){
+      dgSetPushStatus("Web Push inahitaji HTTPS, Service Worker na browser inayotumia Push API.");
+    }else if(Notification.permission === "denied"){
+      dgSetPushStatus("Notifications zimezuiwa kwenye browser. Fungua mipangilio ya site na uchague Allow.");
+    }else if(Notification.permission === "granted"){
+      dgSetPushStatus("Browser tayari imeruhusu notifications. Bonyeza Jiunge ili kuhifadhi kifaa.");
+    }
   }
 
   function dgStartPushIntegration(){
     dgInstallPushPanel();
-    if(!dgPushSupported()){
-      const status = document.getElementById("dgPushStatus");
-      if(status) status.textContent = "Web Push inahitaji HTTPS na browser inayotumia Service Worker na Push API.";
-    }else if(DG_PUSH_VAPID_PUBLIC_KEY === ""){
-      const status = document.getElementById("dgPushStatus");
-      if(status) status.textContent = "Tayari kwa kuunganishwa: bado weka VAPID PUBLIC KEY inayolingana na Supabase.";
+    // Home page inaweza kujengwa baada ya DOMContentLoaded; jaribu tena baada ya muda mfupi.
+    if(!document.getElementById("dgPushPanel")){
+      window.addEventListener("load", dgInstallPushPanel, {once:true});
     }
   }
 
